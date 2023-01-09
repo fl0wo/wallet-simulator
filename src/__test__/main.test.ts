@@ -24,24 +24,24 @@ describe('WalletSimulator' , ()=>{
 
     test('position value calculated correctly', () => {
         const wallet = new WalletSimulator(100);
-        wallet.updatePrice('BTC', 10);
         wallet.addTrade({ ticker: 'BTC', price: 10, quantity: 1, type: TradeMove.BUY });
-        expect(wallet.getPositionValue('BTC')).toEqual(10);
+        wallet.updatePrice('BTC',20);
+        expect(wallet.getPositionValue('BTC')).toEqual(20);
     });
 
     test('total value calculated correctly', () => {
         const wallet = new WalletSimulator(100);
-        wallet.updatePrice('BTC', 10);
         wallet.addTrade({ ticker: 'BTC', price: 10, quantity: 1, type: TradeMove.BUY });
+        wallet.updatePrice('BTC', 20);
         expect(wallet.getTotalValue()).toEqual(110);
     });
 
     test('average cost calculated correctly', () => {
         const wallet = new WalletSimulator(100);
-        wallet.updatePrice('BTC', 10);
         wallet.addTrade({ ticker: 'BTC', price: 10, quantity: 1, type: TradeMove.BUY });
         expect(wallet.getPositionAverageCost('BTC')).toEqual(10);
         wallet.addTrade({ ticker: 'BTC', price: 20, quantity: 1, type: TradeMove.BUY });
+        expect(wallet.getPositionValue('BTC')).toEqual(40);
         expect(wallet.getPositionAverageCost('BTC')).toEqual(15);
     });
 

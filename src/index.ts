@@ -18,9 +18,9 @@ export class WalletSimulator {
      */
     public addTrade(trade: Trade) {
         if (trade.type === TradeMove.BUY) {
-            this.buyPosition(trade);
+            this.buy(trade);
         } else if (trade.type === TradeMove.SELL) {
-            this.sellPosition(trade);
+            this.sell(trade);
         }
     }
 
@@ -29,7 +29,7 @@ export class WalletSimulator {
      * @param trade
      * @private
      */
-    private sellPosition(trade: Trade) {
+    private sell(trade: Trade) {
         const ownedAssetQuantity = this.getPositionQuantity(trade.ticker);
         if (ownedAssetQuantity < trade.quantity) {
             throw new Error(`Cannot sell ${trade.quantity} ${trade.ticker} because only ${ownedAssetQuantity} are held`);
@@ -44,17 +44,19 @@ export class WalletSimulator {
      * @param trade
      * @private
      */
-    private buyPosition(trade: Trade) {
-        const tradeCost = trade.price * trade.quantity;
-
-        if (this.balance < tradeCost) {
+    private buy(trade: Trade) {
+        const completeCost = trade.price * trade.quantity;
+        if (this.balance < completeCost) {
             throw new Error(`Insufficient funds to buy ${trade.quantity} ${trade.ticker} at $${trade.price}`);
         }
-        this.balance -= tradeCost;
+
+        this.updatePrice(trade.ticker,trade.price);
+
+        this.balance -= completeCost;
         const currentTickerQuantity = this.getPositionQuantity(trade.ticker);
         this.holdings.set(trade.ticker, currentTickerQuantity + trade.quantity);
 
-        this.updateCostBasis(trade, currentTickerQuantity, tradeCost);
+        this.updateCostBasis(trade, currentTickerQuantity, completeCost);
     }
 
     /**
@@ -65,13 +67,8 @@ export class WalletSimulator {
      * @private
      */
     private updateCostBasis(trade: Trade, currentTickerQuantity:number, tradeCost: number) {
-        if (this.costBasis.hasOwnProperty(trade.ticker)) {
-            const costBasisForTicker = getSafeNull(this.costBasis.get(trade.ticker),0);
-            const costBase = (costBasisForTicker * currentTickerQuantity + tradeCost) / (currentTickerQuantity + trade.quantity);
-            this.costBasis.set(trade.ticker, costBase);
-        } else {
-            this.costBasis.set(trade.ticker, tradeCost / trade.quantity);
-        }
+        const currentCostForTicker = getSafeNull(this.costBasis.get(trade.ticker),0);
+        this.costBasis.set(trade.ticker, currentCostForTicker + tradeCost);
     }
 
     /**
@@ -119,7 +116,14 @@ export class WalletSimulator {
      * @param ticker
      */
     public getPositionAverageCost(ticker: string): number {
-        return getSafeNull(this.costBasis.get(ticker),0);
+        const quantity = this.getPositionQuantity(ticker);
+        if (quantity === 0) {
+            return 0;
+        }
+        const costBasisForTicker = getSafeOrThrow(this.costBasis.get(ticker), 'Cost basis for ' + ticker + ' is unknown');
+
+        console.log('for',quantity,'paid',costBasisForTicker)
+        return costBasisForTicker / quantity;
     }
 
     /**
