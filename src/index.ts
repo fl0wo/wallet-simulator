@@ -34,11 +34,13 @@ export class WalletSimulator {
         if (ownedAssetQuantity < trade.quantity) {
             throw new Error(`Cannot sell ${trade.quantity} ${trade.ticker} because only ${ownedAssetQuantity} are held`);
         }
+        this.updatePrice(trade.ticker,trade.price);
+
         const tradeCost = trade.price * trade.quantity;
         this.balance += tradeCost;
         this.holdings.set(trade.ticker, ownedAssetQuantity - trade.quantity);
 
-        this.updateCostBasis(trade, -trade.quantity);
+        this.updateCostBasis(trade, -trade.price);
     }
 
     /**
@@ -55,8 +57,8 @@ export class WalletSimulator {
         this.updatePrice(trade.ticker,trade.price);
 
         this.balance -= completeCost;
-        const currentTickerQuantity = this.getPositionQuantity(trade.ticker);
-        this.holdings.set(trade.ticker, currentTickerQuantity + trade.quantity);
+        const currentQuantity = this.getPositionQuantity(trade.ticker);
+        this.holdings.set(trade.ticker, currentQuantity + trade.quantity);
 
         this.updateCostBasis(trade, completeCost);
     }
@@ -122,6 +124,7 @@ export class WalletSimulator {
             return 0;
         }
         const costBasisForTicker = getSafeOrThrow(this.costBasis.get(ticker), 'Cost basis for ' + ticker + ' is unknown');
+        console.log('paid',costBasisForTicker,'for',quantity)
         return costBasisForTicker / quantity;
     }
 
@@ -142,10 +145,7 @@ export class WalletSimulator {
         if (quantity === 0) {
             return 0;
         }
-        const avgCostForTicker = this.getPositionAverageCost(ticker);
-        const currentPriceForTicker = this.getPrice(ticker);
-
-        return avgCostForTicker;
+        return this.getPositionAverageCost(ticker);
     }
 
     /**

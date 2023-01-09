@@ -108,4 +108,33 @@ describe('WalletSimulator' , ()=>{
         expect(wallet.getEstimatedUnrealizedProfitLoss('ETH')).toEqual(20);
     });
 
+    test('average cost of multiple buys and sells calculated correctly', () => {
+        const wallet = new WalletSimulator(100);
+        wallet.updatePrice('BTC', 10);
+        wallet.addTrade({ ticker: 'BTC', price: 10, quantity: 1, type: TradeMove.BUY });
+        wallet.addTrade({ ticker: 'BTC', price: 15, quantity: 1, type: TradeMove.BUY });
+        wallet.addTrade({ ticker: 'BTC', price: 20, quantity: 1, type: TradeMove.SELL });
+        expect(wallet.getPositionAverageCost('BTC')).toEqual(5);
+    });
+
+    test('estimated liquidation price of multiple buys and sells calculated correctly', () => {
+        const wallet = new WalletSimulator(100);
+        wallet.updatePrice('BTC', 10);
+        wallet.addTrade({ ticker: 'BTC', price: 10, quantity: 1, type: TradeMove.BUY });
+        wallet.addTrade({ ticker: 'BTC', price: 15, quantity: 1, type: TradeMove.BUY });
+        wallet.addTrade({ ticker: 'BTC', price: 20, quantity: 1, type: TradeMove.SELL });
+        expect(wallet.getEstimatedLiquidationPrice('BTC')).toEqual(5);
+    });
+
+    test('estimated unrealized profit or loss of multiple buys and sells calculated correctly', () => {
+        const wallet = new WalletSimulator(100);
+        wallet.updatePrice('BTC', 10);
+        wallet.addTrade({ ticker: 'BTC', price: 10, quantity: 1, type: TradeMove.BUY });
+        wallet.addTrade({ ticker: 'BTC', price: 15, quantity: 1, type: TradeMove.BUY });
+        wallet.addTrade({ ticker: 'BTC', price: 20, quantity: 1, type: TradeMove.SELL });
+        expect(wallet.getEstimatedUnrealizedProfitLoss('BTC')).toEqual(15);
+    });
+
+
+
 })
