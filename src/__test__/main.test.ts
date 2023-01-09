@@ -1,5 +1,5 @@
-import { Greeter } from '../index';
+import {WalletSimulator} from "../index";
 
 test('My Greeter', () => {
-    expect(Greeter('Carl')).toBe('Hello Carl');
+    expect(new WalletSimulator('main-wallet')).toBeDefined()
 });

@@ -1,1 +1,3 @@
-export const Greeter = (name: string) => `Hello ${name}`;
+export class WalletSimulator{
+    constructor(private id:string){}
+}
