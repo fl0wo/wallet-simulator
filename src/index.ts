@@ -4,13 +4,15 @@ export class WalletSimulator {
 
     private holdings: Map<string,number>;
     private prices: Map<string,number>;
+    private costBasis: Map<string,number>;
 
-    constructor(private balance: number) {
+    constructor(public balance: number) {
         this.holdings = new Map<string,number>();
         this.prices = new Map<string,number>();
+        this.costBasis = new Map<string,number>();
     }
 
-    /**
+    /**First class commit
      * Update balance and holdings based on trade
      * @param trade the object to add
      */
@@ -28,10 +30,13 @@ export class WalletSimulator {
      * @private
      */
     private sellPosition(trade: Trade) {
-        // TODO: check if there are enough holdings
+        const ownedAssetQuantity = this.getPositionQuantity(trade.ticker);
+        if (ownedAssetQuantity < trade.quantity) {
+            throw new Error(`Cannot sell ${trade.quantity} ${trade.ticker} because only ${ownedAssetQuantity} are held`);
+        }
         const tradeCost = trade.price * trade.quantity;
         this.balance += tradeCost;
-        this.holdings.set(trade.ticker, this.getPositionQuantity(trade.ticker) - trade.quantity);
+        this.holdings.set(trade.ticker, ownedAssetQuantity - trade.quantity);
     }
 
     /**
@@ -40,12 +45,33 @@ export class WalletSimulator {
      * @private
      */
     private buyPosition(trade: Trade) {
-        // TODO: check if there are enough balance
-
         const tradeCost = trade.price * trade.quantity;
+
+        if (this.balance < tradeCost) {
+            throw new Error(`Insufficient funds to buy ${trade.quantity} ${trade.ticker} at $${trade.price}`);
+        }
         this.balance -= tradeCost;
         const currentTickerQuantity = this.getPositionQuantity(trade.ticker);
         this.holdings.set(trade.ticker, currentTickerQuantity + trade.quantity);
+
+        this.updateCostBasis(trade, currentTickerQuantity, tradeCost);
+    }
+
+    /**
+     *
+     * @param trade
+     * @param currentTickerQuantity
+     * @param tradeCost
+     * @private
+     */
+    private updateCostBasis(trade: Trade, currentTickerQuantity:number, tradeCost: number) {
+        if (this.costBasis.hasOwnProperty(trade.ticker)) {
+            const costBasisForTicker = getSafeNull(this.costBasis.get(trade.ticker),0);
+            const costBase = (costBasisForTicker * currentTickerQuantity + tradeCost) / (currentTickerQuantity + trade.quantity);
+            this.costBasis.set(trade.ticker, costBase);
+        } else {
+            this.costBasis.set(trade.ticker, tradeCost / trade.quantity);
+        }
     }
 
     /**
@@ -63,7 +89,7 @@ export class WalletSimulator {
      */
     public getPositionValue(ticker: string): number {
         const quantity = getSafeNull(this.holdings.get(ticker),0);
-        const price = getSafeOrThrow(this.prices.get(ticker),'Price for '+ticker+' unknown!');
+        const price = this.getPrice(ticker);
         return quantity * price;
     }
 
@@ -79,12 +105,47 @@ export class WalletSimulator {
     }
 
     /**
-     *
+     * @return the quantity of a particular asset held in the wallet.
      * @param ticker
      * @private
      */
-    private getPositionQuantity(ticker: string) {
+    getPositionQuantity(ticker: string) {
         return getSafeNull(this.holdings.get(ticker),0);
+    }
+
+
+    /**
+     * @return the average cost of a position in a particular asset.
+     * @param ticker
+     */
+    public getPositionAverageCost(ticker: string): number {
+        return getSafeNull(this.costBasis.get(ticker),0);
+    }
+
+    /**
+     * @return the current price of a particular asset.
+     * @param ticker
+     */
+    public getPrice(ticker: string): number {
+        return getSafeOrThrow(this.prices.get(ticker),`Price for ${ticker} is unknown`);
+    }
+
+    /**
+     * @return the estimated price at which all of a particular asset could be sold to fully liquidate the position.
+     * @param ticker
+     */
+    public getEstimatedLiquidationPrice(ticker: string): number {
+        const quantity = this.getPositionQuantity(ticker);
+        const totalCost = getSafeNull(this.costBasis.get(ticker),0) * quantity;
+        return (totalCost + this.balance) / quantity;
+    }
+
+    /**
+     * @return the estimated profit or loss on a particular asset, assuming it is sold at the current market price.
+     * @param ticker
+     */
+    public getEstimatedUnrealizedProfitLoss(ticker: string): number {
+        return this.getPositionValue(ticker) - getSafeNull(this.costBasis.get(ticker),0) * this.getPositionQuantity(ticker);
     }
 }
 
