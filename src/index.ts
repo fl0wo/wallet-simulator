@@ -37,6 +37,8 @@ export class WalletSimulator {
         const tradeCost = trade.price * trade.quantity;
         this.balance += tradeCost;
         this.holdings.set(trade.ticker, ownedAssetQuantity - trade.quantity);
+
+        this.updateCostBasis(trade, -trade.quantity);
     }
 
     /**
@@ -56,17 +58,16 @@ export class WalletSimulator {
         const currentTickerQuantity = this.getPositionQuantity(trade.ticker);
         this.holdings.set(trade.ticker, currentTickerQuantity + trade.quantity);
 
-        this.updateCostBasis(trade, currentTickerQuantity, completeCost);
+        this.updateCostBasis(trade, completeCost);
     }
 
     /**
      *
      * @param trade
-     * @param currentTickerQuantity
      * @param tradeCost
      * @private
      */
-    private updateCostBasis(trade: Trade, currentTickerQuantity:number, tradeCost: number) {
+    private updateCostBasis(trade: Trade, tradeCost: number) {
         const currentCostForTicker = getSafeNull(this.costBasis.get(trade.ticker),0);
         this.costBasis.set(trade.ticker, currentCostForTicker + tradeCost);
     }
@@ -121,8 +122,6 @@ export class WalletSimulator {
             return 0;
         }
         const costBasisForTicker = getSafeOrThrow(this.costBasis.get(ticker), 'Cost basis for ' + ticker + ' is unknown');
-
-        console.log('for',quantity,'paid',costBasisForTicker)
         return costBasisForTicker / quantity;
     }
 
@@ -140,8 +139,13 @@ export class WalletSimulator {
      */
     public getEstimatedLiquidationPrice(ticker: string): number {
         const quantity = this.getPositionQuantity(ticker);
-        const totalCost = getSafeNull(this.costBasis.get(ticker),0) * quantity;
-        return (totalCost + this.balance) / quantity;
+        if (quantity === 0) {
+            return 0;
+        }
+        const avgCostForTicker = this.getPositionAverageCost(ticker);
+        const currentPriceForTicker = this.getPrice(ticker);
+
+        return avgCostForTicker;
     }
 
     /**
@@ -149,7 +153,13 @@ export class WalletSimulator {
      * @param ticker
      */
     public getEstimatedUnrealizedProfitLoss(ticker: string): number {
-        return this.getPositionValue(ticker) - getSafeNull(this.costBasis.get(ticker),0) * this.getPositionQuantity(ticker);
+        const quantity = this.getPositionQuantity(ticker);
+        if (quantity === 0) {
+            return 0;
+        }
+        const costBasisForTicker = this.getPositionAverageCost(ticker);
+        const price = this.getPrice(ticker);
+        return (price - costBasisForTicker) * quantity;
     }
 }
 
