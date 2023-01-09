@@ -124,7 +124,7 @@ export class WalletSimulator {
             return 0;
         }
         const costBasisForTicker = getSafeOrThrow(this.costBasis.get(ticker), 'Cost basis for ' + ticker + ' is unknown');
-        console.log('paid',costBasisForTicker,'for',quantity)
+        // console.log('paid',costBasisForTicker,'for',quantity)
         return costBasisForTicker / quantity;
     }
 
