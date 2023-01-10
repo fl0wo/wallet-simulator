@@ -12,7 +12,8 @@ export class WalletSimulator {
         this.costBasis = new Map<string,number>();
     }
 
-    /**First class commit
+    /**
+     * First class commit
      * Update balance and holdings based on trade
      * @param trade the object to add
      */
