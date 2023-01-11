@@ -135,6 +135,18 @@ describe('WalletSimulator' , ()=>{
         expect(wallet.getEstimatedUnrealizedProfitLoss('BTC')).toEqual(15);
     });
 
+    test('multiple trades made', () => {
+        const wallet = new WalletSimulator(100);
 
+        wallet.addTrade({ ticker: 'Bananas', price: 1, quantity: 10, type: TradeMove.BUY })
+        wallet.addTrade({ ticker: 'aPPLES', price: 3, quantity: 1, type: TradeMove.BUY })
+
+        wallet.addTrade({ ticker: 'w', price: 1, quantity: 2, type: TradeMove.BUY })
+        wallet.addTrade({ ticker: 'Bananas', price: 3, quantity: 1, type: TradeMove.SELL })
+        wallet.addTrade({ ticker: 'f', price: 2, quantity: 5, type: TradeMove.BUY })
+        wallet.addTrade({ ticker: 'Bananas', price: 10, quantity: 1, type: TradeMove.SELL })
+
+        expect(wallet.trades.length).toEqual(6);
+    });
 
 })

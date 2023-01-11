@@ -6,7 +6,6 @@ A simple class to simulate a cryptocurrency wallet in Node.js
 ```
 npm install wallet-simulator
 ```
-Copy code
 
 ## Usage
 
@@ -55,6 +54,12 @@ console.log(wallet.getEstimatedUnrealizedProfitLoss('BTC')); // 2
 ```
 npm run test
 ```
+
+## Authors
+
+- [@fl0wo](https://www.github.com/fl0wo)
+
+
 
 ## License
 This project is licensed under the Apache License - see the [LICENSE](https://github.com/fl0wo/wallet-simulator/blob/main/LICENSE) file for details.

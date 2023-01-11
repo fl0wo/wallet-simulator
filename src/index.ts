@@ -2,9 +2,11 @@ import {getSafeNull, getSafeOrThrow} from "./utils";
 
 export class WalletSimulator {
 
+
     private holdings: Map<string,number>;
     private prices: Map<string,number>;
     private costBasis: Map<string,number>;
+    private _trades: Array<Trade> =[];
 
     constructor(public balance: number) {
         this.holdings = new Map<string,number>();
@@ -19,10 +21,26 @@ export class WalletSimulator {
      */
     public addTrade(trade: Trade) {
         if (trade.type === TradeMove.BUY) {
-            this.buy(trade);
+            if(this.buy(trade)) {
+                this._trades.push(trade);
+            }
         } else if (trade.type === TradeMove.SELL) {
-            this.sell(trade);
+            if(this.sell(trade)){
+                this._trades.push(trade);
+            }
         }
+    }
+
+    /**
+     * @return all trades made so far
+     */
+    get trades(): Array<Trade> {
+        return this._trades;
+    }
+
+    // TODO: need to rebalance all other informations
+    set trades(value: Array<Trade>) {
+        this._trades = value;
     }
 
     /**
@@ -42,6 +60,8 @@ export class WalletSimulator {
         this.holdings.set(trade.ticker, ownedAssetQuantity - trade.quantity);
 
         this.updateCostBasis(trade, -trade.price);
+
+        return true;
     }
 
     /**
@@ -62,6 +82,8 @@ export class WalletSimulator {
         this.holdings.set(trade.ticker, currentQuantity + trade.quantity);
 
         this.updateCostBasis(trade, completeCost);
+
+        return true;
     }
 
     /**
