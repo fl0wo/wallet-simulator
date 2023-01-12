@@ -80,17 +80,15 @@ describe('trend balance snapshot test',()=>{
 
     });
 
-    test.skip('getTrendBalanceGraph with no snapshots in the specified date range', () => {
+    test('getTrendBalanceGraph with no snapshots in the specified date range', () => {
+        const wallet = new WalletSimulator(100);
         const now = new Date();
-
         // Adding trades and updating prices 5 days ago
         const fiveDaysAgo = daysBefore(now,5);
 
-        const wallet = new WalletSimulator(100);
-
         wallet
             .addTrade({ ticker: 'AAPL', price: 10, quantity: 10, type: TradeMove.BUY,
-                createdTimestamp: fiveDaysAgo.getTime() })
+                createdTimestamp: fiveDaysAgo.getTime()})
             .updatePrice('AAPL', 20, fiveDaysAgo.getTime());
 
         // Getting trend data for the last 3 days
@@ -98,6 +96,57 @@ describe('trend balance snapshot test',()=>{
 
         // Expecting an empty array since there are no snapshots in the specified date range
         expect(trendData).toEqual([]);
+    });
+
+    test('getTrendBalanceGraph with snapshots for all days in the specified date range', () => {
+        const wallet = new WalletSimulator(100);
+        const now = new Date();
+
+        // Adding trades and updating prices for the last 3 days
+        const threeDaysAgo = new Date(now.getTime() - 3 * 24 * 60 * 60 * 1000);
+        wallet
+            .addTrade({ ticker: 'AAPL', price: 10, quantity: 1, type: TradeMove.BUY, createdTimestamp: threeDaysAgo.getTime() })
+            .updatePrice('AAPL', 20, threeDaysAgo.getTime());
+
+        const twoDaysAgo = new Date(now.getTime() - 2 * 24 * 60 * 60 * 1000);
+        wallet
+            .addTrade({ ticker: 'GOOG', price: 5, quantity: 2, type: TradeMove.BUY, createdTimestamp: twoDaysAgo.getTime() })
+            .updatePrice('GOOG', 10, twoDaysAgo.getTime());
+
+        const oneDayAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+        wallet
+            .addTrade({ ticker: 'TSLA', price: 1, quantity: 5, type: TradeMove.BUY, createdTimestamp: oneDayAgo.getTime() })
+            .updatePrice('TSLA', 2, oneDayAgo.getTime());
+
+        // Getting trend data for the last 3 days
+        const trendData = wallet.getTrendBalanceGraph(3, now);
+
+        // Expecting 3 snapshots, one for each day in the specified date range
+        expect(trendData).toHaveLength(3);
+        expect(trendData[0].value).toEqual((100-10) + (2 * 10));
+        expect(trendData[1].value).toEqual((100-10) + (2 * 10) - (5*2) + (10 * 2));
+        expect(trendData[2].value).toEqual((100-10) + (2 * 10) - (5*2) + (10 * 2) - 5 + 10);
+    });
+
+    test('getTrendBalanceGraph with gaps', () => {
+        const wallet = new WalletSimulator(100);
+        const now = new Date();
+
+        // Adding trades and updating prices for the last 5 days
+        const fiveDaysAgo = new Date(now.getTime() - 5 * 24 * 60 * 60 * 1000);
+        wallet
+            .addTrade({ ticker: 'AAPL', price: 10, quantity: 1, type: TradeMove.BUY, createdTimestamp: fiveDaysAgo.getTime() })
+            .updatePrice('AAPL', 20, fiveDaysAgo.getTime());
+
+
+        const threeDaysAgo = new Date(now.getTime() - 3 * 24 * 60 * 60 * 1000);
+        wallet
+            .addTrade({ ticker: 'TSLA', price: 1, quantity: 5, type: TradeMove.BUY, createdTimestamp: threeDaysAgo.getTime() })
+            .updatePrice('TSLA', 2, threeDaysAgo.getTime());
+
+        const trendData = wallet.getTrendBalanceGraph(3, now);
+
+        expect(trendData).toHaveLength(1);
     });
 
 })
