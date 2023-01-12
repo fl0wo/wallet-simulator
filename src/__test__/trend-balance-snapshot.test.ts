@@ -41,9 +41,9 @@ describe('trend balance snapshot test',()=>{
 
         expect(trendData).toHaveLength(3);
         console.log(trendData)
-        expect(trendData[0].value).toEqual(26)
-        expect(trendData[1].value).toEqual(31)//105+(5*2));
-        expect(trendData[2].value).toEqual(20)//94+(10));
+        expect(trendData[0].value).toEqual(6 + (10*2))
+        expect(trendData[1].value).toEqual(21 + (5*2))//105+(5*2));
+        expect(trendData[2].value).toEqual(30 + (10 - 20))//94+(10));
 
     });
 })

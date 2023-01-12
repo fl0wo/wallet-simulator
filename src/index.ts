@@ -166,8 +166,9 @@ export class WalletSimulator {
         const today = nowDate.getTime()
         const pastDate = daysBefore(nowDate,backDays).getTime();
         const result:Array<TrendBalanceInfo> = [];
+        console.log(this.daySnapshots)
         this.daySnapshots.forEach((value, key) => {
-            const date = new Date(key);
+            const date = value.date
             if (date.getTime() >= pastDate && date.getTime() <= today) {
                 result.push({ date: date, value: value.value });
             }
