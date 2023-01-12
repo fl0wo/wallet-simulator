@@ -1,6 +1,7 @@
 import {WalletSimulator} from "../index";
 import {TradeMove} from "../models/Trade";
 import {daysBefore, mockDate} from "../utils/mock";
+import {fillTimestreamGaps} from "../utils/general";
 
 describe('trend balance snapshot test',()=>{
 
@@ -73,10 +74,11 @@ describe('trend balance snapshot test',()=>{
         mockDate(tomorrow); // tomorrow
         const trendData = wallet.getTrendBalanceGraph(3,tomorrow);
 
-        expect(trendData).toHaveLength(2);
+        expect(trendData).toHaveLength(3);
         console.log(trendData)
         expect(trendData[0].value).toEqual(22)
         expect(trendData[1].value).toEqual(31)
+        expect(trendData[2].value).toEqual(31)
 
     });
 
@@ -144,9 +146,14 @@ describe('trend balance snapshot test',()=>{
             .addTrade({ ticker: 'TSLA', price: 1, quantity: 5, type: TradeMove.BUY, createdTimestamp: threeDaysAgo.getTime() })
             .updatePrice('TSLA', 2, threeDaysAgo.getTime());
 
-        const trendData = wallet.getTrendBalanceGraph(3, now);
+        const trendData = wallet.getTrendBalanceGraph(5, now);
 
-        expect(trendData).toHaveLength(1);
+        expect(trendData).toHaveLength(5);
+        expect(trendData[0].value).toEqual(110);
+        expect(trendData[1].value).toEqual(110);
+        expect(trendData[2].value).toEqual(115);
+        expect(trendData[3].value).toEqual(115);
+        expect(trendData[4].value).toEqual(115);
     });
 
 })

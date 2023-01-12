@@ -32,3 +32,6 @@ export const mockDate = (expected: Date) => {
 
 export const daysBefore = (d:Date, beforeDays:number) =>
     new Date(d.getTime() - (beforeDays * 24 * 60 * 60 * 1000));
+
+export const daysBetween = (currentDate:Date,nextDate:Date)=>
+    Math.round((nextDate.getTime() - currentDate.getTime()) / (1000 * 60 * 60 * 24));

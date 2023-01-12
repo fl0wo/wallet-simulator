@@ -1,7 +1,14 @@
-import {tradeOptionToTrade, getSafeNull, getSafeOrThrow, entries, todayDateNoTime} from "./utils/general";
+import {
+    tradeOptionToTrade,
+    getSafeNull,
+    getSafeOrThrow,
+    entries,
+    todayDateNoTime,
+    fillTimestreamGaps
+} from "./utils/general";
 import {Trade, TradeMove, TradeOptions} from "./models/Trade";
 import {DonutAssetInfo, TrendBalanceInfo} from "./models/ExtractWalletInformation";
-import {daysBefore} from "./utils/mock";
+import {daysBefore, daysBetween} from "./utils/mock";
 
 export class WalletSimulator {
 
@@ -174,9 +181,11 @@ export class WalletSimulator {
             }
         });
         const sortedResults = result
-            .sort((a,b)=> a.date.getTime()-b.date.getTime())
+            .sort((a,b)=> a.date.getTime()-b.date.getTime());
 
-        return sortedResults;
+        sortedResults.push({date:nowDate,value:-1});
+        const filled = fillTimestreamGaps(sortedResults);
+        return filled.slice(0,filled.length-1); // remove last one
     }
 
     /**

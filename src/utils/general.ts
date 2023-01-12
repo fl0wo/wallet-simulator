@@ -1,4 +1,6 @@
 import {Trade, TradeOptions} from "../models/Trade";
+import {TrendBalanceInfo} from "../models/ExtractWalletInformation";
+import {daysBetween} from "./mock";
 
 export const safeGet = <T, R = any>(object: T | undefined | null,
                                             safeCallback: (object: T) => R,
@@ -54,3 +56,28 @@ export const todayDateNoTime = (updateDateMs?: number) => {
     const year = dateObj.getUTCFullYear();
     return `${year}-${month}-${day}`;
 }
+
+export const fillTimestreamGaps = (timestream: Array<TrendBalanceInfo>) => {
+    for (let i = 0; i < timestream.length - 1; i++) {
+        const currentSnapshot = timestream[i];
+        const nextSnapshot = timestream[i + 1];
+        const currentDate = currentSnapshot.date;
+        const nextDate = nextSnapshot.date;
+
+        // Calculating the number of days between the current and next snapshot
+        const daysGap = daysBetween(currentDate,nextDate);
+        // If there is a gap of more than 1 day
+        if (daysGap > 1) {
+            // Filling the gap with the value of the previous snapshot
+            for (let j = 1; j < daysGap; j++) {
+                const newSnapshot = {
+                    date: new Date(currentDate.getTime() + j * 24 * 60 * 60 * 1000),
+                    value: currentSnapshot.value
+                };
+                timestream.splice(i + j, 0, newSnapshot);
+            }
+        }
+    }
+    return timestream;
+};
+
