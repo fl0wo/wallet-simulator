@@ -3,3 +3,8 @@ export interface DonutAssetInfo {
     value: number;
     percentage: number;
 }
+
+export interface TrendBalanceInfo{
+    date: Date;
+    value: number;
+}

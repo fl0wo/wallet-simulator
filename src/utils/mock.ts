@@ -29,3 +29,6 @@ export const mockDate = (expected: Date) => {
         global.Date = _Date;
     };
 };
+
+export const daysBefore = (d:Date, beforeDays:number) =>
+    new Date(d.getTime() - (beforeDays * 24 * 60 * 60 * 1000));

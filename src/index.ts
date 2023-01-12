@@ -1,6 +1,7 @@
-import {tradeOptionToTrade, getSafeNull, getSafeOrThrow} from "./utils/general";
+import {tradeOptionToTrade, getSafeNull, getSafeOrThrow, entries, todayDateNoTime} from "./utils/general";
 import {Trade, TradeMove, TradeOptions} from "./models/Trade";
-import {DonutAssetInfo} from "./models/ExtractWalletInformation";
+import {DonutAssetInfo, TrendBalanceInfo} from "./models/ExtractWalletInformation";
+import {daysBefore} from "./utils/mock";
 
 export class WalletSimulator {
 
@@ -8,6 +9,7 @@ export class WalletSimulator {
     private prices: Map<string,number>;
     private costBasis: Map<string,number>;
     private _trades: Array<Trade> =[];
+    private daySnapshots:Map<string,TrendBalanceInfo>;
 
     private readonly _creationAt:Date;
 
@@ -15,7 +17,10 @@ export class WalletSimulator {
         this.holdings = new Map<string,number>();
         this.prices = new Map<string,number>();
         this.costBasis = new Map<string,number>();
+        this.daySnapshots = new Map<string,TrendBalanceInfo>();
         this._creationAt = new Date();
+
+        this.updateTodayBalance()
     }
 
     /**
@@ -38,6 +43,9 @@ export class WalletSimulator {
                 this._trades.push(trade);
             }
         }
+
+        this.updateTodayBalance()
+
         return this;
     }
 
@@ -49,6 +57,7 @@ export class WalletSimulator {
     public updatePrice(ticker: string, price: number) {
         if(!this.isPriceDefined(ticker) || price!==this.getPrice(ticker)){
             this.prices.set(ticker, price);
+            this.updateTodayBalance();
         }
         return this;
     }
@@ -152,6 +161,21 @@ export class WalletSimulator {
         return assetsInfo;
     }
 
+    public getTrendBalanceGraph(backDays: number,now:Date): Array<TrendBalanceInfo> {
+        const nowDate:Date = getSafeNull(now,new Date());
+        const today = nowDate.getTime()
+        const pastDate = daysBefore(nowDate,backDays).getTime();
+        const result:Array<TrendBalanceInfo> = [];
+        this.daySnapshots.forEach((value, key) => {
+            const date = new Date(key);
+            if (date.getTime() >= pastDate && date.getTime() <= today) {
+                result.push({ date: date, value: value.value });
+            }
+        });
+        return result;
+    }
+
+
     /**
      * @return all trades made so far
      */
@@ -230,7 +254,16 @@ export class WalletSimulator {
         if(this.isPriceDefined(ticker)){
             return this.getPrice(ticker)
         }
-
         return undefined;
+    }
+
+    private updateTodayBalance() {
+        const todayKey = todayDateNoTime();
+
+        // FIXME: createdTimestamp
+        this.daySnapshots.set(todayKey,{
+            date: new Date(),
+            value: this.getTotalValue()
+        })
     }
 }
