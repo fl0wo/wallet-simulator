@@ -143,7 +143,7 @@ describe('WalletSimulator' , ()=>{
     test('estimated unrealized profit or loss of multiple buys and sells calculated correctly', () => {
         const wallet = new WalletSimulator(100)
             .updatePrice('BTC', 10)
-            .addTrade({ ticker: 'BTC', price: 10, quantity: 1, type: TradeMove.BUY })
+            .addTrade({ ticker: 'BTC', quantity: 1, type: TradeMove.BUY })
             .addTrade({ ticker: 'BTC', price: 15, quantity: 1, type: TradeMove.BUY })
             .addTrade({ ticker: 'BTC', price: 20, quantity: 1, type: TradeMove.SELL });
 

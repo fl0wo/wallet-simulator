@@ -1,4 +1,4 @@
-import {addTimeStampIfNotDefined, getSafeNull, getSafeOrThrow} from "./utils/general";
+import {tradeOptionToTrade, getSafeNull, getSafeOrThrow} from "./utils/general";
 import {Trade, TradeMove, TradeOptions} from "./models/Trade";
 import {DonutAssetInfo} from "./models/ExtractWalletInformation";
 
@@ -9,10 +9,13 @@ export class WalletSimulator {
     private costBasis: Map<string,number>;
     private _trades: Array<Trade> =[];
 
+    private readonly _creationAt:Date;
+
     constructor(public balance: number) {
         this.holdings = new Map<string,number>();
         this.prices = new Map<string,number>();
         this.costBasis = new Map<string,number>();
+        this._creationAt = new Date();
     }
 
     /**
@@ -21,7 +24,10 @@ export class WalletSimulator {
      * @param incTrade the object to add
      */
     public addTrade(incTrade: TradeOptions) {
-        const trade = addTimeStampIfNotDefined(incTrade);
+        const trade = tradeOptionToTrade(
+            incTrade,
+            this.getPriceIfDefined(incTrade.ticker)
+        );
         if (trade.type === TradeMove.BUY) {
             if(this.buy(trade)) {
                 this._trades.push(trade);
@@ -41,7 +47,9 @@ export class WalletSimulator {
      * @param price its new price
      */
     public updatePrice(ticker: string, price: number) {
-        this.prices.set(ticker, price);
+        if(!this.isPriceDefined(ticker) || price!==this.getPrice(ticker)){
+            this.prices.set(ticker, price);
+        }
         return this;
     }
 
@@ -88,6 +96,10 @@ export class WalletSimulator {
         return getSafeOrThrow(this.prices.get(ticker),`Price for ${ticker} is unknown`);
     }
 
+    public isPriceDefined(ticker: string): boolean {
+        return this.prices.has(ticker)
+    }
+
     /**
      * @return the average cost of a position in a particular asset.
      * @param ticker
@@ -124,7 +136,7 @@ export class WalletSimulator {
     }
 
     /**
-     *
+     * @return the list of assets owned, with their balance and % occupying on the wallet
      */
     public getDonutAssetInformation(): Array<DonutAssetInfo> {
         const totalValue = this.getTotalValue();
@@ -207,4 +219,18 @@ export class WalletSimulator {
         this.costBasis.set(trade.ticker, currentCostForTicker + tradeCost);
     }
 
+    /**
+     * Returns when this wallet was instantiated
+     */
+    get creationAt(): Date {
+        return this._creationAt;
+    }
+
+    private getPriceIfDefined(ticker: string) {
+        if(this.isPriceDefined(ticker)){
+            return this.getPrice(ticker)
+        }
+
+        return undefined;
+    }
 }

@@ -1,5 +1,5 @@
 import {TradeMove, TradeOptions} from "../models/Trade";
-import {addTimeStampIfNotDefined} from "../utils/general";
+import {tradeOptionToTrade} from "../utils/general";
 import {mockDate} from "../utils/mock";
 
 describe('createdTimestamp', () => {
@@ -23,7 +23,7 @@ describe('createdTimestamp', () => {
             type: TradeMove.BUY
         }
 
-        const tradeWithTimestamp = addTimeStampIfNotDefined(tradeWithoutTimestamp);
+        const tradeWithTimestamp = tradeOptionToTrade(tradeWithoutTimestamp);
         expect(tradeWithTimestamp.createdTimestamp).toBeDefined();
         expect(tradeWithTimestamp.createdTimestamp).toBe(new Date('2019-10-01T00:00:01.30Z').getTime())
     });
@@ -37,7 +37,22 @@ describe('createdTimestamp', () => {
             type: TradeMove.BUY,
             createdTimestamp: providedTimestamp
         }
-        const tradeWithTimestamp = addTimeStampIfNotDefined(tradeWithProvidedTimestamp);
+        const tradeWithTimestamp = tradeOptionToTrade(tradeWithProvidedTimestamp);
         expect(tradeWithTimestamp.createdTimestamp).toEqual(providedTimestamp);
+    });
+
+    it('if price not defined on trade still works', () => {
+        const providedTimestamp = Date.now();
+        const tradeWithProvidedTimestamp: TradeOptions = {
+            ticker: 'BTC',
+            quantity: 1,
+            type: TradeMove.BUY,
+            createdTimestamp: providedTimestamp
+        }
+        const tradeWithTimestamp = tradeOptionToTrade(
+            tradeWithProvidedTimestamp,
+            1000
+        );
+        expect(tradeWithTimestamp.price).toEqual(1000);
     });
 });

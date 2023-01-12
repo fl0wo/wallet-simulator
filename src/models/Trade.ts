@@ -8,7 +8,7 @@ export interface Trade {
 
 export interface TradeOptions {
     ticker: string;
-    price: number;
+    price?: number;
     quantity: number;
     type: TradeMove;
     createdTimestamp?: number;

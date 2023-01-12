@@ -23,10 +23,16 @@ export const getSafeOrThrow = <T> (value:T,msg:string):NonNullable<T> => {
     return value as NonNullable<T>;
 }
 
-export const addTimeStampIfNotDefined = (incTrade: TradeOptions): Trade => {
-    const ts = getSafeNull(incTrade.createdTimestamp,Date.now())
+export const tradeOptionToTrade = (incTrade: TradeOptions,priceOfThisAssetToday?:number): Trade => {
+    const ts = getSafeNull(incTrade.createdTimestamp,Date.now());
+    const price = getSafeOrThrow(
+        getSafeNull(incTrade.price,priceOfThisAssetToday),
+        `cannot create new trade without knowing the price of ${incTrade.ticker}`
+    );
+
     const trade:Trade = {
         ...incTrade,
+        price:price,
         createdTimestamp:ts
     }
     return trade;
