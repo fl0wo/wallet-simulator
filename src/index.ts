@@ -1,5 +1,5 @@
-import {addTimeStampIfNotDefined, getSafeNull, getSafeOrThrow} from "./utils";
-import {Trade, TradeMove} from "./models/Trade";
+import {addTimeStampIfNotDefined, getSafeNull, getSafeOrThrow} from "./utils/general";
+import {Trade, TradeMove, TradeOptions} from "./models/Trade";
 
 export class WalletSimulator {
 
@@ -19,7 +19,7 @@ export class WalletSimulator {
      * Update balance and holdings based on incTrade
      * @param incTrade the object to add
      */
-    public addTrade(incTrade: Trade) {
+    public addTrade(incTrade: TradeOptions) {
         const trade = addTimeStampIfNotDefined(incTrade);
         if (trade.type === TradeMove.BUY) {
             if(this.buy(trade)) {

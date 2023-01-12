@@ -1,4 +1,4 @@
-import {Trade} from "./models/Trade";
+import {Trade, TradeOptions} from "../models/Trade";
 
 export const safeGet = <T, R = any>(object: T | undefined | null,
                                             safeCallback: (object: T) => R,
@@ -23,10 +23,11 @@ export const getSafeOrThrow = <T> (value:T,msg:string):NonNullable<T> => {
     return value as NonNullable<T>;
 }
 
-export const addTimeStampIfNotDefined = (incTrade: Trade): Trade => {
+export const addTimeStampIfNotDefined = (incTrade: TradeOptions): Trade => {
     const ts = getSafeNull(incTrade.createdTimestamp,Date.now())
-    return {
+    const trade:Trade = {
         ...incTrade,
         createdTimestamp:ts
     }
+    return trade;
 }
