@@ -1,5 +1,6 @@
 import {addTimeStampIfNotDefined, getSafeNull, getSafeOrThrow} from "./utils/general";
 import {Trade, TradeMove, TradeOptions} from "./models/Trade";
+import {DonutAssetInfo} from "./models/ExtractWalletInformation";
 
 export class WalletSimulator {
 
@@ -123,6 +124,23 @@ export class WalletSimulator {
     }
 
     /**
+     *
+     */
+    public getDonutAssetInformation(): Array<DonutAssetInfo> {
+        const totalValue = this.getTotalValue();
+        const assetsInfo = Array.from(this.holdings.keys()).map(ticker => {
+            const value = this.getPositionValue(ticker);
+            return {
+                ticker,
+                value,
+                percentage: (value/totalValue) * 100
+            };
+        });
+        assetsInfo.push({ ticker: "$", value: this.balance, percentage: (this.balance/totalValue) * 100 });
+        return assetsInfo;
+    }
+
+    /**
      * @return all trades made so far
      */
     get trades(): Array<Trade> {
@@ -188,4 +206,5 @@ export class WalletSimulator {
         const currentCostForTicker = getSafeNull(this.costBasis.get(trade.ticker),0);
         this.costBasis.set(trade.ticker, currentCostForTicker + tradeCost);
     }
+
 }

@@ -12,13 +12,11 @@ npm install wallet-simulator
 ```javascript
 import { WalletSimulator } from 'wallet-simulator';
 
-const wallet = new WalletSimulator(1000);
-
-wallet.addTrade({ ticker: 'BTC', price: 10, quantity: 1, type: 'buy' });
-wallet.addTrade({ ticker: 'ETH', price: 100, quantity: 2, type: 'buy' });
-
-wallet.updatePrice('BTC', 12);
-wallet.updatePrice('ETH', 110);
+const wallet = new WalletSimulator(1000)
+    .addTrade({ ticker: 'BTC', price: 10, quantity: 1, type: TradeMove.BUY })
+    .addTrade({ ticker: 'ETH', price: 100, quantity: 2, type: TradeMove.BUY })
+    .updatePrice('BTC', 12)
+    .updatePrice('ETH', 110);
 
 console.log(wallet.getPositionValue('BTC')); // 12
 console.log(wallet.getPositionValue('ETH')); // 220
@@ -28,6 +26,18 @@ console.log(wallet.getPositionAverageCost('BTC')); // 10
 console.log(wallet.getEstimatedLiquidationPrice('BTC')); // 10
 console.log(wallet.getEstimatedUnrealizedProfitLoss('BTC')); // 2
 ```
+
+
+## Todo
+
+- [x] Price update method on particular asset
+- [x] Add new trades balancing current balance
+- [x] P&L and cost basis for each asset
+- [x] Donut information on % of owned assets
+- [ ] Trend snapshots graph of balance at "every price update"
+- [ ] Plug-in Mapper to format output as needed
+- [ ] Import data from Real Exchanges with API Keys
+
 
 ## Methods
 
@@ -58,7 +68,6 @@ npm run test
 ## Authors
 
 - [@fl0wo](https://www.github.com/fl0wo)
-
 
 
 ## License
