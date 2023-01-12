@@ -13,14 +13,12 @@ export class WalletSimulator {
 
     private readonly _creationAt:Date;
 
-    constructor(public balance: number) {
+    constructor(public balance: number, creationDate?:Date) {
         this.holdings = new Map<string,number>();
         this.prices = new Map<string,number>();
         this.costBasis = new Map<string,number>();
         this.daySnapshots = new Map<string,TrendBalanceInfo>();
-        this._creationAt = new Date();
-
-        this.updateTodayBalance()
+        this._creationAt = getSafeNull(creationDate,new Date());
     }
 
     /**
@@ -163,10 +161,9 @@ export class WalletSimulator {
     }
 
     public getTrendBalanceGraph(backDays: number,now?:Date): Array<TrendBalanceInfo> {
-
         const nowDate:Date = getSafeNull(now,new Date());
-        const today = nowDate.getTime()
-        const pastDate = daysBefore(nowDate,backDays-1).getTime();
+        const today = daysBefore(nowDate,1).getTime();
+        const pastDate = daysBefore(nowDate,backDays).getTime();
 
         const result:Array<TrendBalanceInfo> = [];
         console.log(this.daySnapshots)
@@ -176,8 +173,10 @@ export class WalletSimulator {
                 result.push({ date: date, value: value.value });
             }
         });
-        return result
+        const sortedResults = result
             .sort((a,b)=> a.date.getTime()-b.date.getTime())
+
+        return sortedResults;
     }
 
     /**
@@ -225,7 +224,7 @@ export class WalletSimulator {
             throw new Error(`Insufficient funds to buy ${trade.quantity} ${trade.ticker} at $${trade.price}`);
         }
 
-        this.updatePrice(trade.ticker,trade.price);
+        this.updatePrice(trade.ticker,trade.price,trade.createdTimestamp);
 
         this.balance -= completeCost;
         const currentQuantity = this.getPositionQuantity(trade.ticker);
