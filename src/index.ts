@@ -1,7 +1,7 @@
-import {getSafeNull, getSafeOrThrow} from "./utils";
+import {addTimeStampIfNotDefined, getSafeNull, getSafeOrThrow} from "./utils";
+import {Trade, TradeMove} from "./models/Trade";
 
 export class WalletSimulator {
-
 
     private holdings: Map<string,number>;
     private prices: Map<string,number>;
@@ -16,19 +16,110 @@ export class WalletSimulator {
 
     /**
      * First class commit
-     * Update balance and holdings based on trade
-     * @param trade the object to add
+     * Update balance and holdings based on incTrade
+     * @param incTrade the object to add
      */
-    public addTrade(trade: Trade) {
+    public addTrade(incTrade: Trade) {
+        const trade = addTimeStampIfNotDefined(incTrade);
         if (trade.type === TradeMove.BUY) {
             if(this.buy(trade)) {
                 this._trades.push(trade);
             }
-        } else if (trade.type === TradeMove.SELL) {
+        }
+        else if (trade.type === TradeMove.SELL) {
             if(this.sell(trade)){
                 this._trades.push(trade);
             }
         }
+        return this;
+    }
+
+    /**
+     * Set price for a particular asset
+     * @param ticker the asset
+     * @param price its new price
+     */
+    public updatePrice(ticker: string, price: number) {
+        this.prices.set(ticker, price);
+        return this;
+    }
+
+    /**
+     * @return the quantity of a particular asset held in the wallet.
+     * @param ticker
+     * @private
+     */
+    public getPositionQuantity(ticker: string) {
+        return getSafeNull(this.holdings.get(ticker),0);
+    }
+
+    /**
+     * @return the estimated price at which all of a particular asset could be sold to fully liquidate the position.
+     * @param ticker
+     */
+    public getEstimatedLiquidationPrice(ticker: string): number {
+        const quantity = this.getPositionQuantity(ticker);
+        if (quantity === 0) {
+            return 0;
+        }
+        return this.getPositionAverageCost(ticker);
+    }
+
+    /**
+     * @return the estimated profit or loss on a particular asset, assuming it is sold at the current market price.
+     * @param ticker
+     */
+    public getEstimatedUnrealizedProfitLoss(ticker: string): number {
+        const quantity = this.getPositionQuantity(ticker);
+        if (quantity === 0) {
+            return 0;
+        }
+        const costBasisForTicker = this.getPositionAverageCost(ticker);
+        const price = this.getPrice(ticker);
+        return (price - costBasisForTicker) * quantity;
+    }
+
+    /**
+     * @return the current price of a particular asset.
+     * @param ticker
+     */
+    public getPrice(ticker: string): number {
+        return getSafeOrThrow(this.prices.get(ticker),`Price for ${ticker} is unknown`);
+    }
+
+    /**
+     * @return the average cost of a position in a particular asset.
+     * @param ticker
+     */
+    public getPositionAverageCost(ticker: string): number {
+        const quantity = this.getPositionQuantity(ticker);
+        if (quantity === 0) {
+            return 0;
+        }
+        const costBasisForTicker = getSafeOrThrow(this.costBasis.get(ticker), 'Cost basis for ' + ticker + ' is unknown');
+        // console.log('paid',costBasisForTicker,'for',quantity)
+        return costBasisForTicker / quantity;
+    }
+
+    /**
+     * @return sum of all funds in this wallet
+     */
+    public getTotalValue(): number {
+        let totalValue = this.balance;
+        for (const ticker of this.holdings.keys()) {
+            totalValue += this.getPositionValue(ticker);
+        }
+        return totalValue;
+    }
+
+    /**
+     * Return the value owned on this wallet of a particular asset
+     * @param ticker asset
+     */
+    public getPositionValue(ticker: string): number {
+        const quantity = getSafeNull(this.holdings.get(ticker),0);
+        const price = this.getPrice(ticker);
+        return quantity * price;
     }
 
     /**
@@ -38,9 +129,10 @@ export class WalletSimulator {
         return this._trades;
     }
 
-    // TODO: need to rebalance all other informations
     set trades(value: Array<Trade>) {
         this._trades = value;
+        // Simulate all new trades
+        this.trades.forEach((el)=>this.addTrade(el));
     }
 
     /**
@@ -96,104 +188,4 @@ export class WalletSimulator {
         const currentCostForTicker = getSafeNull(this.costBasis.get(trade.ticker),0);
         this.costBasis.set(trade.ticker, currentCostForTicker + tradeCost);
     }
-
-    /**
-     * Set price for a particular asset
-     * @param ticker the asset
-     * @param price its new price
-     */
-    public updatePrice(ticker: string, price: number) {
-        this.prices.set(ticker, price);
-    }
-
-    /**
-     * Return the value owned on this wallet of a particular asset
-     * @param ticker asset
-     */
-    public getPositionValue(ticker: string): number {
-        const quantity = getSafeNull(this.holdings.get(ticker),0);
-        const price = this.getPrice(ticker);
-        return quantity * price;
-    }
-
-    /**
-     * @return sum of all funds in this wallet
-     */
-    public getTotalValue(): number {
-        let totalValue = this.balance;
-        for (const ticker of this.holdings.keys()) {
-            totalValue += this.getPositionValue(ticker);
-        }
-        return totalValue;
-    }
-
-    /**
-     * @return the quantity of a particular asset held in the wallet.
-     * @param ticker
-     * @private
-     */
-    getPositionQuantity(ticker: string) {
-        return getSafeNull(this.holdings.get(ticker),0);
-    }
-
-
-    /**
-     * @return the average cost of a position in a particular asset.
-     * @param ticker
-     */
-    public getPositionAverageCost(ticker: string): number {
-        const quantity = this.getPositionQuantity(ticker);
-        if (quantity === 0) {
-            return 0;
-        }
-        const costBasisForTicker = getSafeOrThrow(this.costBasis.get(ticker), 'Cost basis for ' + ticker + ' is unknown');
-        // console.log('paid',costBasisForTicker,'for',quantity)
-        return costBasisForTicker / quantity;
-    }
-
-    /**
-     * @return the current price of a particular asset.
-     * @param ticker
-     */
-    public getPrice(ticker: string): number {
-        return getSafeOrThrow(this.prices.get(ticker),`Price for ${ticker} is unknown`);
-    }
-
-    /**
-     * @return the estimated price at which all of a particular asset could be sold to fully liquidate the position.
-     * @param ticker
-     */
-    public getEstimatedLiquidationPrice(ticker: string): number {
-        const quantity = this.getPositionQuantity(ticker);
-        if (quantity === 0) {
-            return 0;
-        }
-        return this.getPositionAverageCost(ticker);
-    }
-
-    /**
-     * @return the estimated profit or loss on a particular asset, assuming it is sold at the current market price.
-     * @param ticker
-     */
-    public getEstimatedUnrealizedProfitLoss(ticker: string): number {
-        const quantity = this.getPositionQuantity(ticker);
-        if (quantity === 0) {
-            return 0;
-        }
-        const costBasisForTicker = this.getPositionAverageCost(ticker);
-        const price = this.getPrice(ticker);
-        return (price - costBasisForTicker) * quantity;
-    }
-}
-
-export interface Trade {
-    ticker: string;
-    price: number;
-    quantity: number;
-    type: TradeMove;
-}
-
-export enum TradeMove {
-    BUY='BUY',
-    SELL='SELL'
 }
