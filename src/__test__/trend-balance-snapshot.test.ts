@@ -15,7 +15,6 @@ describe('trend balance snapshot test',()=>{
         resetDateMock();
     });
 
-
     test('getTrendBalanceGraph', () => {
         const wallet = new WalletSimulator(16);
 
@@ -44,6 +43,33 @@ describe('trend balance snapshot test',()=>{
         expect(trendData[0].value).toEqual(6 + (10*2))
         expect(trendData[1].value).toEqual(21 + (5*2))//105+(5*2));
         expect(trendData[2].value).toEqual(30 + (10 - 20))//94+(10));
+    });
+
+    test('getTrendBalanceGraph passing date', () => {
+        const wallet = new WalletSimulator(16);
+
+        const oneDayInMs = 24 * 60 * 60 * 1000;
+        const now = new Date();
+
+        const twoDaysAgo = now.getTime()-2*oneDayInMs;
+        wallet
+            .addTrade({ ticker: 'TSLA', price: 1, quantity: 6, type: TradeMove.BUY,
+                createdTimestamp: twoDaysAgo})
+            .updatePrice('TSLA',2, twoDaysAgo)
+
+        const oneDayAgo = now.getTime()-oneDayInMs;
+        wallet.addTrade({ ticker: 'GOOG', price: 1, quantity: 1, type: TradeMove.BUY,
+            createdTimestamp: oneDayAgo})
+            .updatePrice('AAPL',0,oneDayAgo)
+            .updatePrice('GOOG',10,oneDayAgo);
+
+        const trendData = wallet.getTrendBalanceGraph(3,now);
+
+        expect(trendData).toHaveLength(3);
+        console.log(trendData)
+        expect(trendData[0].value).toEqual(10 + (6*2))
+        expect(trendData[1].value).toEqual(21 + (10))
+        expect(trendData[2].value).toEqual(21 + (10))
 
     });
 })

@@ -44,7 +44,7 @@ export class WalletSimulator {
             }
         }
 
-        this.updateTodayBalance()
+        this.updateTodayBalance(incTrade.createdTimestamp)
 
         return this;
     }
@@ -53,11 +53,12 @@ export class WalletSimulator {
      * Set price for a particular asset
      * @param ticker the asset
      * @param price its new price
+     * @param nowTimestamp
      */
-    public updatePrice(ticker: string, price: number) {
+    public updatePrice(ticker: string, price: number,nowTimestamp?:number) {
         if(!this.isPriceDefined(ticker) || price!==this.getPrice(ticker)){
             this.prices.set(ticker, price);
-            this.updateTodayBalance();
+            this.updateTodayBalance(nowTimestamp);
         }
         return this;
     }
@@ -161,10 +162,12 @@ export class WalletSimulator {
         return assetsInfo;
     }
 
-    public getTrendBalanceGraph(backDays: number,now:Date): Array<TrendBalanceInfo> {
+    public getTrendBalanceGraph(backDays: number,now?:Date): Array<TrendBalanceInfo> {
+
         const nowDate:Date = getSafeNull(now,new Date());
         const today = nowDate.getTime()
-        const pastDate = daysBefore(nowDate,backDays).getTime();
+        const pastDate = daysBefore(nowDate,backDays-1).getTime();
+
         const result:Array<TrendBalanceInfo> = [];
         console.log(this.daySnapshots)
         this.daySnapshots.forEach((value, key) => {
@@ -173,9 +176,9 @@ export class WalletSimulator {
                 result.push({ date: date, value: value.value });
             }
         });
-        return result;
+        return result
+            .sort((a,b)=> a.date.getTime()-b.date.getTime())
     }
-
 
     /**
      * @return all trades made so far
@@ -258,12 +261,12 @@ export class WalletSimulator {
         return undefined;
     }
 
-    private updateTodayBalance() {
-        const todayKey = todayDateNoTime();
+    private updateTodayBalance(updateDateMs?:number) {
+        const todayKey = todayDateNoTime(updateDateMs);
 
         // FIXME: createdTimestamp
         this.daySnapshots.set(todayKey,{
-            date: new Date(),
+            date: new Date(getSafeNull(updateDateMs,Date.now())),
             value: this.getTotalValue()
         })
     }
