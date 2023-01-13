@@ -95,7 +95,7 @@ export const clone = (obj:Map<any, any>) => {
 }
 
 function fromAinBnotInC(b: Array<any>, c: Array<any>) {
-    return (a: any) => b.find((x) => a == x) && !c.find((x) => a == x);
+    return (a: any) => b.find((x) => a === x) && !c.find((x) => a === x);
 }
 
 export const onlyNotBought = (allKnownAssetPrices: Array<any>, allAssetsToBuy: Array<any>, allAssetsToHold: Array<any>) => {

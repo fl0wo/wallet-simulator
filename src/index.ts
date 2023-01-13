@@ -239,7 +239,7 @@ export class WalletSimulator {
             .sort((a, b) => a.date.getTime() - b.date.getTime());
     }
 
-        /**
+    /**
      * @return all trades made so far
      */
     get trades(): Array<Trade> {
@@ -334,4 +334,23 @@ export class WalletSimulator {
         return mapToArrayKeys(this.holdings)
     }
 
+    public exportToText(){
+        return JSON.stringify(this);
+    }
+
+    static importFromTxt(toString: string) {
+        const parsed:WalletSimulator = JSON.parse(toString) as WalletSimulator;
+
+        console.log(toString,'->',parsed)
+
+        const x = new WalletSimulator(parsed.balanceAtWalletCreation,parsed.creationAt);
+
+        x.balance = parsed.balance
+        x.trades = getSafeNull(parsed._trades,[]);
+
+        console.log(parsed._trades,' trades ->',x.trades)
+
+
+        return x;
+    }
 }
