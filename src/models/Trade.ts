@@ -7,6 +7,7 @@ export interface Trade {
     fee:number;
 }
 
+
 export interface TradeOptions {
     ticker: string;
     price?: number;

@@ -36,6 +36,8 @@ console.log(wallet.getEstimatedUnrealizedProfitLoss('BTC')); // 2
 - [x] Donut information on % of owned assets
 - [x] Trend snapshots graph of balance at "every day"
 - [x] Trend snapshots graph of balance if just buy & hold at day 0
+- [x] Fee % on addTrade operations
+
 - [ ] Plug-in Mapper to format output as needed
 - [ ] Import data from Real Exchanges with API Keys
 
