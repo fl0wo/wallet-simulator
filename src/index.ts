@@ -1,12 +1,16 @@
 import {
     addFee,
     clone,
-    fillTimestreamGaps, fillTimestreamGapsWithLastRecord,
+    fillTimestreamGapsWithLastRecord,
     getSafeNull,
     getSafeOrThrow,
-    mapToArrayKeys, onlyNotBought, removeFee,
+    mapToArrayKeys,
+    onlyNotBought,
+    removeFee,
     todayDateNoTime,
-    tradeOptionToTrade, updateAssetsOnWallet, updatePricesOnWallet
+    tradeOptionToTrade,
+    updateAssetsOnWallet,
+    updatePricesOnWallet
 } from "./utils/general";
 import {Trade, TradeMove, TradeOptions} from "./models/Trade";
 import {DonutAssetInfo, OrderMovementInfo, TrendSnapshotInfo} from "./models/ExtractWalletInformation";
@@ -242,51 +246,48 @@ export class WalletSimulator {
 
     plMadeByOrders(orders?: Trade[]): Array<OrderMovementInfo> {
         const allOrders = getSafeNull(orders,this.trades);
-        return []
-        /*
+
         const ordersWithProfits:any = {};
         const totals:any = {};
 
         for (let i = allOrders.length - 1; i >= 0; i--) {
-            const order = allOrders[i];
+            const order:Trade = allOrders[i];
 
-            const volume = Number.parseFloat(order.qty);
-            const valueAt = Number.parseFloat(order.price);
-            const fees = Number.parseFloat(order.commission);
+            const volume = order.quantity;
+            const valueAt = order.price;
+            const fees = order.fee; // FIXME: have to consider also fees
             const notional = volume * valueAt;
-            const coin = getCryptoFromPair(order.symbol) as Crypto;
-            const symbol = toBinanceCurrencyPair(coin, BaseCurrency.TETER_USDT);
+            const symbol = order.ticker
 
             let profit;
-            if (!order.isBuyer) {
+            if (order.type === TradeMove.SELL) {
                 // If the order is a sell, initialize the running totals for this symbol
-                totals[order.symbol] = {
+                totals[symbol] = {
                     volume: 0,
                     cost: 0,
                 };
                 // Find the last buy order for this symbol
                 for (let j = i - 1; j >= 0; j--) {
-                    const oldOrder = allOrders[j];
-                    if (oldOrder.isBuyer && oldOrder.symbol === order.symbol) {
-                        const oldVolume = Number.parseFloat(oldOrder.qty);
-                        const oldValueAt = Number.parseFloat(oldOrder.price);
+                    const oldOrder:Trade = allOrders[j];
+                    if (oldOrder.type === TradeMove.BUY && oldOrder.ticker === symbol) {
+                        const oldVolume = oldOrder.quantity;
+                        const oldValueAt = oldOrder.price;
                         // Update the running totals for this symbol
-                        totals[order.symbol].volume += oldVolume;
-                        totals[order.symbol].cost += oldVolume * oldValueAt;
-                    } else if (!oldOrder.isBuyer && oldOrder.symbol === order.symbol) {
+                        totals[symbol].volume += oldVolume;
+                        totals[symbol].cost += oldVolume * oldValueAt;
+                    } else if (oldOrder.type === TradeMove.SELL && oldOrder.ticker === symbol) {
                         break;
                     }
                 }
                 // Calculate the profit using the running totals for this symbol
-                profit =    (notional - totals[order.symbol].cost) +
-                    (totals[order.symbol].volume - volume) *
+                profit = (notional - totals[symbol].cost) +
+                    (totals[symbol].volume - volume) *
                     valueAt;
             }
-            ordersWithProfits[order.orderId]=profit;
+            ordersWithProfits[order.createdTimestamp]=profit;
         }
 
-         */
-        //return ordersWithProfits;
+        return ordersWithProfits;
     }
 
 
@@ -393,15 +394,14 @@ export class WalletSimulator {
     static importFromTxt(toString: string) {
         const parsed:WalletSimulator = JSON.parse(toString) as WalletSimulator;
 
-        console.log(toString,'->',parsed)
+        // console.log(toString,'->',parsed)
 
         const x = new WalletSimulator(parsed.balanceAtWalletCreation,parsed.creationAt);
 
         x.balance = parsed.balance
         x.trades = getSafeNull(parsed._trades,[]);
 
-        console.log(parsed._trades,' trades ->',x.trades)
-
+        // console.log(parsed._trades,' trades ->',x.trades)
 
         return x;
     }

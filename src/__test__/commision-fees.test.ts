@@ -41,6 +41,4 @@ describe('commision-fees test',()=>{
         expect(wallet.getTotalValue()).toBeCloseTo(1019.88);
     });
 
-
-
 })

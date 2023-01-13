@@ -3,6 +3,8 @@ import {TrendSnapshotInfo} from "../models/ExtractWalletInformation";
 import {daysBetween} from "./mock";
 import {WalletSimulator} from "../index";
 
+const crypto = require('crypto');
+
 export const safeGet = <T, R = any>(object: T | undefined | null,
                                             safeCallback: (object: T) => R,
                                             notSafeCallback: () => R) => {
@@ -33,13 +35,15 @@ export const tradeOptionToTrade = (incTrade: TradeOptions,priceOfThisAssetToday?
         `cannot create new trade without knowing the price of ${incTrade.ticker}`
     );
 
+    const tradeId = getSafeNull(incTrade.id,crypto.randomUUID());
     const feeValue:number = getSafeNull(incTrade.fee,0)
 
     return {
         ...incTrade,
         price: priceNew,
         createdTimestamp: ts,
-        fee: feeValue
+        fee: feeValue,
+        id:tradeId
     };
 }
 

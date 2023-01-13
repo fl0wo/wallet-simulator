@@ -5,8 +5,8 @@ export interface Trade {
     type: TradeMove;
     createdTimestamp: number;
     fee:number;
+    id:string;
 }
-
 
 export interface TradeOptions {
     ticker: string;
@@ -15,6 +15,7 @@ export interface TradeOptions {
     type: TradeMove;
     createdTimestamp?: number;
     fee?:number;
+    id?:string;
 }
 
 export enum TradeMove {
