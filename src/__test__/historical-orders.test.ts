@@ -1,20 +1,30 @@
 import {WalletSimulator} from "../index";
-import {mockDate} from "../utils/mock";
+import {daysBefore, mockDate} from "../utils/mock";
 import {TradeMove} from "../models/Trade";
 
-describe.skip('order list ',()=>{
+describe('order list ',()=>{
+
     test('orders list',()=>{
-        mockDate(new Date('2019-10-01T00:00:01.30Z')); // Time is ❄
-        const w = new WalletSimulator(100)
-            .addTrade({ ticker: 'BTC', quantity: 1, price:1, type: TradeMove.BUY })
-            .addTrade({ ticker: 'BTC', quantity: 1, price:1, type: TradeMove.BUY })
-            .addTrade({ ticker: 'BTC', quantity: 1, price:1, type: TradeMove.BUY })
-            .addTrade({ ticker: 'BTC', quantity: 1, price:1, type: TradeMove.BUY })
-            .addTrade({ ticker: 'BTC', quantity: 1, price:1, type: TradeMove.BUY })
+        const now = new Date('2019-10-01T00:00:01.30Z')
+        mockDate(now); // Time is ❄
+        const startBalance = 100;
+        const w = new WalletSimulator(startBalance)
+            .addTrade({ ticker: 'BTC', quantity: 1, price:1, type: TradeMove.BUY, createdTimestamp: daysBefore(now,10).getTime() })
+            .addTrade({ ticker: 'BTC', quantity: 1, price:1, type: TradeMove.BUY, createdTimestamp: daysBefore(now,7).getTime()})
+            .addTrade({ ticker: 'BTC', quantity: 1, price:2, type: TradeMove.SELL, createdTimestamp: daysBefore(now,6).getTime() })
+            .addTrade({ ticker: 'BTC', quantity: 1, price:1, type: TradeMove.BUY, createdTimestamp: daysBefore(now,5).getTime() })
+            .addTrade({ ticker: 'BTC', quantity: 1, price:2, type: TradeMove.SELL, createdTimestamp: daysBefore(now,2).getTime() })
+
+            .addTrade({ ticker: 'BTC', quantity: 1, price:1, type: TradeMove.BUY, createdTimestamp: daysBefore(now,6).getTime() })
+            .addTrade({ ticker: 'BTC', quantity: 1, price:1, type: TradeMove.BUY, createdTimestamp: daysBefore(now,5).getTime() })
+            .addTrade({ ticker: 'BTC', quantity: 3, price:0.1, type: TradeMove.SELL, createdTimestamp: daysBefore(now,2).getTime() })
 
         const orderList = w.plMadeByOrders();
+        const sumPL = orderList.reduce((acc, cur) => acc + (cur.profit || 0), 0);
 
-        expect(orderList).toHaveLength(w.trades.length)
+        console.log(w.getTotalValue(), ' == ',startBalance + sumPL)
+
+        expect(startBalance + sumPL)
+            .toStrictEqual(w.getTotalValue())
     })
-
 })

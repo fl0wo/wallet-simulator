@@ -244,20 +244,53 @@ export class WalletSimulator {
             .sort((a, b) => a.date.getTime() - b.date.getTime());
     }
 
+    /**
+     * Returns the list of trades made, but as 'order movement info'
+     * It also includes an info related to each trade decision showing the profit/loss each (sell) order has done to the wallet.
+     *
+     * @param orders
+     */
     plMadeByOrders(orders?: Trade[]): Array<OrderMovementInfo> {
         const allOrders = getSafeNull(orders,this.trades);
 
+        const profitsMap:any = this.calculateProfitsMap(allOrders);
+
+        const movements = allOrders.map((el:Trade) => {
+            const notionalCalculated:number = el.quantity * el.price;
+            const profitCalculated = getSafeNull(profitsMap[el.id], undefined);
+
+            const x: OrderMovementInfo = {
+                date: el.createdTimestamp,
+                fee: el.fee,
+                notional: String(notionalCalculated),
+                orderId: el.id,
+                profit: profitCalculated,
+                side: el.type,
+                ticker: el.ticker,
+                priceAt: el.price,
+                quantity: el.quantity
+            };
+
+            return x;
+        });
+
+        return movements;
+    }
+
+    private calculateProfitsMap(orders: Trade[]): Array<OrderMovementInfo> {
+
         const ordersWithProfits:any = {};
         const totals:any = {};
+        const recentBuyOrders: any = {};
 
-        for (let i = allOrders.length - 1; i >= 0; i--) {
-            const order:Trade = allOrders[i];
+        for (let i = orders.length - 1; i >= 0; i--) {
+            const order: Trade = orders[i];
 
             const volume = order.quantity;
             const valueAt = order.price;
-            const fees = order.fee; // FIXME: have to consider also fees
+            const fees = order.fee;
             const notional = volume * valueAt;
-            const symbol = order.ticker
+            const symbol = order.ticker;
 
             let profit;
             if (order.type === TradeMove.SELL) {
@@ -265,26 +298,38 @@ export class WalletSimulator {
                 totals[symbol] = {
                     volume: 0,
                     cost: 0,
+                    buyOrders: []
                 };
-                // Find the last buy order for this symbol
+                // Find the last 5 buy orders for this symbol
                 for (let j = i - 1; j >= 0; j--) {
-                    const oldOrder:Trade = allOrders[j];
+                    const oldOrder:Trade = orders[j];
                     if (oldOrder.type === TradeMove.BUY && oldOrder.ticker === symbol) {
-                        const oldVolume = oldOrder.quantity;
-                        const oldValueAt = oldOrder.price;
-                        // Update the running totals for this symbol
-                        totals[symbol].volume += oldVolume;
-                        totals[symbol].cost += oldVolume * oldValueAt;
+                        totals[symbol].buyOrders.push(oldOrder);
+                        if(totals[symbol].buyOrders.length === 5) {
+                            break;
+                        }
                     } else if (oldOrder.type === TradeMove.SELL && oldOrder.ticker === symbol) {
                         break;
                     }
                 }
-                // Calculate the profit using the running totals for this symbol
-                profit = (notional - totals[symbol].cost) +
-                    (totals[symbol].volume - volume) *
-                    valueAt;
+
+                // Calculate the average cost basis using the last 5 buy orders for this symbol
+                let costBasis = 0;
+                if (totals[symbol].buyOrders.length > 0) {
+                    for (let buyOrder of totals[symbol].buyOrders) {
+                        const oldVolume = buyOrder.quantity;
+                        const oldValueAt = buyOrder.price;
+                        // Update the running totals for this symbol
+                        totals[symbol].volume += oldVolume;
+                        totals[symbol].cost += oldVolume * oldValueAt;
+                    }
+                    costBasis = totals[symbol].cost / totals[symbol].volume;
+                }
+                // Calculate the profit using the average cost basis for this symbol
+                profit = (notional - costBasis * volume) + (fees);
             }
-            ordersWithProfits[order.createdTimestamp]=profit;
+
+            ordersWithProfits[order.id] = profit;
         }
 
         return ordersWithProfits;

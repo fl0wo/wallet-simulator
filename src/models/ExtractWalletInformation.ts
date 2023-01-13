@@ -1,3 +1,5 @@
+import {TradeMove} from "./Trade";
+
 export interface DonutAssetInfo {
     ticker: string;
     value: number;
@@ -11,13 +13,13 @@ export interface TrendSnapshotInfo {
 }
 
 export interface OrderMovementInfo {
-    symbol: string;
-    volume: string;
-    side: string;
+    ticker: string;
+    quantity: number;
+    side: TradeMove;
     notional: string;
-    valueAt: string;
-    date: string;
+    priceAt: number;
+    date: number;
     profit: number|undefined;
-    fees: string;
-    order_id:string;
+    fee: number;
+    orderId:string;
 }
