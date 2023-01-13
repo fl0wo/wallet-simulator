@@ -1,5 +1,6 @@
 import {WalletSimulator} from "../index";
 import {TradeMove} from "../models/Trade";
+import {daysBefore} from "../utils/mock";
 
 describe('getTrendBalanceSnapshotsBuyAndHold',()=>{
 
@@ -9,31 +10,36 @@ describe('getTrendBalanceSnapshotsBuyAndHold',()=>{
         const now = new Date();
 
         // Adding trades and updating prices for the last 5 days
-        const fiveDaysAgo = new Date(now.getTime() - 5 * 24 * 60 * 60 * 1000);
+        const fiveDaysAgo = daysBefore(now,5);
         wallet
             .addTrade({ ticker: 'AAPL', price: 10, quantity: 1, type: TradeMove.BUY, createdTimestamp: fiveDaysAgo.getTime() })
-            .updatePrice('AAPL', 20, fiveDaysAgo.getTime());
 
 
-        const threeDaysAgo = new Date(now.getTime() - 3 * 24 * 60 * 60 * 1000);
+        const fourDaysAgo = daysBefore(now,4);
+        wallet.updatePrice('AAPL', 20, fourDaysAgo.getTime());
+
+        const threeDaysAgo = daysBefore(now,3);
         wallet
             .addTrade({ ticker: 'NVDA', price: 13, quantity: 3, type: TradeMove.BUY, createdTimestamp: threeDaysAgo.getTime() })
             .addTrade({ ticker: 'BTC', price: 1, quantity: 15, type: TradeMove.BUY, createdTimestamp: threeDaysAgo.getTime() })
             .addTrade({ ticker: 'ETH', price: 2, quantity: 5, type: TradeMove.BUY, createdTimestamp: threeDaysAgo.getTime() })
             .addTrade({ ticker: 'TSLA', price: 1, quantity: 5, type: TradeMove.BUY, createdTimestamp: threeDaysAgo.getTime() })
-            .updatePrice('BTC', 2, threeDaysAgo.getTime())
-            .updatePrice('ETH', 2, threeDaysAgo.getTime())
-            .updatePrice('NVDA', 10, threeDaysAgo.getTime())
-            .updatePrice('TSLA', 10, threeDaysAgo.getTime())
 
+        const oneDayAgo = daysBefore(now,1);
 
-        const trendData = wallet.getTrendBalanceSnapshots(5, now);
+        wallet
+            .updatePrice('BTC', 2, oneDayAgo.getTime())
+            .updatePrice('ETH', 2, oneDayAgo.getTime())
+            .updatePrice('NVDA', 10, oneDayAgo.getTime())
+            .updatePrice('TSLA', 10, oneDayAgo.getTime());
+
+        const trendData = wallet.getTrendBalanceSnapshotsBuyAndHold(5, now);
 
         expect(trendData).toHaveLength(5);
-        expect(trendData[0].value).toEqual(110);
-        expect(trendData[1].value).toEqual(110);
-        expect(trendData[2].value).toEqual(161);
-        expect(trendData[3].value).toEqual(161);
-        expect(trendData[4].value).toEqual(161);
+        expect(trendData[0].value).toEqual(100);
+        expect(trendData[1].value.toFixed(2)).toEqual('116.67');
+        expect(trendData[2].value.toFixed(2)).toEqual('116.67');
+        expect(trendData[3].value.toFixed(2)).toEqual('116.67');
+        expect(trendData[4].value.toFixed(2)).toEqual('279.49');
     })
 })

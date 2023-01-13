@@ -83,3 +83,8 @@ export const fillTimestreamGaps = (timestream: Array<TrendSnapshotInfo>) => {
 
 export const mapToArrayKeys = (m:Map<any, any>) => Array.from(m.keys())
 
+export const clone = (obj:Map<any, any>) => {
+    return new Map(obj)
+}
+
+
