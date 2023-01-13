@@ -3,7 +3,7 @@ import {TrendSnapshotInfo} from "../models/ExtractWalletInformation";
 import {daysBetween} from "./mock";
 import {WalletSimulator} from "../index";
 
-const crypto = require('crypto');
+import * as crypto from 'crypto';
 
 export const safeGet = <T, R = any>(object: T | undefined | null,
                                             safeCallback: (object: T) => R,

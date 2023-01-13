@@ -277,7 +277,7 @@ export class WalletSimulator {
         return movements;
     }
 
-    private calculateProfitsMap(orders: Trade[]): Array<OrderMovementInfo> {
+    calculateProfitsMap(orders: Trade[]): Array<OrderMovementInfo> {
 
         const ordersWithProfits:any = {};
         const totals:any = {};
@@ -316,7 +316,7 @@ export class WalletSimulator {
                 // Calculate the average cost basis using the last 5 buy orders for this symbol
                 let costBasis = 0;
                 if (totals[symbol].buyOrders.length > 0) {
-                    for (let buyOrder of totals[symbol].buyOrders) {
+                    for (const buyOrder of totals[symbol].buyOrders) {
                         const oldVolume = buyOrder.quantity;
                         const oldValueAt = buyOrder.price;
                         // Update the running totals for this symbol
