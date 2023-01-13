@@ -17,7 +17,7 @@ export class WalletSimulator {
     private costBasis: Map<string,number>;
     private _trades: Array<Trade> =[];
     private daySnapshots:Map<string,TrendBalanceInfo>;
-
+    private balanceAtWalletCreation:number = 0;
     private readonly _creationAt:Date;
 
     constructor(public balance: number, creationDate?:Date) {
@@ -26,6 +26,7 @@ export class WalletSimulator {
         this.costBasis = new Map<string,number>();
         this.daySnapshots = new Map<string,TrendBalanceInfo>();
         this._creationAt = getSafeNull(creationDate,new Date());
+        this.balanceAtWalletCreation = this.balance;
     }
 
     /**
@@ -167,17 +168,38 @@ export class WalletSimulator {
         return assetsInfo;
     }
 
-    public getTrendBalanceGraph(backDays: number,now?:Date): Array<TrendBalanceInfo> {
+    public getTrendBalanceSnapshots(backDays: number, now?:Date): Array<TrendBalanceInfo> {
         const nowDate:Date = getSafeNull(now,new Date());
         const today = daysBefore(nowDate,1).getTime();
         const pastDate = daysBefore(nowDate,backDays).getTime();
 
         const result:Array<TrendBalanceInfo> = [];
-        console.log(this.daySnapshots)
+
         this.daySnapshots.forEach((value, key) => {
-            const date = value.date
-            if (date.getTime() >= pastDate && date.getTime() <= today) {
-                result.push({ date: date, value: value.value });
+            const dateValue = value.date
+            if (dateValue.getTime() >= pastDate && dateValue.getTime() <= today) {
+                result.push({ date: dateValue, value: value.value });
+            }
+        });
+        const sortedResults = result
+            .sort((a,b)=> a.date.getTime()-b.date.getTime());
+
+        sortedResults.push({date:nowDate,value:-1});
+        const filled = fillTimestreamGaps(sortedResults);
+        return filled.slice(0,filled.length-1); // remove last one
+    }
+
+    public getTrendBalanceSnapshotsBuyAndHold(backDays: number,now?:Date): Array<TrendBalanceInfo> {
+        const nowDate:Date = getSafeNull(now,new Date());
+        const today = daysBefore(nowDate,1).getTime();
+        const pastDate = daysBefore(nowDate,backDays).getTime();
+
+        const result:Array<TrendBalanceInfo> = [];
+
+        this.daySnapshots.forEach((value, key) => {
+            const dateValue = value.date
+            if (dateValue.getTime() >= pastDate && dateValue.getTime() <= today) {
+                result.push({ date: dateValue, value: value.value });
             }
         });
         const sortedResults = result
@@ -277,5 +299,9 @@ export class WalletSimulator {
             date: new Date(getSafeNull(updateDateMs,Date.now())),
             value: this.getTotalValue()
         })
+    }
+
+    public getAllOwnedAssets(): Array<string>{
+        return Array.from(this.holdings.keys())
     }
 }

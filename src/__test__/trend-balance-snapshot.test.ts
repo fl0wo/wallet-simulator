@@ -21,30 +21,30 @@ describe('trend balance snapshot test',()=>{
 
         const now = new Date('2020-10-10T00:00:01.30Z');
 
-        let twoDaysAgo = mockDate(daysBefore(now,2)); // Two days ago
+        mockDate(daysBefore(now,2)); // Two days ago
         wallet
             .addTrade({ ticker: 'AAPL', price: 1, quantity: 10, type: TradeMove.BUY })
             .updatePrice('AAPL',2);
 
-        let yesterday = mockDate(daysBefore(now,1)); // Day before
+        mockDate(daysBefore(now,1)); // Day before
         wallet
             .addTrade({ ticker: 'TSLA', price: 1, quantity: 5, type: TradeMove.BUY })
             .updatePrice('TSLA',2)
 
-        let today = mockDate(now); // Today
+        mockDate(now); // Today
         wallet.addTrade({ ticker: 'GOOG', price: 1, quantity: 1, type: TradeMove.BUY })
             .updatePrice('AAPL',0)
             .updatePrice('GOOG',10);
 
-        let tomorrow = daysBefore(now,-1)
+        const tomorrow = daysBefore(now,-1)
         mockDate(tomorrow); // tomorrow
-        const trendData = wallet.getTrendBalanceGraph(3,tomorrow);
+        const trendData = wallet.getTrendBalanceSnapshots(3,tomorrow);
 
         expect(trendData).toHaveLength(3);
-        console.log(trendData)
+
         expect(trendData[0].value).toEqual(6 + (10*2))
-        expect(trendData[1].value).toEqual(21 + (5*2))//105+(5*2));
-        expect(trendData[2].value).toEqual(30 + (10 - 20))//94+(10));
+        expect(trendData[1].value).toEqual(21 + (5*2))// 105+(5*2));
+        expect(trendData[2].value).toEqual(30 + (10 - 20))// 94+(10));
     });
 
     test('getTrendBalanceGraph passing date', () => {
@@ -70,12 +70,12 @@ describe('trend balance snapshot test',()=>{
 
         const totalValueAfterTwoDays = wallet.getTotalValue()
 
-        let tomorrow = daysBefore(now,-1)
+        const tomorrow = daysBefore(now,-1)
         mockDate(tomorrow); // tomorrow
-        const trendData = wallet.getTrendBalanceGraph(3,tomorrow);
+        const trendData = wallet.getTrendBalanceSnapshots(3,tomorrow);
 
         expect(trendData).toHaveLength(3);
-        console.log(trendData)
+
         expect(trendData[0].value).toEqual(22)
         expect(trendData[1].value).toEqual(31)
         expect(trendData[2].value).toEqual(31)
@@ -94,7 +94,7 @@ describe('trend balance snapshot test',()=>{
             .updatePrice('AAPL', 20, fiveDaysAgo.getTime());
 
         // Getting trend data for the last 3 days
-        const trendData = wallet.getTrendBalanceGraph(3, now);
+        const trendData = wallet.getTrendBalanceSnapshots(3, now);
 
         // Expecting an empty array since there are no snapshots in the specified date range
         expect(trendData).toEqual([]);
@@ -121,7 +121,7 @@ describe('trend balance snapshot test',()=>{
             .updatePrice('TSLA', 2, oneDayAgo.getTime());
 
         // Getting trend data for the last 3 days
-        const trendData = wallet.getTrendBalanceGraph(3, now);
+        const trendData = wallet.getTrendBalanceSnapshots(3, now);
 
         // Expecting 3 snapshots, one for each day in the specified date range
         expect(trendData).toHaveLength(3);
@@ -146,7 +146,7 @@ describe('trend balance snapshot test',()=>{
             .addTrade({ ticker: 'TSLA', price: 1, quantity: 5, type: TradeMove.BUY, createdTimestamp: threeDaysAgo.getTime() })
             .updatePrice('TSLA', 2, threeDaysAgo.getTime());
 
-        const trendData = wallet.getTrendBalanceGraph(5, now);
+        const trendData = wallet.getTrendBalanceSnapshots(5, now);
 
         expect(trendData).toHaveLength(5);
         expect(trendData[0].value).toEqual(110);

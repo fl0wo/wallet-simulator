@@ -27,23 +27,22 @@ export const getSafeOrThrow = <T> (value:T,msg:string):NonNullable<T> => {
 
 export const tradeOptionToTrade = (incTrade: TradeOptions,priceOfThisAssetToday?:number): Trade => {
     const ts = getSafeNull(incTrade.createdTimestamp,Date.now());
-    const price = getSafeOrThrow(
+    const priceNew = getSafeOrThrow(
         getSafeNull(incTrade.price,priceOfThisAssetToday),
         `cannot create new trade without knowing the price of ${incTrade.ticker}`
     );
 
-    const trade:Trade = {
+    return {
         ...incTrade,
-        price:price,
-        createdTimestamp:ts
-    }
-    return trade;
+        price: priceNew,
+        createdTimestamp: ts
+    };
 }
 
 export const entries = (obj:any) => {
-    let objKeys=Object.keys(obj);
+    const objKeys=Object.keys(obj);
     let i = objKeys.length;
-    let resArray = [];
+    const resArray = [];
     while(i>0) resArray[--i]=[objKeys[i],obj[objKeys[i]]]
     return resArray;
 }
@@ -51,7 +50,7 @@ export const entries = (obj:any) => {
 export const todayDateNoTime = (updateDateMs?: number) => {
     const dateMs = getSafeNull(updateDateMs,Date.now());
     const dateObj = new Date(dateMs);
-    const month = dateObj.getUTCMonth() + 1; //months from 1-12
+    const month = dateObj.getUTCMonth() + 1; // months from 1-12
     const day = dateObj.getUTCDate();
     const year = dateObj.getUTCFullYear();
     return `${year}-${month}-${day}`;

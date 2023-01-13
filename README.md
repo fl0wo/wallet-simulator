@@ -34,7 +34,8 @@ console.log(wallet.getEstimatedUnrealizedProfitLoss('BTC')); // 2
 - [x] Add new trades balancing current balance
 - [x] P&L and cost basis for each asset
 - [x] Donut information on % of owned assets
-- [ ] Trend snapshots graph of balance at "every price update"
+- [x] Trend snapshots graph of balance at "every day"
+- [x] Trend snapshots graph of balance if just buy & hold at day 0
 - [ ] Plug-in Mapper to format output as needed
 - [ ] Import data from Real Exchanges with API Keys
 
