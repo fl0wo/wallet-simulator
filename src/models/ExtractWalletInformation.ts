@@ -4,7 +4,8 @@ export interface DonutAssetInfo {
     percentage: number;
 }
 
-export interface TrendBalanceInfo{
+export interface TrendSnapshotInfo {
     date: Date;
     value: number;
+    prices: Map<string,number>;
 }

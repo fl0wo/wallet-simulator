@@ -7,8 +7,6 @@ describe('getAllAssets',()=>{
         const w = new WalletSimulator(100)
         const act = w.getAllOwnedAssets();
 
-        console.log(act);
-
         expect(act).toHaveLength(0)
     })
 

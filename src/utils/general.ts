@@ -1,5 +1,5 @@
 import {Trade, TradeOptions} from "../models/Trade";
-import {TrendBalanceInfo} from "../models/ExtractWalletInformation";
+import {TrendSnapshotInfo} from "../models/ExtractWalletInformation";
 import {daysBetween} from "./mock";
 
 export const safeGet = <T, R = any>(object: T | undefined | null,
@@ -56,7 +56,7 @@ export const todayDateNoTime = (updateDateMs?: number) => {
     return `${year}-${month}-${day}`;
 }
 
-export const fillTimestreamGaps = (timestream: Array<TrendBalanceInfo>) => {
+export const fillTimestreamGaps = (timestream: Array<TrendSnapshotInfo>) => {
     for (let i = 0; i < timestream.length - 1; i++) {
         const currentSnapshot = timestream[i];
         const nextSnapshot = timestream[i + 1];
@@ -69,9 +69,10 @@ export const fillTimestreamGaps = (timestream: Array<TrendBalanceInfo>) => {
         if (daysGap > 1) {
             // Filling the gap with the value of the previous snapshot
             for (let j = 1; j < daysGap; j++) {
-                const newSnapshot = {
+                const newSnapshot:TrendSnapshotInfo = {
                     date: new Date(currentDate.getTime() + j * 24 * 60 * 60 * 1000),
-                    value: currentSnapshot.value
+                    value: currentSnapshot.value,
+                    prices: currentSnapshot.prices
                 };
                 timestream.splice(i + j, 0, newSnapshot);
             }
@@ -79,4 +80,6 @@ export const fillTimestreamGaps = (timestream: Array<TrendBalanceInfo>) => {
     }
     return timestream;
 };
+
+export const mapToArrayKeys = (m:Map<any, any>) => Array.from(m.keys())
 

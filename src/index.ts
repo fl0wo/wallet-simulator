@@ -1,14 +1,14 @@
 import {
-    tradeOptionToTrade,
+    fillTimestreamGaps,
     getSafeNull,
     getSafeOrThrow,
-    entries,
+    mapToArrayKeys,
     todayDateNoTime,
-    fillTimestreamGaps
+    tradeOptionToTrade
 } from "./utils/general";
 import {Trade, TradeMove, TradeOptions} from "./models/Trade";
-import {DonutAssetInfo, TrendBalanceInfo} from "./models/ExtractWalletInformation";
-import {daysBefore, daysBetween} from "./utils/mock";
+import {DonutAssetInfo, TrendSnapshotInfo} from "./models/ExtractWalletInformation";
+import {daysBefore} from "./utils/mock";
 
 export class WalletSimulator {
 
@@ -16,7 +16,7 @@ export class WalletSimulator {
     private prices: Map<string,number>;
     private costBasis: Map<string,number>;
     private _trades: Array<Trade> =[];
-    private daySnapshots:Map<string,TrendBalanceInfo>;
+    private daySnapshots:Map<string,TrendSnapshotInfo>;
     private balanceAtWalletCreation:number = 0;
     private readonly _creationAt:Date;
 
@@ -24,7 +24,7 @@ export class WalletSimulator {
         this.holdings = new Map<string,number>();
         this.prices = new Map<string,number>();
         this.costBasis = new Map<string,number>();
-        this.daySnapshots = new Map<string,TrendBalanceInfo>();
+        this.daySnapshots = new Map<string,TrendSnapshotInfo>();
         this._creationAt = getSafeNull(creationDate,new Date());
         this.balanceAtWalletCreation = this.balance;
     }
@@ -168,44 +168,70 @@ export class WalletSimulator {
         return assetsInfo;
     }
 
-    public getTrendBalanceSnapshots(backDays: number, now?:Date): Array<TrendBalanceInfo> {
+    public getTrendBalanceSnapshots(backDays: number, now?:Date): Array<TrendSnapshotInfo> {
         const nowDate:Date = getSafeNull(now,new Date());
         const today = daysBefore(nowDate,1).getTime();
         const pastDate = daysBefore(nowDate,backDays).getTime();
 
-        const result:Array<TrendBalanceInfo> = [];
+        const result:Array<TrendSnapshotInfo> = [];
 
         this.daySnapshots.forEach((value, key) => {
             const dateValue = value.date
             if (dateValue.getTime() >= pastDate && dateValue.getTime() <= today) {
-                result.push({ date: dateValue, value: value.value });
+                result.push(value);
             }
         });
         const sortedResults = result
             .sort((a,b)=> a.date.getTime()-b.date.getTime());
 
-        sortedResults.push({date:nowDate,value:-1});
+        sortedResults.push({date:nowDate,value:-1, prices:this.prices });
         const filled = fillTimestreamGaps(sortedResults);
         return filled.slice(0,filled.length-1); // remove last one
     }
 
-    public getTrendBalanceSnapshotsBuyAndHold(backDays: number,now?:Date): Array<TrendBalanceInfo> {
+    public getTrendBalanceSnapshotsBuyAndHold(backDays: number,now?:Date): Array<TrendSnapshotInfo> {
+        const allAssetsToBuy = this.getAllOwnedAssets();
+        const allAssetsToHold = this.getAllOwnedAssets();
+
         const nowDate:Date = getSafeNull(now,new Date());
         const today = daysBefore(nowDate,1).getTime();
         const pastDate = daysBefore(nowDate,backDays).getTime();
 
-        const result:Array<TrendBalanceInfo> = [];
+        const result:Array<TrendSnapshotInfo> = [];
+
+        const totBuyHoldBalance = this.balanceAtWalletCreation;
+        const sliceForEveryAsset = (totBuyHoldBalance/(allAssetsToBuy.length+1)) // a slice also for base currency
+
+        const buyHoldWallet = new WalletSimulator(totBuyHoldBalance);
 
         this.daySnapshots.forEach((value, key) => {
             const dateValue = value.date
             if (dateValue.getTime() >= pastDate && dateValue.getTime() <= today) {
-                result.push({ date: dateValue, value: value.value });
+                const allKnownAssetPrices:Array<string> = mapToArrayKeys(value.prices);
+                // Among all known assets, take the one we still have to buy and haven't bought yet
+                allKnownAssetPrices
+                    .filter((knownAsset:string)=>
+                        allAssetsToBuy.find((buyAsset)=>knownAsset==buyAsset) &&
+                        !allAssetsToHold.find((holdAsset)=>knownAsset==holdAsset)
+                    )
+                    .forEach((buyNowAsset)=>{
+                        const assetHistoricalPrice:number  = getSafeOrThrow(value.prices.get(buyNowAsset),'Unable to parse '+buyNowAsset+' price on calculating buy&hold')
+                        buyHoldWallet.addTrade({
+                            ticker: buyNowAsset,
+                            price: assetHistoricalPrice,
+                            createdTimestamp: value.date.getTime(),
+                            type: TradeMove.BUY,
+                            quantity: (sliceForEveryAsset/assetHistoricalPrice)
+                        })
+                    });
+
+                result.push({date: dateValue, value: buyHoldWallet.getTotalValue(), prices:value.prices });
             }
         });
         const sortedResults = result
             .sort((a,b)=> a.date.getTime()-b.date.getTime());
 
-        sortedResults.push({date:nowDate,value:-1});
+        sortedResults.push({date:nowDate,value:-1, prices:this.prices });
         const filled = fillTimestreamGaps(sortedResults);
         return filled.slice(0,filled.length-1); // remove last one
     }
@@ -294,15 +320,15 @@ export class WalletSimulator {
     private updateTodayBalance(updateDateMs?:number) {
         const todayKey = todayDateNoTime(updateDateMs);
 
-        // FIXME: createdTimestamp
         this.daySnapshots.set(todayKey,{
             date: new Date(getSafeNull(updateDateMs,Date.now())),
-            value: this.getTotalValue()
+            value: this.getTotalValue(),
+            prices: this.prices
         })
     }
 
     public getAllOwnedAssets(): Array<string>{
-        return Array.from(this.holdings.keys())
+        return mapToArrayKeys(this.holdings)
     }
 
 }
