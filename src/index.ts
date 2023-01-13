@@ -304,4 +304,5 @@ export class WalletSimulator {
     public getAllOwnedAssets(): Array<string>{
         return Array.from(this.holdings.keys())
     }
+
 }

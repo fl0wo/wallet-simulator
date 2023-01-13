@@ -12,7 +12,7 @@ describe('getAllAssets',()=>{
         expect(act).toHaveLength(0)
     })
 
-    test('getAllTradedAssets 1',()=>{
+    test('getAllOwnedAssets 1',()=>{
         const w = new WalletSimulator(100)
             .addTrade({ ticker: 'BTC', quantity: 1, price:1, type: TradeMove.BUY })
         const act = w.getAllOwnedAssets();
@@ -48,5 +48,16 @@ describe('getAllAssets',()=>{
 
         expect(act).toHaveLength(3)
         expect(act).toStrictEqual(['BTC','ETH','LTC'])
+    })
+
+    test('getAllOwnedAssets buys but sells still showing',()=>{
+        const w = new WalletSimulator(100)
+            .addTrade({ ticker: 'BTC', quantity: 1, price:1, type: TradeMove.BUY })
+            .addTrade({ ticker: 'BTC', quantity: 1, price:1, type: TradeMove.SELL })
+
+        const act = w.getAllOwnedAssets();
+
+        expect(act).toHaveLength(1)
+        expect(act).toStrictEqual(['BTC'])
     })
 })
