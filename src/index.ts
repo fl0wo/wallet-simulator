@@ -1,11 +1,11 @@
 import {
     clone,
-    fillTimestreamGaps,
+    fillTimestreamGaps, fillTimestreamGapsWithLastRecord,
     getSafeNull,
     getSafeOrThrow,
-    mapToArrayKeys,
+    mapToArrayKeys, onlyNotBought,
     todayDateNoTime,
-    tradeOptionToTrade
+    tradeOptionToTrade, updateAssetsOnWallet, updatePricesOnWallet
 } from "./utils/general";
 import {Trade, TradeMove, TradeOptions} from "./models/Trade";
 import {DonutAssetInfo, TrendSnapshotInfo} from "./models/ExtractWalletInformation";
@@ -174,11 +174,13 @@ export class WalletSimulator {
         const today = daysBefore(nowDate,1).getTime();
         const pastDate = daysBefore(nowDate,backDays).getTime();
 
-        const sortedResults = this.sortedDaySnapshotsOnRange(pastDate, today);
+        const result = this.sortedDaySnapshotsOnRange(pastDate, today);
 
-        sortedResults.push({date:nowDate,value:-1, prices:this.prices });
-        const filled = fillTimestreamGaps(sortedResults);
-        return filled.slice(0,filled.length-1); // remove last one
+        return fillTimestreamGapsWithLastRecord(result, nowDate,{
+            date:nowDate,
+            value:-1,
+            prices:this.prices
+        });
     }
 
     public getTrendBalanceSnapshotsBuyAndHold(backDays: number,now?:Date): Array<TrendSnapshotInfo> {
@@ -194,9 +196,6 @@ export class WalletSimulator {
         const totBuyHoldBalance = this.balanceAtWalletCreation;
         const sliceForEveryAsset = (totBuyHoldBalance/(allAssetsToBuy.length+1)) // a slice also for base currency
 
-        console.log('totBuyHoldBalance',totBuyHoldBalance)
-        console.log('sliceForEveryAsset',sliceForEveryAsset)
-
         const buyHoldWallet = new WalletSimulator(totBuyHoldBalance);
 
         const sortedResults = this.sortedDaySnapshotsOnRange(pastDate, today);
@@ -204,39 +203,28 @@ export class WalletSimulator {
         sortedResults.forEach((value) => {
             const dateValue = value.date
             const allKnownAssetPrices:Array<string> = mapToArrayKeys(value.prices);
-            console.log('allKnownAssetPrices',allKnownAssetPrices)
-            // Among all known assets, take the one we still have to buy and haven't bought yet
-            allKnownAssetPrices
-                .filter((knownAsset:string)=>
-                    allAssetsToBuy.find((buyAsset)=>knownAsset==buyAsset) &&
-                    !allAssetsToHold.find((holdAsset)=>knownAsset==holdAsset)
-                )
-                .forEach((buyNowAsset)=>{
-                    const assetHistoricalPrice:number  = getSafeOrThrow(value.prices.get(buyNowAsset),'Unable to parse '+buyNowAsset+' price on calculating buy&hold')
-                    console.log('buy first time', buyNowAsset)
-                    buyHoldWallet.addTrade({
-                        ticker: buyNowAsset,
-                        price: assetHistoricalPrice,
-                        createdTimestamp: value.date.getTime(),
-                        type: TradeMove.BUY,
-                        quantity: (sliceForEveryAsset/assetHistoricalPrice)
-                    })
-                    // Now start holding it
-                    allAssetsToHold.push(buyNowAsset)
-                });
 
-            allKnownAssetPrices.forEach((knownAsset:string)=>{
-                const assetHistoricalPrice:number  = getSafeOrThrow(value.prices.get(knownAsset),'Unable to parse '+knownAsset+' price on calculating buy&hold')
-                console.log('updating price of',knownAsset,buyHoldWallet.getPrice(knownAsset),'->',assetHistoricalPrice)
-                buyHoldWallet.updatePrice(knownAsset,assetHistoricalPrice)
-            });
-            console.log('buyHoldWallet.getDonutAssetInformation()',buyHoldWallet.getDonutAssetInformation())
+            // Among all known assets, take the one we still have to buy and haven't bought yet
+            const toBuyNowAssets = onlyNotBought(allKnownAssetPrices,allAssetsToBuy,allAssetsToHold)
+
+            // Now start holding it
+            toBuyNowAssets.forEach((buyNowAsset)=>allAssetsToHold.push(buyNowAsset));
+
+            // Add new bought assets to the buy/hold wallet
+            toBuyNowAssets.forEach(updateAssetsOnWallet(value, buyHoldWallet, sliceForEveryAsset))
+
+            // Update the pricing hashmap on buy/hold wallet
+            allKnownAssetPrices.forEach(updatePricesOnWallet(value, buyHoldWallet));
+
+            // Push new snapshot
             result.push({date: dateValue, value: buyHoldWallet.getTotalValue(), prices:value.prices });
         });
 
-        result.push({date:nowDate,value:-1, prices:this.prices });
-        const filled = fillTimestreamGaps(result);
-        return filled.slice(0,filled.length-1); // remove last one
+        return fillTimestreamGapsWithLastRecord(result, nowDate,{
+            date:nowDate,
+            value:-1,
+            prices:this.prices
+        });
     }
 
     private sortedDaySnapshotsOnRange(pastDate: number, today: number) {
@@ -251,8 +239,7 @@ export class WalletSimulator {
             .sort((a, b) => a.date.getTime() - b.date.getTime());
     }
 
-
-    /**
+        /**
      * @return all trades made so far
      */
     get trades(): Array<Trade> {

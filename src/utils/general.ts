@@ -1,6 +1,7 @@
-import {Trade, TradeOptions} from "../models/Trade";
+import {Trade, TradeMove, TradeOptions} from "../models/Trade";
 import {TrendSnapshotInfo} from "../models/ExtractWalletInformation";
 import {daysBetween} from "./mock";
+import {WalletSimulator} from "../index";
 
 export const safeGet = <T, R = any>(object: T | undefined | null,
                                             safeCallback: (object: T) => R,
@@ -81,10 +82,44 @@ export const fillTimestreamGaps = (timestream: Array<TrendSnapshotInfo>) => {
     return timestream;
 };
 
+export const fillTimestreamGapsWithLastRecord = (result: Array<TrendSnapshotInfo>, nowDate: Date, lastRecord:TrendSnapshotInfo) => {
+    result.push(lastRecord);
+    const filled = fillTimestreamGaps(result);
+    return filled.slice(0, filled.length - 1); // remove last one
+}
+
 export const mapToArrayKeys = (m:Map<any, any>) => Array.from(m.keys())
 
 export const clone = (obj:Map<any, any>) => {
     return new Map(obj)
+}
+
+function fromAinBnotInC(b: Array<any>, c: Array<any>) {
+    return (a: any) => b.find((x) => a == x) && !c.find((x) => a == x);
+}
+
+export const onlyNotBought = (allKnownAssetPrices: Array<any>, allAssetsToBuy: Array<any>, allAssetsToHold: Array<any>) => {
+    return allKnownAssetPrices.filter(fromAinBnotInC(allAssetsToBuy, allAssetsToHold))
+}
+
+export const updateAssetsOnWallet = (value: TrendSnapshotInfo, buyHoldWallet: WalletSimulator, sliceForEveryAsset: number) => {
+    return (buyNowAsset:string) => {
+        const assetHistoricalPrice: number = getSafeOrThrow(value.prices.get(buyNowAsset), 'Unable to parse ' + buyNowAsset + ' price on calculating buy&hold')
+        buyHoldWallet.addTrade({
+            ticker: buyNowAsset,
+            price: assetHistoricalPrice,
+            createdTimestamp: value.date.getTime(),
+            type: TradeMove.BUY,
+            quantity: (sliceForEveryAsset / assetHistoricalPrice)
+        })
+    };
+}
+
+export const updatePricesOnWallet = (value: TrendSnapshotInfo, buyHoldWallet: WalletSimulator) => {
+    return (knownAsset: string) => {
+        const assetHistoricalPrice: number = getSafeOrThrow(value.prices.get(knownAsset), 'Unable to parse ' + knownAsset + ' price on calculating buy&hold')
+        buyHoldWallet.updatePrice(knownAsset, assetHistoricalPrice)
+    };
 }
 
 
