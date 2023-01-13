@@ -33,10 +33,13 @@ export const tradeOptionToTrade = (incTrade: TradeOptions,priceOfThisAssetToday?
         `cannot create new trade without knowing the price of ${incTrade.ticker}`
     );
 
+    const feeValue:number = getSafeNull(incTrade.fee,0)
+
     return {
         ...incTrade,
         price: priceNew,
-        createdTimestamp: ts
+        createdTimestamp: ts,
+        fee: feeValue
     };
 }
 
@@ -122,4 +125,6 @@ export const updatePricesOnWallet = (value: TrendSnapshotInfo, buyHoldWallet: Wa
     };
 }
 
+export const removeFee = (cost:number, fee:number) => cost - (cost * (fee/100))
+export const addFee = (cost:number, fee:number) => cost + (cost * (fee/100))
 

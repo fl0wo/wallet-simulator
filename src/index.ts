@@ -1,9 +1,10 @@
 import {
+    addFee,
     clone,
     fillTimestreamGaps, fillTimestreamGapsWithLastRecord,
     getSafeNull,
     getSafeOrThrow,
-    mapToArrayKeys, onlyNotBought,
+    mapToArrayKeys, onlyNotBought, removeFee,
     todayDateNoTime,
     tradeOptionToTrade, updateAssetsOnWallet, updatePricesOnWallet
 } from "./utils/general";
@@ -13,12 +14,12 @@ import {daysBefore} from "./utils/mock";
 
 export class WalletSimulator {
 
-    private holdings: Map<string,number>;
-    private prices: Map<string,number>;
+    private readonly holdings: Map<string,number>;
+    private readonly prices: Map<string,number>;
     private costBasis: Map<string,number>;
     private _trades: Array<Trade> =[];
     private daySnapshots:Map<string,TrendSnapshotInfo>;
-    private balanceAtWalletCreation:number = 0;
+    private readonly balanceAtWalletCreation:number = 0;
     private readonly _creationAt:Date;
 
     constructor(public balance: number, creationDate?:Date) {
@@ -315,7 +316,7 @@ export class WalletSimulator {
         this.updatePrice(trade.ticker,trade.price);
 
         const tradeCost = trade.price * trade.quantity;
-        this.balance += tradeCost;
+        this.balance += removeFee(tradeCost,trade.fee);
         this.holdings.set(trade.ticker, ownedAssetQuantity - trade.quantity);
 
         this.updateCostBasis(trade, -trade.price);
@@ -329,7 +330,8 @@ export class WalletSimulator {
      * @private
      */
     private buy(trade: Trade) {
-        const completeCost = trade.price * trade.quantity;
+        const completeCostNoFees = trade.price * trade.quantity
+        const completeCost = addFee(trade.price * trade.quantity,trade.fee)
         if (this.balance < completeCost) {
             throw new Error(`Insufficient funds to buy ${trade.quantity} ${trade.ticker} at $${trade.price}`);
         }
@@ -340,7 +342,7 @@ export class WalletSimulator {
         const currentQuantity = this.getPositionQuantity(trade.ticker);
         this.holdings.set(trade.ticker, currentQuantity + trade.quantity);
 
-        this.updateCostBasis(trade, completeCost);
+        this.updateCostBasis(trade, completeCostNoFees);
 
         return true;
     }

@@ -4,6 +4,7 @@ export interface Trade {
     quantity: number;
     type: TradeMove;
     createdTimestamp: number;
+    fee:number;
 }
 
 export interface TradeOptions {
@@ -12,6 +13,7 @@ export interface TradeOptions {
     quantity: number;
     type: TradeMove;
     createdTimestamp?: number;
+    fee?:number;
 }
 
 export enum TradeMove {
