@@ -18,3 +18,4 @@ export enum TradeMove {
     BUY='BUY',
     SELL='SELL'
 }
+

@@ -8,7 +8,7 @@ import {
     tradeOptionToTrade, updateAssetsOnWallet, updatePricesOnWallet
 } from "./utils/general";
 import {Trade, TradeMove, TradeOptions} from "./models/Trade";
-import {DonutAssetInfo, TrendSnapshotInfo} from "./models/ExtractWalletInformation";
+import {DonutAssetInfo, OrderMovementInfo, TrendSnapshotInfo} from "./models/ExtractWalletInformation";
 import {daysBefore} from "./utils/mock";
 
 export class WalletSimulator {
@@ -238,6 +238,56 @@ export class WalletSimulator {
         return result
             .sort((a, b) => a.date.getTime() - b.date.getTime());
     }
+
+    plMadeByOrders(orders?: Trade[]): Array<OrderMovementInfo> {
+        const allOrders = getSafeNull(orders,this.trades);
+        return []
+        /*
+        const ordersWithProfits:any = {};
+        const totals:any = {};
+
+        for (let i = allOrders.length - 1; i >= 0; i--) {
+            const order = allOrders[i];
+
+            const volume = Number.parseFloat(order.qty);
+            const valueAt = Number.parseFloat(order.price);
+            const fees = Number.parseFloat(order.commission);
+            const notional = volume * valueAt;
+            const coin = getCryptoFromPair(order.symbol) as Crypto;
+            const symbol = toBinanceCurrencyPair(coin, BaseCurrency.TETER_USDT);
+
+            let profit;
+            if (!order.isBuyer) {
+                // If the order is a sell, initialize the running totals for this symbol
+                totals[order.symbol] = {
+                    volume: 0,
+                    cost: 0,
+                };
+                // Find the last buy order for this symbol
+                for (let j = i - 1; j >= 0; j--) {
+                    const oldOrder = allOrders[j];
+                    if (oldOrder.isBuyer && oldOrder.symbol === order.symbol) {
+                        const oldVolume = Number.parseFloat(oldOrder.qty);
+                        const oldValueAt = Number.parseFloat(oldOrder.price);
+                        // Update the running totals for this symbol
+                        totals[order.symbol].volume += oldVolume;
+                        totals[order.symbol].cost += oldVolume * oldValueAt;
+                    } else if (!oldOrder.isBuyer && oldOrder.symbol === order.symbol) {
+                        break;
+                    }
+                }
+                // Calculate the profit using the running totals for this symbol
+                profit =    (notional - totals[order.symbol].cost) +
+                    (totals[order.symbol].volume - volume) *
+                    valueAt;
+            }
+            ordersWithProfits[order.orderId]=profit;
+        }
+
+         */
+        //return ordersWithProfits;
+    }
+
 
     /**
      * @return all trades made so far

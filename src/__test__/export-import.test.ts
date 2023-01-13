@@ -2,7 +2,6 @@ import {WalletSimulator} from "../index";
 import {mockDate} from "../utils/mock";
 import {TradeMove} from "../models/Trade";
 
-
 // FIXME: still to implement import/export
 describe.skip('export-import test',()=>{
     test('export ok',()=>{
