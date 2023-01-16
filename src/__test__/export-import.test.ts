@@ -21,9 +21,9 @@ describe('export-import test',()=>{
         const toString = w.exportToText();
         const wImported = WalletSimulator.importFromTxt(toString)
 
-        console.log(toString);
-
         expect(wImported)
             .toStrictEqual(w)
     })
 })
+
+export const exportImportWallet = (w:WalletSimulator) => WalletSimulator.importFromTxt(w.exportToText());

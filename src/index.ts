@@ -6,7 +6,8 @@ import {
     getSafeOrThrow,
     objToArrayKeys,
     onlyNotBought,
-    removeFee, toDate,
+    removeFee,
+    toDate,
     todayDateNoTime,
     tradeOptionToTrade,
     updateAssetsOnWallet,
@@ -15,8 +16,6 @@ import {
 import {Trade, TradeMove, TradeOptions} from "./models/Trade";
 import {DonutAssetInfo, OrderMovementInfo, TrendSnapshotInfo} from "./models/ExtractWalletInformation";
 import {daysBefore} from "./utils/mock";
-
-const _ = require('lodash');
 
 export class WalletSimulator {
 
@@ -445,8 +444,7 @@ export class WalletSimulator {
 
     static importFromTxt(toString: string) {
         const parsed:any = JSON.parse(toString);
-        console.log('PARSED->',parsed)
-        const restoredWallet = new WalletSimulator(0, parsed);
-        return restoredWallet;
+        // console.log('PARSED->',parsed)
+        return new WalletSimulator(0, parsed);
     }
 }
