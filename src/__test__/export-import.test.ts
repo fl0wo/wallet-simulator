@@ -8,7 +8,7 @@ describe('export-import test',()=>{
         mockDate(new Date('2019-10-01T00:00:01.30Z')); // Time is ❄
         const w = new WalletSimulator(100);
 
-        const toString = w.exportToText();
+        const toString = w.exportToJson();
 
         expect(toString)
             .toStrictEqual('{"balance":100,"_trades":[],"balanceAtWalletCreation":100,"holdings":{},"prices":{},"costBasis":{},"daySnapshots":{},"_creationAt":"2019-10-01T00:00:01.300Z"}')
@@ -18,12 +18,12 @@ describe('export-import test',()=>{
         const w = new WalletSimulator(100)
             .addTrade({ ticker: 'AAPL', price: 1, quantity: 10, type: TradeMove.BUY })
 
-        const toString = w.exportToText();
-        const wImported = WalletSimulator.importFromTxt(toString)
+        const toString = w.exportToJson();
+        const wImported = WalletSimulator.importFromJsonString(toString)
 
         expect(wImported)
             .toStrictEqual(w)
     })
 })
 
-export const exportImportWallet = (w:WalletSimulator) => WalletSimulator.importFromTxt(w.exportToText());
+export const exportImportWallet = (w:WalletSimulator) => WalletSimulator.importFromJsonString(w.exportToJson());

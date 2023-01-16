@@ -341,7 +341,6 @@ export class WalletSimulator {
         return ordersWithProfits;
     }
 
-
     /**
      * @return all trades made so far
      */
@@ -438,12 +437,12 @@ export class WalletSimulator {
         return objToArrayKeys(this.holdings)
     }
 
-    public exportToText(){
+    public exportToJson(){
         return JSON.stringify(this)
     }
 
-    static importFromTxt(toString: string) {
-        const parsed:any = JSON.parse(toString);
+    static importFromJsonString(walletJsonString: string) {
+        const parsed:any = JSON.parse(walletJsonString);
         // console.log('PARSED->',parsed)
         return new WalletSimulator(0, parsed);
     }
