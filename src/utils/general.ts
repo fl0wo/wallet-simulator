@@ -55,6 +55,13 @@ export const entries = (obj:any) => {
     return resArray;
 }
 
+export const fromEntries =  (entries:any[]) => {
+    if (!entries || !entries[Symbol.iterator]) { throw new Error('Object.fromEntries() requires a single iterable argument'); }
+    let obj:any = {};
+    for (let [key, value] of entries) obj[key] = value;
+    return obj;
+}
+
 export const todayDateNoTime = (updateDateMs?: number) => {
     const dateMs = getSafeNull(updateDateMs,Date.now());
     const dateObj = new Date(dateMs);
@@ -95,10 +102,10 @@ export const fillTimestreamGapsWithLastRecord = (result: Array<TrendSnapshotInfo
     return filled.slice(0, filled.length - 1); // remove last one
 }
 
-export const mapToArrayKeys = (m:Map<any, any>) => Array.from(m.keys())
+export const objToArrayKeys = (m:any) => Object.keys(m)
 
-export const clone = (obj:Map<any, any>) => {
-    return new Map(obj)
+export const cloneObj = (obj:any) => {
+    return {...obj}
 }
 
 function fromAinBnotInC(b: Array<any>, c: Array<any>) {
@@ -111,7 +118,7 @@ export const onlyNotBought = (allKnownAssetPrices: Array<any>, allAssetsToBuy: A
 
 export const updateAssetsOnWallet = (value: TrendSnapshotInfo, buyHoldWallet: WalletSimulator, sliceForEveryAsset: number) => {
     return (buyNowAsset:string) => {
-        const assetHistoricalPrice: number = getSafeOrThrow(value.prices.get(buyNowAsset), 'Unable to parse ' + buyNowAsset + ' price on calculating buy&hold')
+        const assetHistoricalPrice: number = getSafeOrThrow(value.prices[(buyNowAsset)], 'Unable to parse ' + buyNowAsset + ' price on calculating buy&hold')
         buyHoldWallet.addTrade({
             ticker: buyNowAsset,
             price: assetHistoricalPrice,
@@ -124,11 +131,23 @@ export const updateAssetsOnWallet = (value: TrendSnapshotInfo, buyHoldWallet: Wa
 
 export const updatePricesOnWallet = (value: TrendSnapshotInfo, buyHoldWallet: WalletSimulator) => {
     return (knownAsset: string) => {
-        const assetHistoricalPrice: number = getSafeOrThrow(value.prices.get(knownAsset), 'Unable to parse ' + knownAsset + ' price on calculating buy&hold')
+        const assetHistoricalPrice: number = getSafeOrThrow(value.prices[(knownAsset)], 'Unable to parse ' + knownAsset + ' price on calculating buy&hold')
         buyHoldWallet.updatePrice(knownAsset, assetHistoricalPrice)
     };
 }
 
 export const removeFee = (cost:number, fee:number) => cost - (cost * (fee/100))
 export const addFee = (cost:number, fee:number) => cost + (cost * (fee/100))
+export const map2Obj = (m:Map<any,any>) => fromEntries(Array.from(m.entries()));
 
+export function replacer(key:any, value:any) {
+    if(value instanceof Map) {
+        return map2Obj(value as Map<any,any>)
+    } else {
+        return value;
+    }
+}
+
+export const reviver = (arrMapFields:Array<string>) => (key:any, value:any) => {
+    return value;
+}

@@ -3,10 +3,10 @@ import {mockDate} from "../utils/mock";
 import {TradeMove} from "../models/Trade";
 
 // FIXME: still to implement import/export
-describe.skip('export-import test',()=>{
+describe('export-import test',()=>{
     test('export ok',()=>{
         mockDate(new Date('2019-10-01T00:00:01.30Z')); // Time is ❄
-        const w = new WalletSimulator(100, );
+        const w = new WalletSimulator(100);
 
         const toString = w.exportToText();
 
@@ -20,6 +20,8 @@ describe.skip('export-import test',()=>{
 
         const toString = w.exportToText();
         const wImported = WalletSimulator.importFromTxt(toString)
+
+        console.log(toString);
 
         expect(wImported)
             .toStrictEqual(w)

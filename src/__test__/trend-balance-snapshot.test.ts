@@ -53,7 +53,9 @@ describe('trend balance snapshot test',()=>{
         const now = new Date();
 
         const twoDaysAgo = now.getTime()-2*oneDayInMs;
-        const wallet = new WalletSimulator(16,new Date(twoDaysAgo));
+        const wallet = new WalletSimulator(16,{
+            creationDate: new Date(twoDaysAgo)
+        });
 
         wallet
             .addTrade({ ticker: 'TSLA', price: 1, quantity: 6, type: TradeMove.BUY,

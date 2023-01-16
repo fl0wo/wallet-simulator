@@ -1,12 +1,13 @@
 import {
     addFee,
-    clone,
+    cloneObj,
     fillTimestreamGapsWithLastRecord,
     getSafeNull,
-    getSafeOrThrow,
-    mapToArrayKeys,
+    getSafeOrThrow, objToArrayKeys,
     onlyNotBought,
     removeFee,
+    replacer,
+    reviver,
     todayDateNoTime,
     tradeOptionToTrade,
     updateAssetsOnWallet,
@@ -16,23 +17,25 @@ import {Trade, TradeMove, TradeOptions} from "./models/Trade";
 import {DonutAssetInfo, OrderMovementInfo, TrendSnapshotInfo} from "./models/ExtractWalletInformation";
 import {daysBefore} from "./utils/mock";
 
+const _ = require('lodash');
+
 export class WalletSimulator {
 
-    private readonly holdings: Map<string,number>;
-    private readonly prices: Map<string,number>;
-    private costBasis: Map<string,number>;
-    private _trades: Array<Trade> =[];
-    private daySnapshots:Map<string,TrendSnapshotInfo>;
-    private readonly balanceAtWalletCreation:number = 0;
-    private readonly _creationAt:Date;
+    private readonly holdings: { [ticker: string]: number };
+    private readonly prices: { [ticker: string]: number };
+    private costBasis: { [ticker: string]: number };
+    private _trades: Array<Trade> = [];
+    private daySnapshots: { [date: string]: TrendSnapshotInfo };
+    private readonly balanceAtWalletCreation: number = 0;
+    private readonly _creationAt: string;
 
-    constructor(public balance: number, creationDate?:Date) {
-        this.holdings = new Map<string,number>();
-        this.prices = new Map<string,number>();
-        this.costBasis = new Map<string,number>();
-        this.daySnapshots = new Map<string,TrendSnapshotInfo>();
-        this._creationAt = getSafeNull(creationDate,new Date());
+    constructor(public balance: number, overrides:any={}) {
+        this.holdings = {};
+        this.prices = {};
+        this.costBasis = {};
+        this.daySnapshots = {};
         this.balanceAtWalletCreation = this.balance;
+        this._creationAt = getSafeNull(overrides['creationDate'], new Date().toISOString());
     }
 
     /**
@@ -41,22 +44,18 @@ export class WalletSimulator {
      * @param incTrade the object to add
      */
     public addTrade(incTrade: TradeOptions) {
-        const trade = tradeOptionToTrade(
-            incTrade,
-            this.getPriceIfDefined(incTrade.ticker)
-        );
+        const trade = tradeOptionToTrade(incTrade, this.getPriceIfDefined(incTrade.ticker));
         if (trade.type === TradeMove.BUY) {
-            if(this.buy(trade)) {
+            if (this.buy(trade)) {
                 this._trades.push(trade);
             }
-        }
-        else if (trade.type === TradeMove.SELL) {
-            if(this.sell(trade)){
+        } else if (trade.type === TradeMove.SELL) {
+            if (this.sell(trade)) {
                 this._trades.push(trade);
             }
         }
 
-        this.updateTodayBalance(incTrade.createdTimestamp)
+        this.updateTodayBalance(incTrade.createdTimestamp);
 
         return this;
     }
@@ -69,7 +68,7 @@ export class WalletSimulator {
      */
     public updatePrice(ticker: string, price: number,nowTimestamp?:number) {
         if(!this.isPriceDefined(ticker) || price!==this.getPrice(ticker)){
-            this.prices.set(ticker, price);
+            this.prices[ticker]=price;
             this.updateTodayBalance(nowTimestamp);
         }
         return this;
@@ -81,7 +80,7 @@ export class WalletSimulator {
      * @private
      */
     public getPositionQuantity(ticker: string) {
-        return getSafeNull(this.holdings.get(ticker),0);
+        return getSafeNull(this.holdings[ticker], 0);
     }
 
     /**
@@ -115,11 +114,11 @@ export class WalletSimulator {
      * @param ticker
      */
     public getPrice(ticker: string): number {
-        return getSafeOrThrow(this.prices.get(ticker),`Price for ${ticker} is unknown`);
+        return getSafeOrThrow(this.prices[ticker],`Price for ${ticker} is unknown`);
     }
 
     public isPriceDefined(ticker: string): boolean {
-        return this.prices.has(ticker)
+        return !!this.prices[ticker]
     }
 
     /**
@@ -131,7 +130,7 @@ export class WalletSimulator {
         if (quantity === 0) {
             return 0;
         }
-        const costBasisForTicker = getSafeOrThrow(this.costBasis.get(ticker), 'Cost basis for ' + ticker + ' is unknown');
+        const costBasisForTicker = getSafeOrThrow(this.costBasis[ticker], 'Cost basis for ' + ticker + ' is unknown');
         // console.log('paid',costBasisForTicker,'for',quantity)
         return costBasisForTicker / quantity;
     }
@@ -141,7 +140,7 @@ export class WalletSimulator {
      */
     public getTotalValue(): number {
         let totalValue = this.balance;
-        for (const ticker of this.holdings.keys()) {
+        for (const ticker of Object.keys(this.holdings)) {
             totalValue += this.getPositionValue(ticker);
         }
         return totalValue;
@@ -152,7 +151,7 @@ export class WalletSimulator {
      * @param ticker asset
      */
     public getPositionValue(ticker: string): number {
-        const quantity = getSafeNull(this.holdings.get(ticker),0);
+        const quantity = getSafeNull(this.holdings[ticker],0);
         const price = this.getPrice(ticker);
         return quantity * price;
     }
@@ -162,7 +161,7 @@ export class WalletSimulator {
      */
     public getDonutAssetInformation(): Array<DonutAssetInfo> {
         const totalValue = this.getTotalValue();
-        const assetsInfo = Array.from(this.holdings.keys()).map(ticker => {
+        const assetsInfo = Array.from(Object.keys(this.holdings)).map(ticker => {
             const value = this.getPositionValue(ticker);
             return {
                 ticker,
@@ -207,7 +206,7 @@ export class WalletSimulator {
 
         sortedResults.forEach((value) => {
             const dateValue = value.date
-            const allKnownAssetPrices:Array<string> = mapToArrayKeys(value.prices);
+            const allKnownAssetPrices:Array<string> = objToArrayKeys(value.prices);
 
             // Among all known assets, take the one we still have to buy and haven't bought yet
             const toBuyNowAssets = onlyNotBought(allKnownAssetPrices,allAssetsToBuy,allAssetsToHold)
@@ -234,11 +233,13 @@ export class WalletSimulator {
 
     private sortedDaySnapshotsOnRange(pastDate: number, today: number) {
         const result:Array<TrendSnapshotInfo> = [];
-        this.daySnapshots.forEach((value, key) => {
-            const dateValue = value.date
-            if (dateValue.getTime() >= pastDate && dateValue.getTime() <= today) {
-                result.push(value);
-            }
+        objToArrayKeys(this.daySnapshots)
+            .forEach((key:string) => {
+                const value = this.daySnapshots[key]
+                const dateValue = value.date
+                if (dateValue.getTime() >= pastDate && dateValue.getTime() <= today) {
+                    result.push(value);
+                }
         });
         return result
             .sort((a, b) => a.date.getTime() - b.date.getTime());
@@ -363,7 +364,7 @@ export class WalletSimulator {
 
         const tradeCost = trade.price * trade.quantity;
         this.balance += removeFee(tradeCost,trade.fee);
-        this.holdings.set(trade.ticker, ownedAssetQuantity - trade.quantity);
+        this.holdings[trade.ticker]= ownedAssetQuantity - trade.quantity;
 
         this.updateCostBasis(trade, -trade.price);
 
@@ -386,7 +387,7 @@ export class WalletSimulator {
 
         this.balance -= completeCost;
         const currentQuantity = this.getPositionQuantity(trade.ticker);
-        this.holdings.set(trade.ticker, currentQuantity + trade.quantity);
+        this.holdings[trade.ticker]=(currentQuantity + trade.quantity);
 
         this.updateCostBasis(trade, completeCostNoFees);
 
@@ -400,14 +401,14 @@ export class WalletSimulator {
      * @private
      */
     private updateCostBasis(trade: Trade, tradeCost: number) {
-        const currentCostForTicker = getSafeNull(this.costBasis.get(trade.ticker),0);
-        this.costBasis.set(trade.ticker, currentCostForTicker + tradeCost);
+        const currentCostForTicker = getSafeNull(this.costBasis[trade.ticker],0);
+        this.costBasis[trade.ticker]= currentCostForTicker + tradeCost;
     }
 
     /**
      * Returns when this wallet was instantiated
      */
-    get creationAt(): Date {
+    get creationAt(): string {
         return this._creationAt;
     }
 
@@ -421,33 +422,26 @@ export class WalletSimulator {
     private updateTodayBalance(updateDateMs?:number) {
         const todayKey = todayDateNoTime(updateDateMs);
 
-        this.daySnapshots.set(todayKey,{
+        this.daySnapshots[todayKey]={
             date: new Date(getSafeNull(updateDateMs,Date.now())),
             value: this.getTotalValue(),
-            prices: clone(this.prices)
-        })
+            prices: cloneObj(this.prices)
+        }
     }
 
     public getAllOwnedAssets(): Array<string>{
-        return mapToArrayKeys(this.holdings)
+        return objToArrayKeys(this.holdings)
     }
 
     public exportToText(){
-        return JSON.stringify(this);
+        const str = JSON.stringify(this, replacer);
+        return str
     }
 
     static importFromTxt(toString: string) {
-        const parsed:WalletSimulator = JSON.parse(toString) as WalletSimulator;
-
-        // console.log(toString,'->',parsed)
-
-        const x = new WalletSimulator(parsed.balanceAtWalletCreation,parsed.creationAt);
-
-        x.balance = parsed.balance
-        x.trades = getSafeNull(parsed._trades,[]);
-
-        // console.log(parsed._trades,' trades ->',x.trades)
-
-        return x;
+        const parsed:any = JSON.parse(toString, reviver(['daySnapshots','holdings','prices','costBasis']));
+        console.log('PARSED->',parsed)
+        const restoredWallet = new WalletSimulator(0, parsed);
+        return restoredWallet;
     }
 }
