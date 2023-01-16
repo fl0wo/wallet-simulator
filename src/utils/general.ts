@@ -75,8 +75,8 @@ export const fillTimestreamGaps = (timestream: Array<TrendSnapshotInfo>) => {
     for (let i = 0; i < timestream.length - 1; i++) {
         const currentSnapshot = timestream[i];
         const nextSnapshot = timestream[i + 1];
-        const currentDate = currentSnapshot.date;
-        const nextDate = nextSnapshot.date;
+        const currentDate = toDate(currentSnapshot.date);
+        const nextDate = toDate(nextSnapshot.date);
 
         // Calculating the number of days between the current and next snapshot
         const daysGap = daysBetween(currentDate,nextDate);
@@ -85,7 +85,7 @@ export const fillTimestreamGaps = (timestream: Array<TrendSnapshotInfo>) => {
             // Filling the gap with the value of the previous snapshot
             for (let j = 1; j < daysGap; j++) {
                 const newSnapshot:TrendSnapshotInfo = {
-                    date: new Date(currentDate.getTime() + j * 24 * 60 * 60 * 1000),
+                    date: new Date(currentDate.getTime() + j * 24 * 60 * 60 * 1000).toISOString(),
                     value: currentSnapshot.value,
                     prices: currentSnapshot.prices
                 };
@@ -122,7 +122,7 @@ export const updateAssetsOnWallet = (value: TrendSnapshotInfo, buyHoldWallet: Wa
         buyHoldWallet.addTrade({
             ticker: buyNowAsset,
             price: assetHistoricalPrice,
-            createdTimestamp: value.date.getTime(),
+            createdTimestamp: toDate(value.date).getTime(),
             type: TradeMove.BUY,
             quantity: (sliceForEveryAsset / assetHistoricalPrice)
         })
@@ -151,3 +151,5 @@ export function replacer(key:any, value:any) {
 export const reviver = (arrMapFields:Array<string>) => (key:any, value:any) => {
     return value;
 }
+
+export const toDate = (d:string) => new Date(d);

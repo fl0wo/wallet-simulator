@@ -3,11 +3,10 @@ import {
     cloneObj,
     fillTimestreamGapsWithLastRecord,
     getSafeNull,
-    getSafeOrThrow, objToArrayKeys,
+    getSafeOrThrow,
+    objToArrayKeys,
     onlyNotBought,
-    removeFee,
-    replacer,
-    reviver,
+    removeFee, toDate,
     todayDateNoTime,
     tradeOptionToTrade,
     updateAssetsOnWallet,
@@ -36,6 +35,13 @@ export class WalletSimulator {
         this.daySnapshots = {};
         this.balanceAtWalletCreation = this.balance;
         this._creationAt = getSafeNull(overrides['creationDate'], new Date().toISOString());
+
+        Object.keys(overrides).forEach((el)=>{
+            if(overrides[el]){
+                // @ts-ignore
+                this[el]=overrides[el];
+            }
+        })
     }
 
     /**
@@ -181,7 +187,7 @@ export class WalletSimulator {
         const result = this.sortedDaySnapshotsOnRange(pastDate, today);
 
         return fillTimestreamGapsWithLastRecord(result, nowDate,{
-            date:nowDate,
+            date:nowDate.toISOString(),
             value:-1,
             prices:this.prices
         });
@@ -225,7 +231,7 @@ export class WalletSimulator {
         });
 
         return fillTimestreamGapsWithLastRecord(result, nowDate,{
-            date:nowDate,
+            date:nowDate.toISOString(),
             value:-1,
             prices:this.prices
         });
@@ -237,12 +243,12 @@ export class WalletSimulator {
             .forEach((key:string) => {
                 const value = this.daySnapshots[key]
                 const dateValue = value.date
-                if (dateValue.getTime() >= pastDate && dateValue.getTime() <= today) {
+                if (toDate(dateValue).getTime() >= pastDate && toDate(dateValue).getTime() <= today) {
                     result.push(value);
                 }
         });
         return result
-            .sort((a, b) => a.date.getTime() - b.date.getTime());
+            .sort((a, b) => toDate(a.date).getTime() - toDate(b.date).getTime());
     }
 
     /**
@@ -423,7 +429,7 @@ export class WalletSimulator {
         const todayKey = todayDateNoTime(updateDateMs);
 
         this.daySnapshots[todayKey]={
-            date: new Date(getSafeNull(updateDateMs,Date.now())),
+            date: new Date(getSafeNull(updateDateMs,Date.now())).toISOString(),
             value: this.getTotalValue(),
             prices: cloneObj(this.prices)
         }
@@ -434,12 +440,11 @@ export class WalletSimulator {
     }
 
     public exportToText(){
-        const str = JSON.stringify(this, replacer);
-        return str
+        return JSON.stringify(this)
     }
 
     static importFromTxt(toString: string) {
-        const parsed:any = JSON.parse(toString, reviver(['daySnapshots','holdings','prices','costBasis']));
+        const parsed:any = JSON.parse(toString);
         console.log('PARSED->',parsed)
         const restoredWallet = new WalletSimulator(0, parsed);
         return restoredWallet;

@@ -7,7 +7,7 @@ export interface DonutAssetInfo {
 }
 
 export interface TrendSnapshotInfo {
-    date: Date;
+    date: string;
     value: number;
     prices: { [ticker: string]: number };
 }
