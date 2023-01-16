@@ -33,7 +33,7 @@ export class WalletSimulator {
         this.costBasis = {};
         this.daySnapshots = {};
         this.balanceAtWalletCreation = this.balance;
-        this._creationAt = getSafeNull(overrides['creationDate'], new Date().toISOString());
+        this._creationAt = getSafeNull(overrides.creationDate, new Date().toISOString());
 
         Object.keys(overrides).forEach((el)=>{
             if(overrides[el]){

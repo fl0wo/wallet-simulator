@@ -55,10 +55,10 @@ export const entries = (obj:any) => {
     return resArray;
 }
 
-export const fromEntries =  (entries:any[]) => {
-    if (!entries || !entries[Symbol.iterator]) { throw new Error('Object.fromEntries() requires a single iterable argument'); }
-    let obj:any = {};
-    for (let [key, value] of entries) obj[key] = value;
+export const fromEntries =  (objEntries:any[]) => {
+    if (!objEntries || !objEntries[Symbol.iterator]) { throw new Error('Object.fromEntries() requires a single iterable argument'); }
+    const obj:any = {};
+    for (const [key, value] of objEntries) obj[key] = value;
     return obj;
 }
 
