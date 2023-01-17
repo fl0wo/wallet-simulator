@@ -1,6 +1,6 @@
 # Wallet Simulator
 
-A simple class to simulate a cryptocurrency wallet in Node.js
+A ZERO-dependency class to simulate a cryptocurrency wallet in Node.js
 
 ## Installation
 ```
@@ -39,8 +39,7 @@ console.log(wallet.getEstimatedUnrealizedProfitLoss('BTC')); // 2
 - [x] Fee % on addTrade operations
 - [x] Export Wallet as JSON
 - [x] Import Wallet from JSON
-
-- [ ] Import data from Real Exchanges with API Keys
+- [ ] Reverse-Engineering data from Real Exchanges Trades
 
 
 ## Methods

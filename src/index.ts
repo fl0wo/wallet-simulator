@@ -16,6 +16,7 @@ import {
 import {Trade, TradeMove, TradeOptions} from "./models/Trade";
 import {DonutAssetInfo, OrderMovementInfo, TrendSnapshotInfo} from "./models/ExtractWalletInformation";
 import {daysBefore} from "./utils/mock";
+import {ExchangeTrade} from "./models/ExchangeModels";
 
 export class WalletSimulator {
 
@@ -24,8 +25,10 @@ export class WalletSimulator {
     private costBasis: { [ticker: string]: number };
     private _trades: Array<Trade> = [];
     private daySnapshots: { [date: string]: TrendSnapshotInfo };
-    private readonly balanceAtWalletCreation: number = 0;
+    public balanceAtWalletCreation: number = 0;
     private readonly _creationAt: string;
+    private allowNegativeBalance:boolean = false;
+    private allowNegativeHeld:boolean = false;
 
     constructor(public balance: number, overrides:any={}) {
         this.holdings = {};
@@ -361,14 +364,14 @@ export class WalletSimulator {
      */
     private sell(trade: Trade) {
         const ownedAssetQuantity = this.getPositionQuantity(trade.ticker);
-        if (ownedAssetQuantity < trade.quantity) {
+        if (!this.allowNegativeHeld && ownedAssetQuantity < trade.quantity) {
             throw new Error(`Cannot sell ${trade.quantity} ${trade.ticker} because only ${ownedAssetQuantity} are held`);
         }
         this.updatePrice(trade.ticker,trade.price);
 
         const tradeCost = trade.price * trade.quantity;
         this.balance += removeFee(tradeCost,trade.fee);
-        this.holdings[trade.ticker]= ownedAssetQuantity - trade.quantity;
+        this.holdings[trade.ticker]= Math.max(0,ownedAssetQuantity - trade.quantity);
 
         this.updateCostBasis(trade, -trade.price);
 
@@ -383,7 +386,7 @@ export class WalletSimulator {
     private buy(trade: Trade) {
         const completeCostNoFees = trade.price * trade.quantity
         const completeCost = addFee(trade.price * trade.quantity,trade.fee)
-        if (this.balance < completeCost) {
+        if (!this.allowNegativeBalance && this.balance < completeCost) {
             throw new Error(`Insufficient funds to buy ${trade.quantity} ${trade.ticker} at $${trade.price}`);
         }
 
@@ -445,5 +448,93 @@ export class WalletSimulator {
         const parsed:any = JSON.parse(walletJsonString);
         // console.log('PARSED->',parsed)
         return new WalletSimulator(0, parsed);
+    }
+
+    public clone(){
+        return WalletSimulator.importFromJsonString(this.exportToJson())
+    }
+
+    /*
+     My Trades:
+     [
+        timestamp: 1673967653101,
+        symbol: 'ETH/USDT',
+        id: '1058571462',
+        order: '12208032776',
+        type: undefined,
+        side: 'sell',
+        takerOrMaker: 'taker',
+        price: 1581.86,
+        amount: 0.0066,
+        cost: 10.440276,
+        fee: { cost: 0.01044028, currency: 'USDT' }
+        ]
+     */
+
+    public static reverseParsingRealTrades(
+        prices: { [ticker: string]: number },
+        holdings: { [ticker: string]: number },
+        allTrades:Array<ExchangeTrade>
+    ){
+        allTrades.sort((a, b) => a.timestamp - b.timestamp);
+
+        const usdtHold = getSafeNull(holdings['USDT'],'0');
+        const currentBalance = Number.parseFloat(usdtHold);
+
+        const wallet = new WalletSimulator(130,{
+            allowNegativeHeld:true
+        });
+
+        for(const ticker in prices){
+            wallet.updatePrice(ticker,prices[ticker])
+            wallet.updatePrice('USDT',1);
+        }
+
+        for (let i=0;i<allTrades.length;i++) {
+            const trade = allTrades[i];
+            const tradeFee =  0//trade.fee.currency==='USDT' ? 0 : trade.fee.cost;
+            const tradeQuantity = trade.amount - tradeFee;
+            const tradeType = trade.side === 'buy' ? TradeMove.BUY : TradeMove.SELL;
+            const tradeSymbol = trade.symbol.split('/')[0]
+
+            const opt:TradeOptions = {
+                ticker: tradeSymbol,
+                price: trade.price,
+                quantity: tradeQuantity,
+                type: tradeType,
+                createdTimestamp: trade.timestamp
+            }
+
+            // Add the trade to the wallet simulator
+            wallet.addTrade(opt);
+        }
+
+        wallet.balanceAtWalletCreation = currentBalance + -wallet.balance;
+        console.log('initial balanceGap ->',wallet.balance);
+        console.log('starting holdings ->',wallet.holdings);
+        console.log('starting date ->', wallet.getFirstDate())
+
+        const wallet2 = wallet.clone();
+        wallet2.allowNegativeBalance = false
+        wallet2.allowNegativeHeld = true
+
+        wallet2.trades = allTrades.map((el)=>{
+            const t:Trade = {
+                createdTimestamp: el.timestamp,
+                fee: 0,
+                id: el.id,
+                price: el.price,
+                quantity: el.amount,
+                ticker: el.symbol.split('/')[0],
+                type: el.side==='buy'?TradeMove.BUY:TradeMove.SELL
+            }
+            return t;
+        })
+
+        return wallet2;
+    }
+
+    private getFirstDate() {
+        return Object.keys(this.daySnapshots).sort((a,b)=>a.localeCompare(b))[0]
     }
 }
