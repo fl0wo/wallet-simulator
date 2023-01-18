@@ -30,12 +30,13 @@ export class WalletSimulator {
     private allowNegativeBalance:boolean = false;
     private allowNegativeHeld:boolean = false;
 
-    constructor(public balance: number, overrides:any={}) {
+    constructor(balance: number, overrides:any={}) {
         this.holdings = {};
         this.prices = {};
         this.costBasis = {};
         this.daySnapshots = {};
-        this.balanceAtWalletCreation = this.balance;
+        this.setBalance(balance);
+        this.balanceAtWalletCreation = this.getBalance();
         this._creationAt = getSafeNull(overrides.creationDate, new Date().toISOString());
 
         Object.keys(overrides).forEach((el)=>{
@@ -44,6 +45,8 @@ export class WalletSimulator {
                 this[el]=overrides[el];
             }
         })
+
+        this.prices['USDT'] = 1;
     }
 
     /**
@@ -147,7 +150,7 @@ export class WalletSimulator {
      * @return sum of all funds in this wallet
      */
     public getTotalValue(): number {
-        let totalValue = this.balance;
+        let totalValue = 0//this.getBalance();
         for (const ticker of Object.keys(this.holdings)) {
             totalValue += this.getPositionValue(ticker);
         }
@@ -177,7 +180,6 @@ export class WalletSimulator {
                 percentage: (value/totalValue) * 100
             };
         });
-        assetsInfo.push({ ticker: "$", value: this.balance, percentage: (this.balance/totalValue) * 100 });
         return assetsInfo;
     }
 
@@ -370,7 +372,7 @@ export class WalletSimulator {
         this.updatePrice(trade.ticker,trade.price);
 
         const tradeCost = trade.price * trade.quantity;
-        this.balance += removeFee(tradeCost,trade.fee);
+        this.setBalance(this.getBalance() + removeFee(tradeCost,trade.fee))
         this.holdings[trade.ticker]= Math.max(0,ownedAssetQuantity - trade.quantity);
 
         this.updateCostBasis(trade, -trade.price);
@@ -386,13 +388,13 @@ export class WalletSimulator {
     private buy(trade: Trade) {
         const completeCostNoFees = trade.price * trade.quantity
         const completeCost = addFee(trade.price * trade.quantity,trade.fee)
-        if (!this.allowNegativeBalance && this.balance < completeCost) {
+        if (!this.allowNegativeBalance && this.getBalance() < completeCost) {
             throw new Error(`Insufficient funds to buy ${trade.quantity} ${trade.ticker} at $${trade.price}`);
         }
 
         this.updatePrice(trade.ticker,trade.price,trade.createdTimestamp);
 
-        this.balance -= completeCost;
+        this.setBalance(this.getBalance() - completeCost)
         const currentQuantity = this.getPositionQuantity(trade.ticker);
         this.holdings[trade.ticker]=(currentQuantity + trade.quantity);
 
@@ -509,8 +511,8 @@ export class WalletSimulator {
             wallet.addTrade(opt);
         }
 
-        wallet.balanceAtWalletCreation = currentBalance + -wallet.balance;
-        console.log('initial balanceGap ->',wallet.balance);
+        wallet.balanceAtWalletCreation = currentBalance + -wallet.getBalance();
+        console.log('initial balanceGap ->',wallet.getBalance());
         console.log('starting holdings ->',wallet.holdings);
         console.log('starting date ->', wallet.getFirstDate())
 
@@ -536,5 +538,13 @@ export class WalletSimulator {
 
     private getFirstDate() {
         return Object.keys(this.daySnapshots).sort((a,b)=>a.localeCompare(b))[0]
+    }
+
+    getBalance() {
+        return getSafeNull(this.holdings['USDT'],0);
+    }
+
+    private setBalance(x:number){
+        this.holdings['USDT']=x;
     }
 }

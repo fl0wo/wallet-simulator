@@ -11,7 +11,7 @@ describe('export-import test',()=>{
         const toString = w.exportToJson();
 
         expect(toString)
-            .toStrictEqual('{"balance":100,"_trades":[],"balanceAtWalletCreation":100,"allowNegativeBalance":false,"allowNegativeHeld":false,"holdings":{},"prices":{},"costBasis":{},"daySnapshots":{},"_creationAt":"2019-10-01T00:00:01.300Z"}')
+            .toStrictEqual('{"_trades":[],"balanceAtWalletCreation":100,"allowNegativeBalance":false,"allowNegativeHeld":false,"holdings":{"USDT":100},"prices":{"USDT":1},"costBasis":{},"daySnapshots":{},"_creationAt":"2019-10-01T00:00:01.300Z"}')
     })
 
     test('import ok',()=>{

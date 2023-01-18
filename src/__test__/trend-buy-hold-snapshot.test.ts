@@ -37,9 +37,9 @@ describe('getTrendBalanceSnapshotsBuyAndHold',()=>{
 
         expect(trendData).toHaveLength(5);
         expect(trendData[0].value).toEqual(100);
-        expect(trendData[1].value.toFixed(2)).toEqual('116.67');
-        expect(trendData[2].value.toFixed(2)).toEqual('116.67');
-        expect(trendData[3].value.toFixed(2)).toEqual('116.67');
-        expect(trendData[4].value.toFixed(2)).toEqual('279.49');
+        expect(trendData[1].value.toFixed(2)).toEqual('114.29');
+        expect(trendData[2].value.toFixed(2)).toEqual('114.29');
+        expect(trendData[3].value.toFixed(2)).toEqual('114.29');
+        expect(trendData[4].value.toFixed(2)).toEqual('253.85');
     })
 })

@@ -10,9 +10,12 @@ describe('Donut Asset Information',()=>{
         const assetsInfo = wallet.getDonutAssetInformation();
 
         expect(assetsInfo).toHaveLength(3);
-        expect(assetsInfo[0]).toEqual({ ticker: 'AAPL', value: 10000, percentage: 47.61904761904761 });
-        expect(assetsInfo[1]).toEqual({ ticker: 'GOOG', value: 10000, percentage: 47.61904761904761 });
-        expect(assetsInfo[2]).toEqual({ ticker: "$", value: 1000, percentage: 4.761904761904762 });
+        expect(assetsInfo)
+            .toEqual([
+                { ticker: 'USDT', value: 1000, percentage: 4.761904761904762 },
+                { ticker: 'AAPL', value: 10000, percentage: 47.61904761904761 },
+                { ticker: 'GOOG', value: 10000, percentage: 47.61904761904761 }
+            ])
         expect(assetsInfo.reduce((total, a) => total + a.percentage, 0)).toBeCloseTo(100);
     });
 })

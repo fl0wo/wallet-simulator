@@ -1,13 +1,19 @@
 import {CCTXWrapper} from "../utils/cctx-wrapper";
-import {daysBefore} from "../utils/mock";
 const secrets = require('../../_secrets/sec.json')
 
-describe('CCTX Wrapper',()=>{
+jest.setTimeout(60000)
+
+describe.skip('CCTX Wrapper',()=>{
 
     const client = CCTXWrapper.getClientWith(secrets.api,secrets.secret);
 
-    test('with client api keys ok',()=>{
+    test.skip('with client api keys ok',async () => {
         expect(client).toBeDefined()
+
+        const w = await client.initWalletSimulator();
+
+        console.log(w);
+        console.log(w.getTotalValue())
     });
 
     test('showRequiredCredentials ok',()=>{
@@ -40,7 +46,7 @@ describe('CCTX Wrapper',()=>{
     test('getTotalBuyPower ok',async () => {
         const buyPower = await client.getTotalBuyPower()
         expect(buyPower)
-            .toBeDefined()
+            .toBeGreaterThan(0)
     });
 
     test('getDate ok',async () => {

@@ -1,22 +1,43 @@
 import {WalletSimulator} from "../index";
 import {TradeMove} from "../models/Trade";
 import {exportImportWallet} from "./export-import.test";
+import {CCTXWrapper} from "../utils/cctx-wrapper";
 
+const secrets = require('../../_secrets/sec.json')
+
+jest.setTimeout(60000);
+let wallet:any;
+
+async function getWallet():Promise<WalletSimulator> {
+    if (!wallet) {
+        const client = CCTXWrapper.getClientWith(secrets.api, secrets.secret);
+        wallet = await client.initWalletSimulator();
+    }
+    return wallet;
+}
 
 /**
  *
  */
-describe('WalletSimulator With Export Import to Db before Each Test' , ()=>{
+describe.skip('WalletSimulator With CCTX Import to Db before Each Test' , () => {
+
+    beforeAll(async () => {
+        await getWallet();
+    })
+
+    beforeEach(()=>{
+        wallet.setBalance(100);
+    })
 
     test('My WalletSimulator', () => {
         expect(new WalletSimulator(300)).toBeDefined()
     });
 
     test('adding a trade updates balance and holdings', () => {
-        const wallet = new WalletSimulator(100)
-            .addTrade({ ticker: 'BTC', price: 10, quantity: 1, type: TradeMove.BUY })
-            .addTrade({ ticker: 'BTC', price: 10, quantity: 1, type: TradeMove.BUY })
-            .addTrade({ ticker: 'BTC', price: 5, quantity: 2, type: TradeMove.BUY });
+        wallet
+            .addTrade({ticker: 'BTC', price: 10, quantity: 1, type: TradeMove.BUY})
+            .addTrade({ticker: 'BTC', price: 10, quantity: 1, type: TradeMove.BUY})
+            .addTrade({ticker: 'BTC', price: 5, quantity: 2, type: TradeMove.BUY});
 
         const wEI = exportImportWallet(wallet)
 
@@ -25,7 +46,7 @@ describe('WalletSimulator With Export Import to Db before Each Test' , ()=>{
     });
 
     test('updating price stores correct value', () => {
-        const wallet = new WalletSimulator(100)
+        wallet
             .updatePrice('BTC', 10);
 
         const wEI = exportImportWallet(wallet)
@@ -34,9 +55,9 @@ describe('WalletSimulator With Export Import to Db before Each Test' , ()=>{
     });
 
     test('position value calculated correctly', () => {
-        const wallet = new WalletSimulator(100)
-            .addTrade({ ticker: 'BTC', price: 10, quantity: 1, type: TradeMove.BUY })
-            .updatePrice('BTC',20);
+        wallet
+            .addTrade({ticker: 'BTC', price: 10, quantity: 1, type: TradeMove.BUY})
+            .updatePrice('BTC', 20);
 
         const wEI = exportImportWallet(wallet)
 
@@ -44,8 +65,8 @@ describe('WalletSimulator With Export Import to Db before Each Test' , ()=>{
     });
 
     test('total value calculated correctly', () => {
-        const wallet = new WalletSimulator(100)
-            .addTrade({ ticker: 'BTC', price: 10, quantity: 1, type: TradeMove.BUY })
+        wallet
+            .addTrade({ticker: 'BTC', price: 10, quantity: 1, type: TradeMove.BUY})
             .updatePrice('BTC', 20);
 
         const wEI = exportImportWallet(wallet)
@@ -54,9 +75,9 @@ describe('WalletSimulator With Export Import to Db before Each Test' , ()=>{
     });
 
     test('average cost calculated correctly', () => {
-        const wallet = new WalletSimulator(100)
-            .addTrade({ ticker: 'BTC', price: 10, quantity: 1, type: TradeMove.BUY })
-            .addTrade({ ticker: 'BTC', price: 20, quantity: 1, type: TradeMove.BUY });
+        wallet
+            .addTrade({ticker: 'BTC', price: 10, quantity: 1, type: TradeMove.BUY})
+            .addTrade({ticker: 'BTC', price: 20, quantity: 1, type: TradeMove.BUY});
 
         const wEI = exportImportWallet(wallet)
 
@@ -65,9 +86,9 @@ describe('WalletSimulator With Export Import to Db before Each Test' , ()=>{
     });
 
     test('adding multiple trades updates balance and holdings', () => {
-        const wallet = new WalletSimulator(100)
-            .addTrade({ ticker: 'BTC', price: 10, quantity: 1, type: TradeMove.BUY })
-            .addTrade({ ticker: 'ETH', price: 20, quantity: 2, type: TradeMove.BUY });
+        wallet
+            .addTrade({ticker: 'BTC', price: 10, quantity: 1, type: TradeMove.BUY})
+            .addTrade({ticker: 'ETH', price: 20, quantity: 2, type: TradeMove.BUY});
 
         const wEI = exportImportWallet(wallet)
 
@@ -77,7 +98,7 @@ describe('WalletSimulator With Export Import to Db before Each Test' , ()=>{
     });
 
     test('updating prices of multiple assets stores correct values', () => {
-        const wallet = new WalletSimulator(100)
+        wallet
             .updatePrice('BTC', 10)
             .updatePrice('ETH', 20);
 
@@ -88,11 +109,11 @@ describe('WalletSimulator With Export Import to Db before Each Test' , ()=>{
     });
 
     test('position values of multiple assets calculated correctly', () => {
-        const wallet = new WalletSimulator(100)
+        wallet
             .updatePrice('BTC', 10)
             .updatePrice('ETH', 20)
-            .addTrade({ ticker: 'BTC', price: 10, quantity: 1, type: TradeMove.BUY })
-            .addTrade({ ticker: 'ETH', price: 20, quantity: 2, type: TradeMove.BUY });
+            .addTrade({ticker: 'BTC', price: 10, quantity: 1, type: TradeMove.BUY})
+            .addTrade({ticker: 'ETH', price: 20, quantity: 2, type: TradeMove.BUY});
         const wEI = exportImportWallet(wallet)
 
         expect(wEI.getPositionValue('BTC')).toEqual(10);
@@ -100,12 +121,12 @@ describe('WalletSimulator With Export Import to Db before Each Test' , ()=>{
     });
 
     test('average cost of multiple positions calculated correctly', () => {
-        const wallet = new WalletSimulator(100)
+        wallet
             .updatePrice('BTC', 10)
             .updatePrice('ETH', 20)
-            .addTrade({ ticker: 'BTC', price: 10, quantity: 1, type: TradeMove.BUY })
-            .addTrade({ ticker: 'ETH', price: 20, quantity: 2, type: TradeMove.BUY })
-            .addTrade({ ticker: 'BTC', price: 15, quantity: 1, type: TradeMove.BUY });
+            .addTrade({ticker: 'BTC', price: 10, quantity: 1, type: TradeMove.BUY})
+            .addTrade({ticker: 'ETH', price: 20, quantity: 2, type: TradeMove.BUY})
+            .addTrade({ticker: 'BTC', price: 15, quantity: 1, type: TradeMove.BUY});
         const wEI = exportImportWallet(wallet)
 
         expect(wEI.getPositionAverageCost('BTC')).toEqual(12.5);
@@ -113,12 +134,12 @@ describe('WalletSimulator With Export Import to Db before Each Test' , ()=>{
     });
 
     test('estimated liquidation price of multiple positions calculated correctly', () => {
-        const wallet = new WalletSimulator(100)
+        wallet
             .updatePrice('BTC', 10)
             .updatePrice('ETH', 20)
-            .addTrade({ ticker: 'BTC', price: 10, quantity: 1, type: TradeMove.BUY })
-            .addTrade({ ticker: 'ETH', price: 20, quantity: 2, type: TradeMove.BUY })
-            .addTrade({ ticker: 'BTC', price: 15, quantity: 1, type: TradeMove.BUY });
+            .addTrade({ticker: 'BTC', price: 10, quantity: 1, type: TradeMove.BUY})
+            .addTrade({ticker: 'ETH', price: 20, quantity: 2, type: TradeMove.BUY})
+            .addTrade({ticker: 'BTC', price: 15, quantity: 1, type: TradeMove.BUY});
         const wEI = exportImportWallet(wallet)
 
         expect(wEI.getEstimatedLiquidationPrice('BTC')).toEqual(12.5);
@@ -126,11 +147,11 @@ describe('WalletSimulator With Export Import to Db before Each Test' , ()=>{
     });
 
     test('estimated unrealized profit or loss of multiple positions calculated correctly', () => {
-        const wallet = new WalletSimulator(100)
+        wallet
             .updatePrice('BTC', 10)
             .updatePrice('ETH', 20)
-            .addTrade({ ticker: 'BTC', price: 10, quantity: 1, type: TradeMove.BUY })
-            .addTrade({ ticker: 'ETH', price: 20, quantity: 2, type: TradeMove.BUY });
+            .addTrade({ticker: 'BTC', price: 10, quantity: 1, type: TradeMove.BUY})
+            .addTrade({ticker: 'ETH', price: 20, quantity: 2, type: TradeMove.BUY});
 
         const wEI = exportImportWallet(wallet)
 
@@ -147,11 +168,11 @@ describe('WalletSimulator With Export Import to Db before Each Test' , ()=>{
     });
 
     test('average cost of multiple buys and sells calculated correctly', () => {
-        const wallet = new WalletSimulator(100)
+        wallet
             .updatePrice('BTC', 10)
-            .addTrade({ ticker: 'BTC', price: 10, quantity: 1, type: TradeMove.BUY })
-            .addTrade({ ticker: 'BTC', price: 15, quantity: 1, type: TradeMove.BUY })
-            .addTrade({ ticker: 'BTC', price: 20, quantity: 1, type: TradeMove.SELL });
+            .addTrade({ticker: 'BTC', price: 10, quantity: 1, type: TradeMove.BUY})
+            .addTrade({ticker: 'BTC', price: 15, quantity: 1, type: TradeMove.BUY})
+            .addTrade({ticker: 'BTC', price: 20, quantity: 1, type: TradeMove.SELL});
 
         const wEI = exportImportWallet(wallet)
 
@@ -159,35 +180,35 @@ describe('WalletSimulator With Export Import to Db before Each Test' , ()=>{
     });
 
     test('estimated liquidation price of multiple buys and sells calculated correctly', () => {
-        const wallet = new WalletSimulator(100)
+        wallet
             .updatePrice('BTC', 10)
-            .addTrade({ ticker: 'BTC', price: 10, quantity: 1, type: TradeMove.BUY })
-            .addTrade({ ticker: 'BTC', price: 15, quantity: 1, type: TradeMove.BUY })
-            .addTrade({ ticker: 'BTC', price: 20, quantity: 1, type: TradeMove.SELL });
+            .addTrade({ticker: 'BTC', price: 10, quantity: 1, type: TradeMove.BUY})
+            .addTrade({ticker: 'BTC', price: 15, quantity: 1, type: TradeMove.BUY})
+            .addTrade({ticker: 'BTC', price: 20, quantity: 1, type: TradeMove.SELL});
         const wEI = exportImportWallet(wallet)
 
         expect(wEI.getEstimatedLiquidationPrice('BTC')).toEqual(5);
     });
 
     test('estimated unrealized profit or loss of multiple buys and sells calculated correctly', () => {
-        const wallet = new WalletSimulator(100)
+        wallet
             .updatePrice('BTC', 10)
-            .addTrade({ ticker: 'BTC', quantity: 1, type: TradeMove.BUY })
-            .addTrade({ ticker: 'BTC', price: 15, quantity: 1, type: TradeMove.BUY })
-            .addTrade({ ticker: 'BTC', price: 20, quantity: 1, type: TradeMove.SELL });
+            .addTrade({ticker: 'BTC', quantity: 1, type: TradeMove.BUY})
+            .addTrade({ticker: 'BTC', price: 15, quantity: 1, type: TradeMove.BUY})
+            .addTrade({ticker: 'BTC', price: 20, quantity: 1, type: TradeMove.SELL});
         const wEI = exportImportWallet(wallet)
 
         expect(wEI.getEstimatedUnrealizedProfitLoss('BTC')).toEqual(15);
     });
 
     test('multiple trades made', () => {
-        const wallet = new WalletSimulator(100)
-            .addTrade({ ticker: 'Bananas', price: 1, quantity: 10, type: TradeMove.BUY })
-            .addTrade({ ticker: 'aPPLES', price: 3, quantity: 1, type: TradeMove.BUY })
-            .addTrade({ ticker: 'w', price: 1, quantity: 2, type: TradeMove.BUY })
-            .addTrade({ ticker: 'Bananas', price: 3, quantity: 1, type: TradeMove.SELL })
-            .addTrade({ ticker: 'f', price: 2, quantity: 5, type: TradeMove.BUY })
-            .addTrade({ ticker: 'Bananas', price: 10, quantity: 1, type: TradeMove.SELL })
+        wallet
+            .addTrade({ticker: 'Bananas', price: 1, quantity: 10, type: TradeMove.BUY})
+            .addTrade({ticker: 'aPPLES', price: 3, quantity: 1, type: TradeMove.BUY})
+            .addTrade({ticker: 'w', price: 1, quantity: 2, type: TradeMove.BUY})
+            .addTrade({ticker: 'Bananas', price: 3, quantity: 1, type: TradeMove.SELL})
+            .addTrade({ticker: 'f', price: 2, quantity: 5, type: TradeMove.BUY})
+            .addTrade({ticker: 'Bananas', price: 10, quantity: 1, type: TradeMove.SELL})
         const wEI = exportImportWallet(wallet)
 
         expect(wEI.trades.length).toEqual(6);

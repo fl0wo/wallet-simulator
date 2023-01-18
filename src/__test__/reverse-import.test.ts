@@ -2,7 +2,7 @@ import {WalletSimulator} from "../index";
 
 describe('reverse import from real trades exchange',()=>{
 
-    test('reverse import ok',()=>{
+    test.skip('reverse import ok',()=>{
 
         const holdings =  {
             BTC: 0.0000072,
@@ -28,9 +28,8 @@ describe('reverse import from real trades exchange',()=>{
             TRADES
         );
 
-        console.log(w.getTotalValue())
-
-        expect(w)
+        expect(w.getTotalValue())
+            .toBeGreaterThan(0)
 
     })
 

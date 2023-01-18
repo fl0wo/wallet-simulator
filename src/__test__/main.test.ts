@@ -13,7 +13,7 @@ describe('WalletSimulator' , ()=>{
             .addTrade({ ticker: 'BTC', price: 10, quantity: 1, type: TradeMove.BUY })
             .addTrade({ ticker: 'BTC', price: 5, quantity: 2, type: TradeMove.BUY });
 
-        expect(wallet.balance).toEqual(70);
+        expect(wallet.getBalance()).toEqual(70);
         expect(wallet.getPositionQuantity('BTC')).toEqual(4);
     });
 
@@ -54,7 +54,7 @@ describe('WalletSimulator' , ()=>{
             .addTrade({ ticker: 'BTC', price: 10, quantity: 1, type: TradeMove.BUY })
             .addTrade({ ticker: 'ETH', price: 20, quantity: 2, type: TradeMove.BUY });
 
-        expect(wallet.balance).toEqual(50);
+        expect(wallet.getBalance()).toEqual(50);
         expect(wallet.getPositionQuantity('BTC')).toEqual(1);
         expect(wallet.getPositionQuantity('ETH')).toEqual(2);
     });

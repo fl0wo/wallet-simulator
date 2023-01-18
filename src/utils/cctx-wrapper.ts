@@ -1,10 +1,18 @@
-import {entries, getSafeNull, getSafeOrThrow, objToArrayKeys} from "./general";
+import {
+    arrayToObjectKeys,
+    entries,
+    getSafeNull,
+    getSafeOrThrow,
+    objToArrayKeys,
+    cctxTradeToWalletSimulatorTrade
+} from "./general";
 
 const ccxt = require('ccxt')
 import {Exchange, Trade} from 'ccxt';
 import {TradeMove} from "../models/Trade";
 import {daysBefore} from "./mock";
 import {MyWalletAccount} from "../models/MyWalletAccount";
+import {WalletSimulator} from "../index";
 
 export class CCTXWrapper {
 
@@ -22,7 +30,24 @@ export class CCTXWrapper {
     }
 
     public async initWalletSimulator() {
-        // Call reverse engineering function of WalletSimulator
+
+        const holdingsPromise = this.getAllHoldings();
+        const pricesPromise = this.getAllTickerPrices();
+        const daySnapshotsPromise:any = {};// snapshots somehow
+        const _tradesPromise = this.getMyTrades()
+
+        const [holdings,prices,daySnapshots,_trades] = await Promise.all([
+            holdingsPromise,pricesPromise,daySnapshotsPromise,_tradesPromise
+        ])
+
+        const w:WalletSimulator = new WalletSimulator(0,{
+            holdings:holdings,
+            prices:prices,
+            daySnapshots:daySnapshots,
+            _trades:_trades.map(cctxTradeToWalletSimulatorTrade)
+        });
+
+        return w;
     }
 
     private constructor(private cctxExchange:Exchange) {
@@ -104,18 +129,17 @@ export class CCTXWrapper {
 
     async getAllHoldings(): Promise<any> {
         const allHoldings:any = await this.cctxExchange.fetchTotalBalance();
-        return objToArrayKeys(allHoldings)
+        return arrayToObjectKeys(objToArrayKeys(allHoldings)
             .filter((asset)=>allHoldings[asset]>0)
             .map((asset)=> {
-                return {
-                    asset:asset,
-                    amount: allHoldings[asset]
-                }
-            });
+                return {[asset]:allHoldings[asset]}
+            })
+        );
     }
 
-    async getTotalBuyPower(): Promise<any> {
-        return (await this.getAccount()).buyPowerUSDT;
+    async getTotalBuyPower(): Promise<number> {
+        const buyPower:string = getSafeNull(String((await this.getAccount()).buyPowerUSDT),'0');
+        return Number.parseFloat(buyPower)
     }
 
     getTradeFee(): Promise<any> {
@@ -141,14 +165,14 @@ export class CCTXWrapper {
     async getAllTickerPrices(desiredSymbols?:Array<string>) {
         const desSymbols = getSafeNull(desiredSymbols,this.desiredSymbols());
         const tickers = await this.cctxExchange.fetchTickers(desSymbols);
-        return objToArrayKeys(tickers)
+        return arrayToObjectKeys(
+            objToArrayKeys(tickers)
             .filter((asset)=>tickers[asset] && tickers[asset].close)
             .map((asset)=> {
-                return {
-                    asset:asset.split('/')[0],
-                    close: tickers[asset].close
-                }
-            });
+                    return {[asset.split('/')[0]]:tickers[asset].close}
+            })
+                .concat({'USDT':1})
+        )
     }
 
     showRequiredCredentials() {

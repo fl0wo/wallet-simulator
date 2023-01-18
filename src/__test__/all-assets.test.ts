@@ -7,7 +7,7 @@ describe('getAllAssets',()=>{
         const w = new WalletSimulator(100)
         const act = w.getAllOwnedAssets();
 
-        expect(act).toHaveLength(0)
+        expect(act).toHaveLength(1)
     })
 
     test('getAllOwnedAssets 1',()=>{
@@ -15,8 +15,8 @@ describe('getAllAssets',()=>{
             .addTrade({ ticker: 'BTC', quantity: 1, price:1, type: TradeMove.BUY })
         const act = w.getAllOwnedAssets();
 
-        expect(act).toHaveLength(1)
-        expect(act).toStrictEqual(['BTC'])
+        expect(act).toHaveLength(2)
+        expect(act).toStrictEqual(['USDT','BTC'])
     })
 
     test('getAllOwnedAssets 3',()=>{
@@ -27,8 +27,8 @@ describe('getAllAssets',()=>{
 
         const act = w.getAllOwnedAssets();
 
-        expect(act).toHaveLength(3)
-        expect(act).toStrictEqual(['BTC','ETH','LTC'])
+        expect(act).toHaveLength(4)
+        expect(act).toStrictEqual(['USDT','BTC','ETH','LTC'])
     })
 
     test('getAllOwnedAssets 3 no duplicates',()=>{
@@ -44,8 +44,8 @@ describe('getAllAssets',()=>{
 
         const act = w.getAllOwnedAssets();
 
-        expect(act).toHaveLength(3)
-        expect(act).toStrictEqual(['BTC','ETH','LTC'])
+        expect(act).toHaveLength(4)
+        expect(act).toStrictEqual(['USDT','BTC','ETH','LTC'])
     })
 
     test('getAllOwnedAssets buys but sells still showing',()=>{
@@ -55,7 +55,7 @@ describe('getAllAssets',()=>{
 
         const act = w.getAllOwnedAssets();
 
-        expect(act).toHaveLength(1)
-        expect(act).toStrictEqual(['BTC'])
+        expect(act).toHaveLength(2)
+        expect(act).toStrictEqual(['USDT','BTC'])
     })
 })

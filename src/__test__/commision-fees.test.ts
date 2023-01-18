@@ -12,7 +12,7 @@ describe('commision-fees test',()=>{
             .addTrade({ fee:0.1, ticker: 'BTC', quantity: 1, price:3, type: TradeMove.BUY })
             .addTrade({ fee:0.1, ticker: 'BTC', quantity: 1, price:2, type: TradeMove.BUY })
 
-        expect(wallet.balance).toEqual(81.982);
+        expect(wallet.getBalance()).toEqual(81.982);
         expect(wallet.getPositionQuantity('BTC'))
             .toEqual(5);
     })

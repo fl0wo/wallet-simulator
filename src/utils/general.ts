@@ -2,6 +2,7 @@ import {Trade, TradeMove, TradeOptions} from "../models/Trade";
 import {TrendSnapshotInfo} from "../models/ExtractWalletInformation";
 import {daysBetween} from "./mock";
 import {WalletSimulator} from "../index";
+import {Trade as CCTXTrade} from 'ccxt';
 
 import * as crypto from 'crypto';
 
@@ -108,6 +109,8 @@ export const cloneObj = (obj:any) => {
     return {...obj}
 }
 
+export const arrayToObjectKeys = (a:Array<any>) => Object.assign({}, ...a)
+
 function fromAinBnotInC(b: Array<any>, c: Array<any>) {
     return (a: any) => b.find((x) => a === x) && !c.find((x) => a === x);
 }
@@ -153,3 +156,16 @@ export const reviver = (arrMapFields:Array<string>) => (key:any, value:any) => {
 }
 
 export const toDate = (d:string) => new Date(d);
+
+export const cctxTradeToWalletSimulatorTrade = (trade:CCTXTrade) => {
+    const t:Trade =  {
+        createdTimestamp: trade.timestamp,
+        fee: trade.fee.rate,
+        id: trade.id,
+        price: trade.price,
+        quantity: trade.amount,
+        ticker: trade.symbol.split('/')[0],
+        type: trade.side==='buy'?TradeMove.BUY:TradeMove.SELL
+    }
+    return t;
+}
