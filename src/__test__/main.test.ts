@@ -17,6 +17,20 @@ describe('WalletSimulator' , ()=>{
         expect(wallet.getPositionQuantity('BTC')).toEqual(4);
     });
 
+    test('try to buy with no money', () => {
+        const wallet = new WalletSimulator(0)
+            expect(()=>wallet.addTrade({ ticker: 'BTC', price: 10, quantity: 1, type: TradeMove.BUY }))
+                .toThrowError(`Insufficient funds to buy ${1} BTC at $${10}`)
+    });
+
+    test('try to buy with no money 2', () => {
+        const wallet = new WalletSimulator(10)
+            .addTrade({ ticker: 'BTC', price: 10, quantity: 1, type: TradeMove.BUY })
+
+        expect(()=>wallet.addTrade({ ticker: 'BTC', price: 11, quantity: 1, type: TradeMove.BUY }))
+            .toThrowError(`Insufficient funds to buy ${1} BTC at $${11}`)
+    });
+
     test('updating price stores correct value', () => {
         const wallet = new WalletSimulator(100)
             .updatePrice('BTC', 10);
