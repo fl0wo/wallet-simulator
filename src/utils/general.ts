@@ -5,6 +5,7 @@ import {WalletSimulator} from "../index";
 import {Trade as CCTXTrade} from 'ccxt';
 
 import * as crypto from 'crypto';
+import {MyTrade} from "binance-api-node";
 
 export const safeGet = <T, R = any>(object: T | undefined | null,
                                             safeCallback: (object: T) => R,
@@ -168,4 +169,67 @@ export const cctxTradeToWalletSimulatorTrade = (trade:CCTXTrade) => {
         type: trade.side==='buy'?TradeMove.BUY:TradeMove.SELL
     }
     return t;
+}
+
+export function addProfits(trades: Trade[]): Trade[] {
+
+    const mapOfProfitsOrders =  calculateProfitsMadeByOrdersReverse(trades);
+
+    const allCryptoMovements = trades.map((el) => {
+        const profitCalculated = mapOfProfitsOrders[el.id];
+
+        if(profitCalculated){
+            const x: Trade = {
+                ...el,
+                profit: profitCalculated,
+            };
+            return x;
+        }
+
+        return el;
+    });
+
+    return allCryptoMovements;
+}
+
+function calculateProfitsMadeByOrdersReverse(allOrders: Trade[]) {
+    const ordersWithProfits:any = {};
+    const totals:any = {};
+
+    for (let i = allOrders.length - 1; i >= 0; i--) {
+        const order = allOrders[i];
+
+        const volume = order.quantity;
+        const valueAt = order.price
+        const fees = order.fee
+        const notional = volume * valueAt;
+
+        let profit;
+        if (order.type===TradeMove.SELL) {
+            // If the order is a sell, initialize the running totals for this symbol
+            totals[order.ticker] = {
+                volume: 0,
+                cost: 0,
+            };
+            // Find the last buy order for this symbol
+            for (let j = i - 1; j >= 0; j--) {
+                const oldOrder = allOrders[j];
+                if (oldOrder.type===TradeMove.BUY && oldOrder.ticker === order.ticker) {
+                    const oldVolume = oldOrder.quantity
+                    const oldValueAt =oldOrder.price
+                    // Update the running totals for this symbol
+                    totals[order.ticker].volume += oldVolume;
+                    totals[order.ticker].cost += oldVolume * oldValueAt;
+                } else if (oldOrder.type===TradeMove.SELL && oldOrder.ticker === order.ticker) {
+                    break;
+                }
+            }
+            // Calculate the profit using the running totals for this symbol
+            profit =    (notional - totals[order.ticker].cost) +
+                (totals[order.ticker].volume - volume) *
+                valueAt;
+        }
+        ordersWithProfits[order.id]=profit;
+    }
+    return ordersWithProfits;
 }

@@ -3,7 +3,7 @@ import {
     getSafeNull,
     getSafeOrThrow,
     objToArrayKeys,
-    cctxTradeToWalletSimulatorTrade
+    cctxTradeToWalletSimulatorTrade, addProfits
 } from "./general";
 
 const ccxt = require('ccxt');
@@ -44,8 +44,8 @@ export class CCTXWrapper {
         const daySnapshotsModel = daySnapshots.map((item:WalletTrendSnapshot) => {
             return {
                 date: new Date(item.time).toISOString(),
-                value: item.amountInBTC,
-                prices: { USDT: item.amountInUSDT, BTC: item.amountInBTC }
+                value: String(item.amountInBTC),
+                prices: { USDT: String(item.amountInUSDT), BTC: String(item.amountInBTC) }
             };
         });
 
@@ -53,7 +53,7 @@ export class CCTXWrapper {
             holdings,
             prices,
             daySnapshots:daySnapshotsModel,
-            _trades:_trades.map(cctxTradeToWalletSimulatorTrade)
+            _trades: addProfits(_trades.map(cctxTradeToWalletSimulatorTrade))
         });
 
         return w;
@@ -131,7 +131,7 @@ export class CCTXWrapper {
             const symbol = this.toLocalAsset(el, 'USDT');
             return this.cctxExchange.fetchMyTrades(
                 symbol,
-                daysBefore(new Date(),30).getTime(), // Use this.fetchTime instead
+                daysBefore(new Date(),30).getTime(),
                 1000
             );
         })

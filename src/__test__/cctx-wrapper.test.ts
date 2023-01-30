@@ -7,7 +7,7 @@ jest.setTimeout(60000)
 
 describe('CCTX Wrapper',()=>{
 
-    const client = CCTXWrapper.getClientWith(secrets.api,secrets.secret);
+    const client = CCTXWrapper.getClientWith(secrets.dallaApi,secrets.dallaSecret);
 
     test('with client api keys ok',async () => {
         expect(client).toBeDefined()

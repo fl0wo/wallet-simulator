@@ -6,6 +6,7 @@ export interface Trade {
     createdTimestamp: number;
     fee:number;
     id:string;
+    profit?:number;
 }
 
 export interface TradeOptions {
