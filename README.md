@@ -1,6 +1,8 @@
 # Wallet Simulator
 
-A ZERO-dependency class to simulate a cryptocurrency wallet in Node.js
+A class to simulate a cryptocurrency wallet in Node.js
+
+Can Integrate with CCTX to Import/Export information from real world crypto exchanges.
 
 ## Installation
 ```
