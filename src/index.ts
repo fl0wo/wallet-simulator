@@ -46,7 +46,7 @@ export class WalletSimulator {
             }
         })
 
-        this.prices['USDT'] = 1;
+        this.prices.USDT = 1;
     }
 
     /**
@@ -150,7 +150,7 @@ export class WalletSimulator {
      * @return sum of all funds in this wallet
      */
     public getTotalValue(): number {
-        let totalValue = 0//this.getBalance();
+        let totalValue = 0
         for (const ticker of Object.keys(this.holdings)) {
             totalValue += this.getPositionValue(ticker);
         }
@@ -473,6 +473,7 @@ export class WalletSimulator {
         ]
      */
 
+    /*
     public static reverseParsingRealTrades(
         prices: { [ticker: string]: number },
         holdings: { [ticker: string]: number },
@@ -480,7 +481,7 @@ export class WalletSimulator {
     ){
         allTrades.sort((a, b) => a.timestamp - b.timestamp);
 
-        const usdtHold = getSafeNull(holdings['USDT'],'0');
+        const usdtHold = getSafeNull(holdings.USDT,'0');
         const currentBalance = Number.parseFloat(usdtHold);
 
         const wallet = new WalletSimulator(130,{
@@ -536,15 +537,17 @@ export class WalletSimulator {
         return wallet2;
     }
 
+     */
+
     private getFirstDate() {
         return Object.keys(this.daySnapshots).sort((a,b)=>a.localeCompare(b))[0]
     }
 
     getBalance() {
-        return getSafeNull(this.holdings['USDT'],0);
+        return getSafeNull(this.holdings.USDT,0);
     }
 
     private setBalance(x:number){
-        this.holdings['USDT']=x;
+        this.holdings.USDT=x;
     }
 }

@@ -40,6 +40,7 @@ console.log(wallet.getEstimatedUnrealizedProfitLoss('BTC')); // 2
 - [x] Export Wallet as JSON
 - [x] Import Wallet from JSON
 - [ ] Reverse-Engineering data from Real Exchanges Trades
+- [ ] Filter on Max Buy Power allowed and list of allowed-desired assets to open orders
 
 
 ## Methods

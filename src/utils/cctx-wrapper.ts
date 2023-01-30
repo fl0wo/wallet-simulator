@@ -1,18 +1,19 @@
 import {
     arrayToObjectKeys,
-    entries,
     getSafeNull,
     getSafeOrThrow,
     objToArrayKeys,
     cctxTradeToWalletSimulatorTrade
 } from "./general";
 
-const ccxt = require('ccxt')
+const ccxt = require('ccxt');
+
 import {Exchange, Trade} from 'ccxt';
 import {TradeMove} from "../models/Trade";
 import {daysBefore} from "./mock";
 import {MyWalletAccount} from "../models/MyWalletAccount";
 import {WalletSimulator} from "../index";
+import {defineWalletSnapshots} from "./cctx-extensions/binance/wallet-snapshots";
 
 export class CCTXWrapper {
 
@@ -33,7 +34,7 @@ export class CCTXWrapper {
 
         const holdingsPromise = this.getAllHoldings();
         const pricesPromise = this.getAllTickerPrices();
-        const daySnapshotsPromise:any = {};// snapshots somehow
+        const daySnapshotsPromise:any = this.walletSnapshots()
         const _tradesPromise = this.getMyTrades()
 
         const [holdings,prices,daySnapshots,_trades] = await Promise.all([
@@ -41,9 +42,9 @@ export class CCTXWrapper {
         ])
 
         const w:WalletSimulator = new WalletSimulator(0,{
-            holdings:holdings,
-            prices:prices,
-            daySnapshots:daySnapshots,
+            holdings,
+            prices,
+            daySnapshots,
             _trades:_trades.map(cctxTradeToWalletSimulatorTrade)
         });
 
@@ -54,11 +55,24 @@ export class CCTXWrapper {
         if (!cctxExchange) {
             throw Error('null cctxExchange client object!');
         }
-        cctxExchange.checkRequiredCredentials()
+
+        // Extra functions
+        defineWalletSnapshots();
+        cctxExchange.checkRequiredCredentials();
     }
 
-    async getLedger(ticker:string){
-        return this.cctxExchange.fetchLedger()
+    public async walletSnapshots(){
+        // TODO: replace 'BINANCE' with the current exchange
+        if(this.cctxExchange.walletSnapshotsBINANCE) {
+            return await this.cctxExchange.walletSnapshotsBINANCE(
+                30,
+                this.cctxExchange.apiKey,
+                this.cctxExchange.secret
+            );
+        }
+
+
+        return []
     }
 
     allSymbols(): Promise<any> {
@@ -74,13 +88,13 @@ export class CCTXWrapper {
     }
 
     async getAccount(): Promise<MyWalletAccount> {
-        function CCTX2WalletAccount(cctxBalance:any) {
-            const balanceUSDTether = cctxBalance['USDT']
+        function CCTX2WalletAccount(cctxBalanceParam:any) {
+            const balanceUSDTether = cctxBalanceParam.USDT
             const buyingPowerUSDTether = getSafeNull(balanceUSDTether?.free, '0');
 
             return {
                 buyPowerUSDT: buyingPowerUSDTether,
-                cctxBalance: cctxBalance
+                cctxBalance
             };
         }
 
@@ -148,10 +162,6 @@ export class CCTXWrapper {
 
     toLocalAsset(crypto: string, base: string): string {
         return `${crypto}/${base}`;
-    }
-
-    async loadAllFiltersFor() {
-
     }
 
     async priceOf(symbol: string) {

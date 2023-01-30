@@ -1,22 +1,24 @@
 import {CCTXWrapper} from "../utils/cctx-wrapper";
+import * as fs from 'fs';
+
 const secrets = require('../../_secrets/sec.json')
 
 jest.setTimeout(60000)
 
-describe.skip('CCTX Wrapper',()=>{
+describe('CCTX Wrapper',()=>{
 
     const client = CCTXWrapper.getClientWith(secrets.api,secrets.secret);
 
-    test.skip('with client api keys ok',async () => {
+    test('with client api keys ok',async () => {
         expect(client).toBeDefined()
-
         const w = await client.initWalletSimulator();
 
         console.log(w);
-        console.log(w.getTotalValue())
+
+        fs.writeFileSync('./walletExported.json', w.exportToJson());
     });
 
-    test('showRequiredCredentials ok',()=>{
+    test('showRequiredCredentials ok', () => {
         expect(client.showRequiredCredentials())
             .toStrictEqual({
                 apiKey: true,
@@ -38,7 +40,7 @@ describe.skip('CCTX Wrapper',()=>{
 
     test('getAllHoldings ok',async () => {
         const totBalance = await client.getAllHoldings()
-        console.log(totBalance)
+
         expect(totBalance)
             .toBeDefined()
     });
@@ -57,7 +59,7 @@ describe.skip('CCTX Wrapper',()=>{
 
     test('getAllTickerPrices ok',async () => {
         const allPrices = await client.getAllTickerPrices()
-        console.log(allPrices)
+
         expect(allPrices)
             .toBeDefined()
     });
@@ -70,8 +72,6 @@ describe.skip('CCTX Wrapper',()=>{
 
     test('priceOf ok',async () => {
         const btcPrice = await client.priceOf('BTC')
-
-        console.log(btcPrice)
 
         expect(btcPrice)
             .toBeDefined()
