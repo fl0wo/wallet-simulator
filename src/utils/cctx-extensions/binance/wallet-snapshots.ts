@@ -13,10 +13,6 @@ export interface WalletTrendSnapshot {
     amountInUSDT:number|string;
 }
 
-export interface WalletSnapshots {
-    snapshots:Array<WalletTrendSnapshot>
-}
-
 export class BinanceConnector {
 
     private binanceF:any;
@@ -66,9 +62,7 @@ export class BinanceConnector {
                 return snap;
             });
 
-        return {
-            snapshots
-        };
+        return snapshots
     }
 
 }
@@ -78,7 +72,7 @@ export const defineWalletSnapshots = () => {
         howManyDaysBefore: number = 30,
         apiKey:string,
         apiSecret:string
-    ): Promise<WalletSnapshots> => {
+    ): Promise<Array<WalletTrendSnapshot>> => {
 
         const client = new BinanceConnector(
             BinanceConnector.getClientWith(apiKey,apiSecret)

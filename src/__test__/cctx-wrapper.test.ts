@@ -15,6 +15,8 @@ describe('CCTX Wrapper',()=>{
 
         console.log(w);
 
+        expect(w.getTrendBalanceSnapshots(30,new Date()))
+            .toHaveLength(30)
         fs.writeFileSync('./walletExported.json', w.exportToJson());
     });
 

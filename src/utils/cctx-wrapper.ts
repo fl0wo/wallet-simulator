@@ -13,7 +13,7 @@ import {TradeMove} from "../models/Trade";
 import {daysBefore} from "./mock";
 import {MyWalletAccount} from "../models/MyWalletAccount";
 import {WalletSimulator} from "../index";
-import {defineWalletSnapshots} from "./cctx-extensions/binance/wallet-snapshots";
+import {defineWalletSnapshots, WalletTrendSnapshot} from "./cctx-extensions/binance/wallet-snapshots";
 
 export class CCTXWrapper {
 
@@ -34,17 +34,25 @@ export class CCTXWrapper {
 
         const holdingsPromise = this.getAllHoldings();
         const pricesPromise = this.getAllTickerPrices();
-        const daySnapshotsPromise:any = this.walletSnapshots()
+        const daySnapshotsPromise:Promise<Array<WalletTrendSnapshot>> = this.walletSnapshots()
         const _tradesPromise = this.getMyTrades()
 
         const [holdings,prices,daySnapshots,_trades] = await Promise.all([
             holdingsPromise,pricesPromise,daySnapshotsPromise,_tradesPromise
         ])
 
+        const daySnapshotsModel = daySnapshots.map((item:WalletTrendSnapshot) => {
+            return {
+                date: new Date(item.time).toISOString(),
+                value: item.amountInBTC,
+                prices: { USDT: item.amountInUSDT, BTC: item.amountInBTC }
+            };
+        });
+
         const w:WalletSimulator = new WalletSimulator(0,{
             holdings,
             prices,
-            daySnapshots,
+            daySnapshots:daySnapshotsModel,
             _trades:_trades.map(cctxTradeToWalletSimulatorTrade)
         });
 
@@ -61,7 +69,7 @@ export class CCTXWrapper {
         cctxExchange.checkRequiredCredentials();
     }
 
-    public async walletSnapshots(){
+    public async walletSnapshots():Promise<Array<WalletTrendSnapshot>>{
         // TODO: replace 'BINANCE' with the current exchange
         if(this.cctxExchange.walletSnapshotsBINANCE) {
             return await this.cctxExchange.walletSnapshotsBINANCE(
@@ -94,7 +102,7 @@ export class CCTXWrapper {
 
             return {
                 buyPowerUSDT: buyingPowerUSDTether,
-                cctxBalance
+                cctxBalance:cctxBalanceParam
             };
         }
 
