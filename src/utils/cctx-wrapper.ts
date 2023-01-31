@@ -5,15 +5,14 @@ import {
     objToArrayKeys,
     cctxTradeToWalletSimulatorTrade, addProfits
 } from "./general";
-
-const ccxt = require('ccxt');
-
 import {Exchange, Trade} from 'ccxt';
 import {TradeMove} from "../models/Trade";
 import {daysBefore} from "./mock";
 import {MyWalletAccount} from "../models/MyWalletAccount";
 import {WalletSimulator} from "../index";
 import {defineWalletSnapshots, WalletTrendSnapshot} from "./cctx-extensions/binance/wallet-snapshots";
+
+const ccxt = require('ccxt');
 
 export class CCTXWrapper {
 
@@ -89,7 +88,6 @@ export class CCTXWrapper {
                 this.cctxExchange.secret
             );
         }
-
 
         return []
     }

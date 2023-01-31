@@ -1,5 +1,6 @@
 import {CCTXWrapper} from "../utils/cctx-wrapper";
 import * as fs from 'fs';
+import {WalletSimulator} from "../index";
 
 const secrets = require('../../_secrets/sec.json')
 

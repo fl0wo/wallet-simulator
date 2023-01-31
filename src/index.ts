@@ -360,9 +360,9 @@ export class WalletSimulator {
     }
 
     set trades(value: Array<Trade>) {
-        this._trades = value;
+        this._trades = []
         // Simulate all new trades
-        this.trades.forEach((el)=>this.addTrade(el));
+        value.forEach((el)=>this.addTrade(el));
     }
 
     /**
