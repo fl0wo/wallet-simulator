@@ -149,10 +149,6 @@ export class CCTXWrapper {
         const allTrades = (await Promise.all(allTradesPromises)).flat()
         return allTrades.sort((a, b) => b.timestamp - a.timestamp)
     }
-    // @ts-ignore
-    getPositionWithSymbol(symbol: string): Promise<Position[]> {
-        return Promise.resolve([]);
-    }
 
     getPositions(): Promise<any> {
         return this.cctxExchange.fetchPositions([

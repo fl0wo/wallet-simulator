@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "skipLibCheck": true,
     "target": "es2019",
     "module": "commonjs",
     "declaration": true,
@@ -7,5 +8,5 @@
     "strict": true
   },
   "include": ["src"],
-  "exclude": ["node_modules", "**/__tests__/*"],
+  "exclude": ["**/node_modules/*", "**/__tests__/*"],
 }

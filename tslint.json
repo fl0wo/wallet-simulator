@@ -1,4 +1,7 @@
 {
+  "exclude": [
+    "node_modules"
+  ],
   "extends": ["tslint:recommended", "tslint-config-prettier"],
   "rules": {
     "array-type": false,
