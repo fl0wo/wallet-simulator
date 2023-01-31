@@ -38,7 +38,7 @@ describe('trend balance snapshot test',()=>{
 
         const tomorrow = daysBefore(now,-1)
         mockDate(tomorrow); // tomorrow
-        const trendData = wallet.getTrendBalanceSnapshots(3,tomorrow);
+        const trendData = wallet.getTrendBalanceSnapshotsCalculated(3,tomorrow);
 
         expect(trendData).toHaveLength(3);
 
@@ -74,7 +74,7 @@ describe('trend balance snapshot test',()=>{
 
         const tomorrow = daysBefore(now,-1)
         mockDate(tomorrow); // tomorrow
-        const trendData = wallet.getTrendBalanceSnapshots(3,tomorrow);
+        const trendData = wallet.getTrendBalanceSnapshotsCalculated(3,tomorrow);
 
         expect(trendData).toHaveLength(3);
 
@@ -96,7 +96,7 @@ describe('trend balance snapshot test',()=>{
             .updatePrice('AAPL', 20, fiveDaysAgo.getTime());
 
         // Getting trend data for the last 3 days
-        const trendData = wallet.getTrendBalanceSnapshots(3, now);
+        const trendData = wallet.getTrendBalanceSnapshotsCalculated(3, now);
 
         // Expecting an empty array since there are no snapshots in the specified date range
         expect(trendData).toEqual([]);
@@ -123,7 +123,7 @@ describe('trend balance snapshot test',()=>{
             .updatePrice('TSLA', 2, oneDayAgo.getTime());
 
         // Getting trend data for the last 3 days
-        const trendData = wallet.getTrendBalanceSnapshots(3, now);
+        const trendData = wallet.getTrendBalanceSnapshotsCalculated(3, now);
 
         // Expecting 3 snapshots, one for each day in the specified date range
         expect(trendData).toHaveLength(3);
@@ -148,7 +148,7 @@ describe('trend balance snapshot test',()=>{
             .addTrade({ ticker: 'TSLA', price: 1, quantity: 5, type: TradeMove.BUY, createdTimestamp: threeDaysAgo.getTime() })
             .updatePrice('TSLA', 2, threeDaysAgo.getTime());
 
-        const trendData = wallet.getTrendBalanceSnapshots(5, now);
+        const trendData = wallet.getTrendBalanceSnapshotsCalculated(5, now);
 
         expect(trendData).toHaveLength(5);
         expect(trendData[0].value).toEqual(110);

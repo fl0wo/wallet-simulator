@@ -5,7 +5,6 @@ import {WalletSimulator} from "../index";
 import {Trade as CCTXTrade} from 'ccxt';
 
 import * as crypto from 'crypto';
-import {MyTrade} from "binance-api-node";
 
 export const safeGet = <T, R = any>(object: T | undefined | null,
                                             safeCallback: (object: T) => R,
@@ -171,6 +170,8 @@ export const cctxTradeToWalletSimulatorTrade = (trade:CCTXTrade) => {
     return t;
 }
 
+
+// TODO: Basically when a "SELL" order appears without any "BUY" we cant calculate profit there
 export function addProfits(trades: Trade[]): Trade[] {
 
     const mapOfProfitsOrders =  calculateProfitsMadeByOrdersReverse(trades);
@@ -226,10 +227,11 @@ function calculateProfitsMadeByOrdersReverse(allOrders: Trade[]) {
             }
             // Calculate the profit using the running totals for this symbol
             profit =    (notional - totals[order.ticker].cost) +
-                (totals[order.ticker].volume - volume) *
-                valueAt;
+                (totals[order.ticker].volume - volume) * valueAt;
+
+            ordersWithProfits[order.id]=profit;
+
         }
-        ordersWithProfits[order.id]=profit;
     }
     return ordersWithProfits;
 }

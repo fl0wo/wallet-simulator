@@ -18,8 +18,19 @@ import {defineWalletSnapshots, WalletTrendSnapshot} from "./cctx-extensions/bina
 export class CCTXWrapper {
 
     // TODO: let user set this from database
+    // FIXME: be really careful
     private desiredAssets:Array<string> = [
-        'BTC', 'ETH', 'LTC', 'SOL', 'DOT', 'DOGE', 'SHIB', 'AVAX'
+        'BTC',
+        'ETH',
+        'LTC',
+        'SOL',
+        'DOT',
+        'DOGE',
+        'SHIB',
+        'AVAX',
+        'XRP',
+        'ADA',
+        'BUSD'
     ]
 
     public static getClientWith(api:string, secret:string,exchangeId = 'binance'):CCTXWrapper {
@@ -44,7 +55,7 @@ export class CCTXWrapper {
         const daySnapshotsModel = daySnapshots.map((item:WalletTrendSnapshot) => {
             return {
                 date: new Date(item.time).toISOString(),
-                value: String(item.amountInBTC),
+                value: String(item.amountInUSDT),
                 prices: { USDT: String(item.amountInUSDT), BTC: String(item.amountInBTC) }
             };
         });
@@ -180,16 +191,19 @@ export class CCTXWrapper {
         return this.cctxExchange.fetchCurrencies();
     }
 
+    async getAllCurrenciesNames() {
+        return Object.keys(await this.cctxExchange.fetchCurrencies());
+    }
+
     async getAllTickerPrices(desiredSymbols?:Array<string>) {
-        const desSymbols = getSafeNull(desiredSymbols,this.desiredSymbols());
-        const tickers = await this.cctxExchange.fetchTickers(desSymbols);
+        // const desSymbols = getSafeNull(desiredSymbols,this.desiredSymbols());
+        const tickers = await this.cctxExchange.fetchTickers();
         return arrayToObjectKeys(
             objToArrayKeys(tickers)
             .filter((asset)=>tickers[asset] && tickers[asset].close)
             .map((asset)=> {
                     return {[asset.split('/')[0]]:tickers[asset].close}
-            })
-                .concat({'USDT':1})
+            }).concat({'USDT':1})
         )
     }
 

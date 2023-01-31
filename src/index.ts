@@ -16,7 +16,6 @@ import {
 import {Trade, TradeMove, TradeOptions} from "./models/Trade";
 import {DonutAssetInfo, OrderMovementInfo, TrendSnapshotInfo} from "./models/ExtractWalletInformation";
 import {daysBefore} from "./utils/mock";
-import {ExchangeTrade} from "./models/ExchangeModels";
 
 export class WalletSimulator {
 
@@ -151,10 +150,14 @@ export class WalletSimulator {
      */
     public getTotalValue(): number {
         let totalValue = 0
-        for (const ticker of Object.keys(this.holdings)) {
+        for (const ticker of this.getHoldingsWithKnownPrices()) {
             totalValue += this.getPositionValue(ticker);
         }
         return totalValue;
+    }
+
+    private getHoldingsWithKnownPrices() {
+        return Array.from(Object.keys(this.holdings)).filter((asset)=>this.isPriceDefined(asset))
     }
 
     /**
@@ -172,7 +175,8 @@ export class WalletSimulator {
      */
     public getDonutAssetInformation(): Array<DonutAssetInfo> {
         const totalValue = this.getTotalValue();
-        const assetsInfo = Array.from(Object.keys(this.holdings)).map(ticker => {
+        const assetsInfo = this.getHoldingsWithKnownPrices()
+            .map(ticker => {
             const value = this.getPositionValue(ticker);
             return {
                 ticker,
@@ -183,9 +187,9 @@ export class WalletSimulator {
         return assetsInfo;
     }
 
-    public getTrendBalanceSnapshots(backDays: number, now?:Date): Array<TrendSnapshotInfo> {
+    public getTrendBalanceSnapshotsCalculated(backDays: number, now?:Date): Array<TrendSnapshotInfo> {
         const nowDate:Date = getSafeNull(now,new Date());
-        const today = daysBefore(nowDate,1).getTime();
+        const today = daysBefore(nowDate,0).getTime();
         const pastDate = daysBefore(nowDate,backDays).getTime();
 
         const result = this.sortedDaySnapshotsOnRange(pastDate, today);
@@ -196,6 +200,8 @@ export class WalletSimulator {
             prices:this.prices
         });
     }
+
+
 
     public getTrendBalanceSnapshotsBuyAndHold(backDays: number,now?:Date): Array<TrendSnapshotInfo> {
         const allAssetsToBuy = this.getAllOwnedAssets();

@@ -12,11 +12,10 @@ describe('reverse import from real trades exchange',()=>{
         // console.log(expW.getTotalValue());
         // console.log(expW.getDonutAssetInformation());
 
-        expect(expW.getDonutAssetInformation())
-            .toBeDefined()
         expect(expW.getTotalValue())
             .toBeGreaterThan(0)
-
+        expect(expW.getDonutAssetInformation())
+            .toBeDefined()
     })
 
 })

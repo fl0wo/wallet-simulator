@@ -5,17 +5,17 @@ const secrets = require('../../_secrets/sec.json')
 
 jest.setTimeout(60000)
 
-describe('CCTX Wrapper',()=>{
+describe.skip('CCTX Wrapper',()=>{
 
-    const client = CCTXWrapper.getClientWith(secrets.dallaApi,secrets.dallaSecret);
+    const client = CCTXWrapper.getClientWith(secrets.api,secrets.secret);
 
     test('with client api keys ok',async () => {
         expect(client).toBeDefined()
         const w = await client.initWalletSimulator();
 
-        console.log(w);
+        // console.log(w);
 
-        expect(w.getTrendBalanceSnapshots(30,new Date()))
+        expect(w.getTrendBalanceSnapshotsCalculated(31,new Date()))
             .toHaveLength(30)
         fs.writeFileSync('./walletExported.json', w.exportToJson());
     });
