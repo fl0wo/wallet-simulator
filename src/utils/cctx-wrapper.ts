@@ -42,13 +42,16 @@ export class CCTXWrapper {
 
     public async initWalletSimulator() {
 
-        const holdingsPromise = this.getAllHoldings();
-        const pricesPromise = this.getAllTickerPrices();
+        const holdings = await this.getAllHoldings();
+        const ownedCryptoAssets = Object.keys(holdings)
+            .filter(el=>el!=='USDT' && el!=='EUR' && el!='USD')
+            ?.map(el=>`${el}/USDT`)
+        const pricesPromise = this.getAllTickerPrices(ownedCryptoAssets);
         const daySnapshotsPromise:Promise<Array<WalletTrendSnapshot>> = this.walletSnapshots()
         const _tradesPromise = this.getMyTrades()
 
-        const [holdings,prices,daySnapshots,_trades] = await Promise.all([
-            holdingsPromise,pricesPromise,daySnapshotsPromise,_tradesPromise
+        const [prices,daySnapshots,_trades] = await Promise.all([
+            pricesPromise,daySnapshotsPromise,_tradesPromise
         ])
 
         const daySnapshotsModel = daySnapshots.map((item:WalletTrendSnapshot) => {
@@ -190,8 +193,9 @@ export class CCTXWrapper {
     }
 
     async getAllTickerPrices(desiredSymbols?:Array<string>) {
-        // const desSymbols = getSafeNull(desiredSymbols,this.desiredSymbols());
-        const tickers = await this.cctxExchange.fetchTickers();
+        console.log('desiredSymbols',desiredSymbols)
+        const tickers = await this.cctxExchange.fetchTickers(desiredSymbols);
+
         return arrayToObjectKeys(
             objToArrayKeys(tickers)
             .filter((asset)=>tickers[asset] && tickers[asset].close)

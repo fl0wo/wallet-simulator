@@ -1,12 +1,11 @@
 import {CCTXWrapper} from "../utils/cctx-wrapper";
 import * as fs from 'fs';
-import {WalletSimulator} from "../index";
 
 const secrets = require('../../_secrets/sec.json')
 
 jest.setTimeout(60000)
 
-describe.skip('CCTX Wrapper',()=>{
+describe('CCTX Wrapper',()=>{
 
     const client = CCTXWrapper.getClientWith(secrets.api,secrets.secret);
 
@@ -14,10 +13,11 @@ describe.skip('CCTX Wrapper',()=>{
         expect(client).toBeDefined()
         const w = await client.initWalletSimulator();
 
-        // console.log(w);
+        console.log('w.getTotalValue() => ',w.getTotalValue());
 
         expect(w.getTrendBalanceSnapshotsCalculated(31,new Date()))
-            .toHaveLength(30)
+            .toHaveLength(30);
+
         fs.writeFileSync('./walletExported.json', w.exportToJson());
     });
 
@@ -79,5 +79,4 @@ describe.skip('CCTX Wrapper',()=>{
         expect(btcPrice)
             .toBeDefined()
     });
-
 })
