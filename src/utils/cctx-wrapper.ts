@@ -193,7 +193,7 @@ export class CCTXWrapper {
     }
 
     async getAllTickerPrices(desiredSymbols?:Array<string>) {
-        console.log('desiredSymbols',desiredSymbols)
+
         const tickers = await this.cctxExchange.fetchTickers(desiredSymbols);
 
         return arrayToObjectKeys(

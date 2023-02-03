@@ -28,6 +28,7 @@ export class WalletSimulator {
     private readonly _creationAt: string;
     private allowNegativeBalance:boolean = false;
     private allowNegativeHeld:boolean = false;
+    private totalValueInUSDT: number = 0;
 
     constructor(balance: number, overrides:any={}) {
         this.holdings = {};
@@ -449,6 +450,7 @@ export class WalletSimulator {
     }
 
     public exportToJson(){
+        this.totalValueInUSDT = this.getTotalValue();
         return JSON.stringify(this)
     }
 
