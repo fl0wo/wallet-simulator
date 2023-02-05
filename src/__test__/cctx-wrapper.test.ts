@@ -7,7 +7,7 @@ jest.setTimeout(60000)
 
 describe('CCTX Wrapper',()=>{
 
-    const client = CCTXWrapper.getClientWith(secrets.api,secrets.secret);
+    const client = CCTXWrapper.getClientWith(secrets.dallaApi,secrets.dallaSecret);
 
     test('with client api keys ok',async () => {
         expect(client).toBeDefined()
@@ -39,10 +39,18 @@ describe('CCTX Wrapper',()=>{
             .toBe(true)
     });
 
-    test('getAllHoldings ok',async () => {
-        const totBalance = await client.getAllHoldings()
+    test('allSymbols ok',async ()=>{
+        const allSymbols:string[] = await client.allSymbols();
+        expect(allSymbols.length).toBeGreaterThan(10)
+    })
 
+    test('getAllHoldings ok',async () => {
+        const totBalance = await client.getAllHoldings();
+
+        console.log(totBalance)
         expect(totBalance)
+            .toBeDefined()
+        expect(totBalance.USDT)
             .toBeDefined()
     });
 

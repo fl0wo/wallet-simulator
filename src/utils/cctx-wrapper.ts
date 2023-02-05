@@ -160,10 +160,13 @@ export class CCTXWrapper {
 
     async getAllHoldings(): Promise<any> {
         const allHoldings:any = await this.cctxExchange.fetchTotalBalance();
-        const allSymbols:string[] = await this.allSymbols()
+        const allSymbols:string[] = await this.allSymbols();
+
         return arrayToObjectKeys(objToArrayKeys(allHoldings)
             .filter((asset)=>allHoldings[asset]>0)
-            .filter((asset:string)=>allSymbols.includes(asset+'/USDT'))
+            .filter((asset:string)=>{
+                return this.stableCoin(asset) || allSymbols.includes(asset+'/USDT')
+            })
             .map((asset)=> {
                 return {[asset]:allHoldings[asset]}
             })
@@ -227,5 +230,9 @@ export class CCTXWrapper {
 
     private desiredSymbols() {
         return this.desiredAssets.map((el)=>this.toLocalAsset(el,'USDT'))
+    }
+
+    private stableCoin(asset: string) {
+        return asset==='USDT'||asset==='USD'||asset==='EUR'||asset==='BUSD'
     }
 }

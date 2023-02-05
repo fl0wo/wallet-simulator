@@ -9,7 +9,7 @@ describe('reverse import from real trades exchange',()=>{
         const s:string = getSafeNull(fs.readFileSync('./walletExported.json'),'')
         const expW = WalletSimulator.importFromJsonString(s)
 
-        // console.log(expW.getTotalValue());
+         console.log('expW.getTotalValue()',expW.getTotalValue());
         // console.log(expW.getDonutAssetInformation());
 
         expect(expW.getTotalValue())
