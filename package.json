@@ -1,6 +1,6 @@
 {
   "name": "@fl0wo/wallet-simulator",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "Tool for tracking and simulating trades, work as well with cryptocurrency transactions.",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",

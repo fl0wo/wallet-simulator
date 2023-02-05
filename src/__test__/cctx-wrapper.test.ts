@@ -13,8 +13,6 @@ describe('CCTX Wrapper',()=>{
         expect(client).toBeDefined()
         const w = await client.initWalletSimulator();
 
-        console.log('w.getTotalValue() => ',w.getTotalValue());
-
         expect(w.getTrendBalanceSnapshotsCalculated(31,new Date()))
             .toHaveLength(30);
 
@@ -63,6 +61,12 @@ describe('CCTX Wrapper',()=>{
     test('getAllTickerPrices ok',async () => {
         const allPrices = await client.getAllTickerPrices()
 
+        expect(allPrices)
+            .toBeDefined()
+    });
+
+    test('getAllTickerPrices with weird symbol ok',async () => {
+        const allPrices = await client.getAllTickerPrices(['BTC/USDT','ETHW/USDT']);
         expect(allPrices)
             .toBeDefined()
     });

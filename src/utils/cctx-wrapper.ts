@@ -11,6 +11,7 @@ import {daysBefore} from "./mock";
 import {MyWalletAccount} from "../models/MyWalletAccount";
 import {WalletSimulator} from "../index";
 import {defineWalletSnapshots, WalletTrendSnapshot} from "./cctx-extensions/binance/wallet-snapshots";
+import * as assert from "assert";
 
 const ccxt = require('ccxt');
 
@@ -44,7 +45,7 @@ export class CCTXWrapper {
 
         const holdings = await this.getAllHoldings();
         const ownedCryptoAssets = Object.keys(holdings)
-            .filter(el=>el!=='USDT' && el!=='EUR' && el!='USD')
+            .filter(el=>el!=='USDT' && el!=='EUR' && el!=='USD')
             ?.map(el=>`${el}/USDT`)
         const pricesPromise = this.getAllTickerPrices(ownedCryptoAssets);
         const daySnapshotsPromise:Promise<Array<WalletTrendSnapshot>> = this.walletSnapshots()
@@ -96,7 +97,7 @@ export class CCTXWrapper {
     }
 
     allSymbols(): Promise<any> {
-        throw Error('Method not implemented.')
+        return Promise.resolve(this.cctxExchange.symbols)
     }
 
     createOrder(payload: any, forReal: boolean=false): Promise<any> {
@@ -159,8 +160,10 @@ export class CCTXWrapper {
 
     async getAllHoldings(): Promise<any> {
         const allHoldings:any = await this.cctxExchange.fetchTotalBalance();
+        const allSymbols:string[] = await this.allSymbols()
         return arrayToObjectKeys(objToArrayKeys(allHoldings)
             .filter((asset)=>allHoldings[asset]>0)
+            .filter((asset:string)=>allSymbols.includes(asset+'/USDT'))
             .map((asset)=> {
                 return {[asset]:allHoldings[asset]}
             })
@@ -192,9 +195,16 @@ export class CCTXWrapper {
         return Object.keys(await this.cctxExchange.fetchCurrencies());
     }
 
-    async getAllTickerPrices(desiredSymbols?:Array<string>) {
+    async getAllTickerPrices(desiredSymbols?:string[]) {
 
-        const tickers = await this.cctxExchange.fetchTickers(desiredSymbols);
+        const allSymbols:any[] = await this.allSymbols()
+
+        let availableSymbols = getSafeNull(desiredSymbols,[])
+            .filter((el:any)=>allSymbols.includes(el));
+
+        if(availableSymbols.length===0) availableSymbols = undefined;
+
+        const tickers = await this.cctxExchange.fetchTickers(availableSymbols);
 
         return arrayToObjectKeys(
             objToArrayKeys(tickers)

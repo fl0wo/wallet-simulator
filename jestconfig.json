@@ -4,7 +4,8 @@
   },
   "transformIgnorePatterns": [
     "/node_modules/",
-    "/lib/"
+    "/lib/",
+    "<rootDir>/node_modules/"
   ],
   "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
   "moduleFileExtensions": ["ts", "tsx", "js", "jsx", "json", "node"]
