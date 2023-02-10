@@ -35,6 +35,8 @@ describe('getTrendBalanceSnapshotsBuyAndHold',()=>{
 
         const trendData = wallet.getTrendBalanceSnapshotsBuyAndHold(5, now);
 
+        console.log(trendData)
+
         expect(trendData).toHaveLength(5);
         expect(trendData[0].value).toEqual(100);
         expect(trendData[1].value.toFixed(2)).toEqual('114.29');

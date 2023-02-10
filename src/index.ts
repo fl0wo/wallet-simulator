@@ -202,8 +202,6 @@ export class WalletSimulator {
         });
     }
 
-
-
     public getTrendBalanceSnapshotsBuyAndHold(backDays: number,now?:Date): Array<TrendSnapshotInfo> {
         const allAssetsToBuy = this.getAllOwnedAssets();
         const allAssetsToHold:Array<string> = []

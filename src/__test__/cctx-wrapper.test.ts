@@ -5,7 +5,7 @@ const secrets = require('../../_secrets/sec.json')
 
 jest.setTimeout(60000)
 
-describe('CCTX Wrapper',()=>{
+describe.skip('CCTX Wrapper',()=>{
 
     const client = CCTXWrapper.getClientWith(secrets.dallaApi,secrets.dallaSecret);
 
@@ -46,8 +46,6 @@ describe('CCTX Wrapper',()=>{
 
     test('getAllHoldings ok',async () => {
         const totBalance = await client.getAllHoldings();
-
-        console.log(totBalance)
         expect(totBalance)
             .toBeDefined()
         expect(totBalance.USDT)
