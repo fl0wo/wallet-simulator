@@ -143,6 +143,14 @@ export const removeFee = (cost:number, fee:number) => cost - (cost * (fee/100))
 export const addFee = (cost:number, fee:number) => cost + (cost * (fee/100))
 export const map2Obj = (m:Map<any,any>) => fromEntries(Array.from(m.entries()));
 
+export function removeEmpty(baseObj:any) {
+    const obj = getSafeNull(baseObj,{});
+    return Object.entries(obj)
+        .filter(([_, v]) => (v!==null && v!==undefined))
+        .reduce((acc, [k, v]) => ({ ...acc, [k]: v }), {});
+}
+
+
 export function replacer(key:any, value:any) {
     if(value instanceof Map) {
         return map2Obj(value as Map<any,any>)

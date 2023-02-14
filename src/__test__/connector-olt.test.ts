@@ -1,4 +1,4 @@
-import {CCTXWrapper, CCTXWrapperError} from "../utils/cctx-wrapper";
+import {CCTXWrapper} from "../utils/cctx-wrapper";
 import {MyWalletAccount} from "../models/MyWalletAccount";
 import * as fs from 'fs';
 import {WalletSimulator} from "../index";
@@ -20,8 +20,6 @@ describe('CCTX connection to wallet test', () => {
             .toBeGreaterThan(50);
         expect(account.cctxBalance)
             .toBeDefined();
-
-        // console.log(account);
     });
 
     test('CCTX My Trades', async () => {
@@ -72,39 +70,22 @@ describe('CCTX connection to wallet test', () => {
         console.log(new Date(date).toISOString(), new Date().toISOString());
     });
 
+    test.only('CCTX Create Buy Order', async () => {
+        const payload: any = client.createOrderPayload({
+            type:'limit',
+            side:'buy',
+            symbol:'BTC/USDT',
+            amount:0.00324,
+            price: 20000, // <- buy @ this price
+            // stopLossPrice:1, // <- stop-loss @ this price
+            // takeProfitPrice:52200 // <- take-home @ this price
+        });
+        console.log(payload);
+        const newOrderResponse = await client.sendOrder(payload);
+        console.log(newOrderResponse);
+    });
+
     /*
-        test('CCTX Create Buy Order TEST', async () => {
-            const payload: any = await client.createOrderPayload(
-                MoveType.BUY,
-                Crypto.DOGE,
-                BaseCurrency.USD,
-                15
-            );
-            console.log(payload);
-            const newOrderResponse = await bin.createOrder(payload);
-            console.log(newOrderResponse);
-
-            exct(newOrderResponse).toEqual({});
-        });
-        /*
-        test('CCTX Create Sell Order TEST', async () => {
-            const payload: any = await bin.createOrderPayload(
-                MoveType.SELL,
-                Crypto.MANA,
-                BaseCurrency.USD,
-                222
-                //0.028
-            );
-            const newOrderResponse = await bin.createOrder(payload);
-            console.log(newOrderResponse);
-            expect(newOrderResponse).toEqual({});
-        });
-
-        test('CCTX Get Positions', async () => {
-            const positions = await bin.getPositions();
-            console.log(positions);
-        });
-
         test('CCTX Total Balance', async () => {
             const totBalance = await bin.getTotalBalance();
             console.log(totBalance);
