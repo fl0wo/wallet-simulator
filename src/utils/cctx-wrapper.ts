@@ -61,7 +61,6 @@ export class CCTXWrapper {
     public async initWalletSimulator() {
 
         const holdings = await this.getAllHoldings();
-
         const ownedCryptoAssets = Object.keys(holdings);
         const pricesPromise = this.getAllTickerPrices(ownedCryptoAssets);
         const daySnapshotsPromise:Promise<Array<WalletTrendSnapshot>> = this.walletSnapshots()
@@ -171,11 +170,7 @@ export class CCTXWrapper {
         return CCTX2WalletAccount(cctxBalance);
     }
 
-    getBotDetailsLive(): Promise<any> {
-        throw Error('Method not implemented.')
-    }
-
-    getDate(): Promise<any> {
+    getCurrentTimeMs(): Promise<number> {
         return this.cctxExchange.fetchTime()
     }
 

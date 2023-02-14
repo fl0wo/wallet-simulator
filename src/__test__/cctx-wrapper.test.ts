@@ -80,7 +80,7 @@ describe.skip('CCTX Wrapper',()=>{
     });
 
     test('getDate ok',async () => {
-        const time = await client.getDate()
+        const time = await client.getCurrentTimeMs()
         expect(time)
             .toBeGreaterThan(0)
     });

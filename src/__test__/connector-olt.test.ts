@@ -1,6 +1,7 @@
 import {CCTXWrapper, CCTXWrapperError} from "../utils/cctx-wrapper";
 import {MyWalletAccount} from "../models/MyWalletAccount";
 import * as fs from 'fs';
+import {WalletSimulator} from "../index";
 
 const secrets = require('../../_secrets/sec.json')
 jest.setTimeout(60000)
@@ -40,7 +41,7 @@ describe('CCTX connection to wallet test', () => {
             .toBeDefined()
     });
 
-    test.only('CCTX All Ticker Prices', async () => {
+    test('CCTX All Ticker Prices', async () => {
         const currencies = await client.getAllTickerPrices(['BTC/USDT','ETH','ltc']);
         console.log(currencies);
         expect(currencies).toBeDefined()
@@ -52,44 +53,28 @@ describe('CCTX connection to wallet test', () => {
         const symbols = await client.allSymbols();
         console.log(symbols);
     });
+
+    test('CCTX initWalletSimulator Chart', async () => {
+        const details:WalletSimulator = await client.initWalletSimulator();
+        fs.writeFileSync('./initWalletSimulator.json', details.exportToJson());
+        console.log(details.getTotalValue());
+    });
+
+
+    test('CCTX price of', async () => {
+        const price = await client.priceOf('LTC');
+        console.log(price);
+    });
+
+
+    test('CCTX getDate', async () => {
+        const date = await client.getCurrentTimeMs();
+        console.log(new Date(date).toISOString(), new Date().toISOString());
+    });
+
     /*
-        test('CCTX getBotDetailsLive Chart', async () => {
-            await bin.loadAllFiltersFor();
-            const details: VUserBotDetails = await bin.getBotDetailsLive();
-            fs.writeFileSync('./orders4.json', JSON.stringify(details));
-            console.log(JSON.stringify(details));
-        });
-
-        test('CCTX global filters', async () => {
-            GlobalCronometer2.RESET_NOW();
-            const filters = await bin.loadAllFiltersFor();
-            console.log(GlobalCronometer2.DIFF_MS(), 'ms to load bin.loadAllFiltersFor()');
-            console.log(filters);
-        });
-
-        test('CCTX price of', async () => {
-            const price = await bin.priceOf('LTCUSDT');
-            console.log(price);
-        });
-
-        test('CCTX toFixedAmountForCCTX', async () => {
-            await bin.loadAllFiltersFor();
-            const adapted = await bin.toFixedAmount(Crypto.LTC, 12.2396233);
-            console.log(adapted);
-        });
-
-        test.skip('CCTX Symbol Info', async () => {
-            const symbolInfo = await bin.getSymbolInfo(Crypto.SHIB);
-            console.log(symbolInfo);
-        });
-
-        test('CCTX getDate', async () => {
-            const date = await bin.getDate();
-            console.log(new Date(date).toISOString(), new Date().toISOString());
-        });
-
         test('CCTX Create Buy Order TEST', async () => {
-            const payload: any = await bin.createOrderPayload(
+            const payload: any = await client.createOrderPayload(
                 MoveType.BUY,
                 Crypto.DOGE,
                 BaseCurrency.USD,
@@ -99,9 +84,9 @@ describe('CCTX connection to wallet test', () => {
             const newOrderResponse = await bin.createOrder(payload);
             console.log(newOrderResponse);
 
-            expect(newOrderResponse).toEqual({});
+            exct(newOrderResponse).toEqual({});
         });
-
+        /*
         test('CCTX Create Sell Order TEST', async () => {
             const payload: any = await bin.createOrderPayload(
                 MoveType.SELL,
@@ -169,5 +154,5 @@ describe('CCTX connection to wallet test', () => {
                 console.log(newOrderResponse);
                 expect(newOrderResponse).toEqual({});
             });
-         */
+             */
 });
