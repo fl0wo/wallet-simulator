@@ -1,17 +1,27 @@
 import {
+    addProfits,
     arrayToObjectKeys,
+    cctxTradeToWalletSimulatorTrade,
     getSafeNull,
     getSafeOrThrow,
-    objToArrayKeys,
-    cctxTradeToWalletSimulatorTrade, addProfits
+    objToArrayKeys
 } from "./general";
 import {Exchange, Trade} from 'ccxt';
 import {TradeMove} from "../models/Trade";
 import {daysBefore} from "./mock";
 import {MyWalletAccount} from "../models/MyWalletAccount";
 import {WalletSimulator} from "../index";
-import {defineWalletSnapshots, WalletTrendSnapshot} from "./cctx-extensions/binance/wallet-snapshots";
-import * as assert from "assert";
+import {WalletTrendSnapshot} from "./cctx-extensions/binance/wallet-snapshots";
+
+export enum CCTXWrapperError {
+    DDOS='DDOS',
+    NETWORK='NETWORK',
+    AUTH='AUTH',
+    EXCHANGE_NOT_AVAILABLE='EXCHANGE_NOT_AVAILABLE',
+    EXCHANGE_ERROR='EXCHANGE_ERROR',
+    TIMEOUT='TIMEOUT',
+    GENERAL='GENERAL',
+}
 
 const ccxt = require('ccxt');
 
@@ -33,20 +43,26 @@ export class CCTXWrapper {
         'BUSD'
     ]
 
-    public static getClientWith(api:string, secret:string,exchangeId = 'binance'):CCTXWrapper {
+    public static async getClientWith(api:string, secret:string,exchangeId = 'binance'):Promise<CCTXWrapper> {
         const exchangeClass = getSafeOrThrow(ccxt[exchangeId],`${exchangeId} exchange not supported.`);
-        return new CCTXWrapper(new exchangeClass({
+        const wrapper = new CCTXWrapper(new exchangeClass({
             'apiKey': api,
             'secret': secret,
         }));
+        const res:any = await wrapper.initMarketData();
+
+        if(res in CCTXWrapperError) {
+            throw Error(res);
+        }
+
+        return wrapper;
     }
 
     public async initWalletSimulator() {
 
         const holdings = await this.getAllHoldings();
-        const ownedCryptoAssets = Object.keys(holdings)
-            .filter(el=>el!=='USDT' && el!=='EUR' && el!=='USD')
-            ?.map(el=>`${el}/USDT`)
+
+        const ownedCryptoAssets = Object.keys(holdings);
         const pricesPromise = this.getAllTickerPrices(ownedCryptoAssets);
         const daySnapshotsPromise:Promise<Array<WalletTrendSnapshot>> = this.walletSnapshots()
         const _tradesPromise = this.getMyTrades()
@@ -77,10 +93,43 @@ export class CCTXWrapper {
         if (!cctxExchange) {
             throw Error('null cctxExchange client object!');
         }
-
-        // Extra functions
-        defineWalletSnapshots();
         cctxExchange.checkRequiredCredentials();
+    }
+
+    public async initMarketData(){
+        return await this.wrapCatchableOperation(async (exchange: Exchange) => {
+            return await exchange.loadMarkets();
+        });
+    }
+
+    private async wrapCatchableOperation<T=any>(fn: (exchange: Exchange) => Promise<T>) {
+        const exchange = this.cctxExchange
+        try {
+            return await fn(exchange); // Run cctx function
+        } catch (e: any) {
+            if (e instanceof ccxt.DDoSProtection) {
+                console.log(exchange.id, '[DDoSProtection] ' + e.message)
+                return CCTXWrapperError.DDOS
+            } else if (e instanceof ccxt.RequestTimeout) {
+                console.log(exchange.id, '[Request Timeout] ' + e.message)
+                return CCTXWrapperError.TIMEOUT
+            } else if (e instanceof ccxt.AuthenticationError) {
+                console.log(exchange.id, '[Authentication Error] ' + e.message)
+                return CCTXWrapperError.AUTH
+            } else if (e instanceof ccxt.ExchangeNotAvailable) {
+                console.log(exchange.id, '[Exchange Not Available] ' + e.message)
+                return CCTXWrapperError.EXCHANGE_NOT_AVAILABLE
+            } else if (e instanceof ccxt.ExchangeError) {
+                console.log(exchange.id, '[Exchange Error] ' + e.message)
+                return CCTXWrapperError.EXCHANGE_ERROR
+            } else if (e instanceof ccxt.NetworkError) {
+                console.log(exchange.id, '[Network Error] ' + e.message)
+                return CCTXWrapperError.NETWORK
+            } else {
+                console.log(exchange.id, '[General Error] ' + e.message)
+                return CCTXWrapperError.GENERAL;
+            }
+        }
     }
 
     public async walletSnapshots():Promise<Array<WalletTrendSnapshot>>{
@@ -96,7 +145,7 @@ export class CCTXWrapper {
         return []
     }
 
-    allSymbols(): Promise<any> {
+    async allSymbols(): Promise<any> {
         return Promise.resolve(this.cctxExchange.symbols)
     }
 
@@ -112,7 +161,6 @@ export class CCTXWrapper {
         function CCTX2WalletAccount(cctxBalanceParam:any) {
             const balanceUSDTether = cctxBalanceParam.USDT
             const buyingPowerUSDTether = getSafeNull(balanceUSDTether?.free, '0');
-
             return {
                 buyPowerUSDT: buyingPowerUSDTether,
                 cctxBalance:cctxBalanceParam
@@ -199,23 +247,22 @@ export class CCTXWrapper {
     }
 
     async getAllTickerPrices(desiredSymbols?:string[]) {
+        let availableSymbols:string[] = await this.getOnlySymbolsInUSDT(desiredSymbols);
+        return await this.cctxExchange.fetchTickers(availableSymbols)
+    }
 
-        const allSymbols:any[] = await this.allSymbols()
+    private async getOnlySymbolsInUSDT(desiredSymbols?: string[]) {
+        if (desiredSymbols) {
+            return desiredSymbols
+                .filter(el => el !== 'USDT' && el !== 'EUR' && el !== 'USD')
+                ?.map((el)=>el.toUpperCase())
+                ?.map(el => el.includes('/USDT')?el:`${el}/USDT`);
+        }
 
-        let availableSymbols = getSafeNull(desiredSymbols,[])
-            .filter((el:any)=>allSymbols.includes(el));
+        const allSymbols:string[] = await this.allSymbols();
 
-        if(availableSymbols.length===0) availableSymbols = undefined;
-
-        const tickers = await this.cctxExchange.fetchTickers(availableSymbols);
-
-        return arrayToObjectKeys(
-            objToArrayKeys(tickers)
-            .filter((asset)=>tickers[asset] && tickers[asset].close)
-            .map((asset)=> {
-                    return {[asset.split('/')[0]]:tickers[asset].close}
-            }).concat({'USDT':1})
-        )
+        return allSymbols
+            .filter(el => el !== 'USDT' && el !== 'EUR' && el !== 'USD')
     }
 
     showRequiredCredentials() {

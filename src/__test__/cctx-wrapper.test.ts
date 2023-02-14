@@ -2,12 +2,33 @@ import {CCTXWrapper} from "../utils/cctx-wrapper";
 import * as fs from 'fs';
 
 const secrets = require('../../_secrets/sec.json')
+let client:CCTXWrapper;
 
 jest.setTimeout(60000)
 
-describe.skip('CCTX Wrapper',()=>{
+describe.skip('WalletTrend',()=>{
+    beforeAll(async () => {
+        client = await CCTXWrapper.getClientWith(secrets.floApi, secrets.floSecret);
+    })
 
-    const client = CCTXWrapper.getClientWith(secrets.dallaApi,secrets.dallaSecret);
+    it('normal wallet trend',async () => {
+        const w = await client.initWalletSimulator();
+        const snapshots = w.getTrendBalanceSnapshotsCalculated(30,new Date());
+        console.log(JSON.stringify(snapshots))
+    })
+
+    it.only('orders list',async () => {
+        const _tradesPromise = await client.getMyTrades()
+        console.log(_tradesPromise)
+    })
+
+})
+
+
+describe.skip('CCTX Wrapper',()=>{
+    beforeAll(async () => {
+        client = await CCTXWrapper.getClientWith(secrets.floApi, secrets.floSecret);
+    })
 
     test('with client api keys ok',async () => {
         expect(client).toBeDefined()
@@ -65,14 +86,14 @@ describe.skip('CCTX Wrapper',()=>{
     });
 
     test('getAllTickerPrices ok',async () => {
-        const allPrices = await client.getAllTickerPrices()
+        const allPrices = await client.getAllTickerPrices(['BTC','ETHW'])
 
         expect(allPrices)
             .toBeDefined()
     });
 
     test('getAllTickerPrices with weird symbol ok',async () => {
-        const allPrices = await client.getAllTickerPrices(['BTC/USDT','ETHW/USDT']);
+        const allPrices = await client.getAllTickerPrices(['BTC','ETHW']);
         expect(allPrices)
             .toBeDefined()
     });

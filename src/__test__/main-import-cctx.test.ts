@@ -10,7 +10,7 @@ let wallet:any;
 
 async function getWallet():Promise<WalletSimulator> {
     if (!wallet) {
-        const client = CCTXWrapper.getClientWith(secrets.api, secrets.secret);
+        const client = await CCTXWrapper.getClientWith(secrets.api, secrets.secret);
         wallet = await client.initWalletSimulator();
     }
     return wallet;
