@@ -7,7 +7,7 @@ import {
     objToArrayKeys,
     removeEmpty
 } from "./general";
-import {Exchange, Order, Params, Ticker, Trade} from 'ccxt';
+import {Exchange, Market, Order, Params, Ticker, Trade} from 'ccxt';
 import {daysBefore} from "./mock";
 import {MyWalletAccount} from "../models/MyWalletAccount";
 import {WalletSimulator} from "../index";
@@ -368,7 +368,11 @@ export class CCTXWrapper {
     }
 
 
-    async getPositions():Promise<CCTXPositions> {
+    /**
+     * Returns CCTXPositions object containing currently running orders already filled.
+     * Its similar to AllHoldings but returns more information such as % p&l & price
+     */
+    async getOpenedPositions():Promise<CCTXPositions> {
         const account: MyWalletAccount = await this.getAccount();
         const ownedHoldings: {
             [asset: string]: {
@@ -473,5 +477,9 @@ export class CCTXWrapper {
         return (await Promise.all(allCancelOperations))
             .filter((el)=>!!el)
 
+    }
+
+    getMinimumBuyAmountForSymbol(symbol: string):Market {
+        return this.cctxExchange.market(symbol)
     }
 }

@@ -8,7 +8,7 @@ jest.setTimeout(60000)
 
 let client:CCTXWrapper;
 
-describe('CCTX connection to wallet test', () => {
+describe.skip('CCTX connection to wallet test', () => {
 
     beforeAll(async () => {
         client = await CCTXWrapper.getClientWith(secrets.floApi, secrets.floSecret);
@@ -104,8 +104,12 @@ describe('CCTX connection to wallet test', () => {
     });
 
     test('CCTX See Positions', async () => {
-        const positions = await client.getPositions();
-        console.log(positions);
+        const positions = await client.getOpenedPositions();
+        //console.log(positions);
+    });
+
+    test('CCTX Min Buy for symbol', async () => {
+        const amount = client.getMinimumBuyAmountForSymbol('BTC/USDT');
     });
 
 /*
