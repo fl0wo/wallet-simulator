@@ -48,7 +48,7 @@
   },
   "dependencies": {
     "binance-api-node": "^0.12.2",
-    "ccxt": "^2.6.30",
+    "ccxt": "^2.7.95",
     "fs": "^0.0.1-security",
     "node-binance-api": "^0.13.1"
   }

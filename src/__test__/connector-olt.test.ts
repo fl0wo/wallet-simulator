@@ -14,12 +14,15 @@ describe('CCTX connection to wallet test', () => {
         client = await CCTXWrapper.getClientWith(secrets.floApi, secrets.floSecret);
     })
 
-    test('CCTX Connection', async () => {
+    test('CCTX getAccount', async () => {
+        // Use this to fetch BUY POWER
         const account: MyWalletAccount = await client.getAccount();
         expect(account.buyPowerUSDT)
             .toBeGreaterThan(50);
         expect(account.cctxBalance)
             .toBeDefined();
+
+        console.log(JSON.stringify(account))
     });
 
     test('CCTX My Trades', async () => {
@@ -44,7 +47,6 @@ describe('CCTX connection to wallet test', () => {
         console.log(currencies);
         expect(currencies).toBeDefined()
         expect(currencies['LTC/USDT']).toBeDefined()
-
     });
 
     test('CCTX Symbols', async () => {
@@ -70,70 +72,67 @@ describe('CCTX connection to wallet test', () => {
         console.log(new Date(date).toISOString(), new Date().toISOString());
     });
 
-    test.only('CCTX Create Buy Order', async () => {
+    test('CCTX Create Buy Order', async () => {
         const payload: any = client.createOrderPayload({
             type:'limit',
             side:'buy',
             symbol:'BTC/USDT',
-            amount:0.00324,
+            amount:0.00224,
             price: 20000, // <- buy @ this price
-            // stopLossPrice:1, // <- stop-loss @ this price
-            // takeProfitPrice:52200 // <- take-home @ this price
+            // stopLossPrice:18000, // <- stop-loss @ this price
+            // takeProfitPrice:25200 // <- take-home @ this price
         });
+
         console.log(payload);
         const newOrderResponse = await client.sendOrder(payload);
         console.log(newOrderResponse);
     });
 
-    /*
-        test('CCTX Total Balance', async () => {
-            const totBalance = await bin.getTotalBalance();
-            console.log(totBalance);
+    test('CCTX Get Trade Fees', async () => {
+        const tradeFees = await client.getTradeFee('ETH/USDT');
+        console.log(tradeFees);
+    });
+
+    test('CCTX Get Holdings', async () => {
+        const allHoldings = await client.getAllHoldings();
+        console.log(allHoldings)
+    });
+
+    test.only('CCTX See Positions', async () => {
+        const positions = await client.getPositions();
+        console.log(positions);
+    });
+
+    test('CCTX See Positions', async () => {
+        const positions = await client.getPositions();
+        console.log(positions);
+    });
+/*
+    test
+        .each([
+            {coin: Crypto.DOGE, amount: 129.283476},
+            {coin: Crypto.BTC, amount: 0.0719274568323},
+            {coin: Crypto.ETH, amount: 0.0719274568323},
+            {coin: Crypto.SHIB, amount: (637048 + 318524) + 10000000.10291673},
+            {coin: Crypto.MANA, amount: 122.126233},
+            {coin: Crypto.LTC, amount: 0.1725},
+            {coin: Crypto.XRP, amount: 31.2121346},
+            {coin: Crypto.DOT, amount: 5.58},
+            {coin: Crypto.ADA, amount: 221.82132345},
+
+        ])('CCTX TRUSTED_CRYPTOS SELL TEST ALL', async (
+            args: { coin: Crypto; amount: number }) => {
+            (await bin.loadAllFiltersFor());
+            const payload: any = await bin.createOrderPayload(
+                MoveType.SELL,
+                args.coin,
+                BaseCurrency.USD,
+                args.amount,
+                //0.028
+            );
+            const newOrderResponse = await bin.createOrder(payload, false);
+            console.log(newOrderResponse);
+            expect(newOrderResponse).toEqual({});
         });
-
-        test('CCTX Get Trade Fees', async () => {
-            const tradeFees = await bin.getTradeFee();
-            console.log(tradeFees);
-        });
-
-        test('CCTX Get Position', async () => {
-            // @ts-ignore
-            const position: Position[] = await bin.getPositionWithSymbol(
-                bin.toLocalAsset(Crypto.DOGE, BaseCurrency.USD));
-            console.log(position);
-        });
-
-        test('CCTX See Positions % Diffs', async () => {
-            // @ts-ignore
-            const positions: Position[] = await bin.getPositions();
-            console.log(positions.map(pos => `${pos.unrealized_plpc}%`));
-        });
-
-        test
-            .each([
-                {coin: Crypto.DOGE, amount: 129.283476},
-                {coin: Crypto.BTC, amount: 0.0719274568323},
-                {coin: Crypto.ETH, amount: 0.0719274568323},
-                {coin: Crypto.SHIB, amount: (637048 + 318524) + 10000000.10291673},
-                {coin: Crypto.MANA, amount: 122.126233},
-                {coin: Crypto.LTC, amount: 0.1725},
-                {coin: Crypto.XRP, amount: 31.2121346},
-                {coin: Crypto.DOT, amount: 5.58},
-                {coin: Crypto.ADA, amount: 221.82132345},
-
-            ])('CCTX TRUSTED_CRYPTOS SELL TEST ALL', async (
-                args: { coin: Crypto; amount: number }) => {
-                (await bin.loadAllFiltersFor());
-                const payload: any = await bin.createOrderPayload(
-                    MoveType.SELL,
-                    args.coin,
-                    BaseCurrency.USD,
-                    args.amount,
-                    //0.028
-                );
-                const newOrderResponse = await bin.createOrder(payload, false);
-                console.log(newOrderResponse);
-                expect(newOrderResponse).toEqual({});
-            });
-             */
+ */
 });

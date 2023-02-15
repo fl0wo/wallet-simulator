@@ -150,6 +150,17 @@ export function removeEmpty(baseObj:any) {
         .reduce((acc, [k, v]) => ({ ...acc, [k]: v }), {});
 }
 
+export function hideFields<T>(obj: T|any, fields: Array<string>):T {
+    if(!obj) {
+        return obj;
+    }
+    fields.forEach((f)=>{
+        if((obj as any).hasOwnProperty(f)){
+            delete obj[f];
+        }
+    });
+    return obj;
+}
 
 export function replacer(key:any, value:any) {
     if(value instanceof Map) {
