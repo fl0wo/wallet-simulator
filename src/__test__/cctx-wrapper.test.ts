@@ -14,12 +14,12 @@ describe.skip('WalletTrend',()=>{
     it('normal wallet trend',async () => {
         const w = await client.initWalletSimulator();
         const snapshots = w.getTrendBalanceSnapshotsCalculated(30,new Date());
-        console.log(JSON.stringify(snapshots))
+        // console.log(JSON.stringify(snapshots))
     })
 
-    it.only('orders list',async () => {
+    it('orders list',async () => {
         const _tradesPromise = await client.getMyTrades()
-        console.log(_tradesPromise)
+        // console.log(_tradesPromise)
     })
 
 })
@@ -93,7 +93,7 @@ describe.skip('CCTX Wrapper',()=>{
     });
 
     test('getAllTickerPrices with weird symbol ok',async () => {
-        const allPrices = await client.getAllTickerPrices(['BTC','ETHW']);
+        const allPrices = await client.getAllTickerPrices(['BTC/USDT','ETHW/USDT']);
         expect(allPrices)
             .toBeDefined()
     });

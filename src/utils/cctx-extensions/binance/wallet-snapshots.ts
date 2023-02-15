@@ -54,8 +54,6 @@ export class BinanceConnector {
 
         const snapshots: Array<WalletTrendSnapshot> = el.snapshotVos
             .map((singleSnapshot) => {
-                console.log(singleSnapshot);
-
                 const snap: WalletTrendSnapshot = {
                     time: singleSnapshot.updateTime,
                     amountInBTC: singleSnapshot.data.totalAssetOfBtc,

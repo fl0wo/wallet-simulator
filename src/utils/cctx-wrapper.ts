@@ -15,6 +15,16 @@ import * as crypto from 'crypto';
 
 const ccxt = require('ccxt');
 
+export interface CCTXPosition{
+    symbol: string;
+    positionSize: number;
+    curPrice: number;
+    spentPrice: number;
+    positionValue: number;
+    unrealizedPnl: number;
+    unrealizedPnlPercentage: number;
+}
+
 export interface CCTXOrder {
     datetime: string;
     timestamp: number;
@@ -31,16 +41,8 @@ export interface CCTXOrder {
     takeProfitPrice?: number;
 
 }
-export interface CCTXPosition{
-    [symbol:string]:{
-        symbol:string,
-        positionSize:number,
-        curPrice:number,
-        spentPrice:number,
-        positionValue:number,
-        unrealizedPnl:number,
-        unrealizedPnlPercentage:number,
-    }
+export interface CCTXPositions{
+    [symbol:string]:CCTXPosition
 }
 
 interface CCTXOrderPayload {
@@ -150,11 +152,6 @@ export class CCTXWrapper {
             takeProfitPrice: ifHas(order.takeProfitPrice)
         })
 
-        console.log('Sending an order:', {
-            ...order,
-            ...params
-        })
-
         const exchange = this.cctxExchange;
         const side = getSafeOrThrow(order.side, 'order.side missing')
         const type = getSafeOrThrow(order.type, 'order.type missing')
@@ -166,15 +163,6 @@ export class CCTXWrapper {
         const formattedAmount = exchange.amountToPrecision(symbol, amount);
         const formattedPrice = exchange.priceToPrecision(symbol, price);
         // round_step_size(price - (price * (stop_percent / 100)), tick);
-
-        console.log({
-            symbol,
-            type,
-            side,
-            formattedAmount,
-            formattedPrice,
-            params
-        })
 
         return await exchange.createOrder(
             symbol,
@@ -296,8 +284,8 @@ export class CCTXWrapper {
         return this.cctxExchange.fetchTradingFee(symbol)
     }
 
-    toLocalAsset(crypto: string, base: string): string {
-        return `${crypto}/${base}`;
+    toLocalAsset(coin: string, base: string): string {
+        return `${coin}/${base}`;
     }
 
     async priceOf(symbol: string) {
@@ -314,7 +302,7 @@ export class CCTXWrapper {
     }
 
     async getAllTickerPrices(desiredSymbols?: string[]): Promise<{ [asset: string]: Ticker }> {
-        let availableSymbols: string[] = await this.getOnlySymbolsInUSDT(desiredSymbols);
+        const availableSymbols: string[] = await this.getOnlySymbolsInUSDT(desiredSymbols);
         return await this.cctxExchange.fetchTickers(availableSymbols)
     }
 
@@ -360,19 +348,19 @@ export class CCTXWrapper {
             return await fn(exchange); // Run cctx function
         } catch (e: any) {
             if (e instanceof ccxt.DDoSProtection) {
-                console.log(exchange.id, '[DDoSProtection] ' + e.message)
+                // console.log(exchange.id, '[DDoSProtection] ' + e.message)
             } else if (e instanceof ccxt.RequestTimeout) {
-                console.log(exchange.id, '[Request Timeout] ' + e.message)
+                // console.log(exchange.id, '[Request Timeout] ' + e.message)
             } else if (e instanceof ccxt.AuthenticationError) {
-                console.log(exchange.id, '[Authentication Error] ' + e.message)
+                // console.log(exchange.id, '[Authentication Error] ' + e.message)
             } else if (e instanceof ccxt.ExchangeNotAvailable) {
-                console.log(exchange.id, '[Exchange Not Available] ' + e.message)
+                // console.log(exchange.id, '[Exchange Not Available] ' + e.message)
             } else if (e instanceof ccxt.ExchangeError) {
-                console.log(exchange.id, '[Exchange Error] ' + e.message)
+                // console.log(exchange.id, '[Exchange Error] ' + e.message)
             } else if (e instanceof ccxt.NetworkError) {
-                console.log(exchange.id, '[Network Error] ' + e.message)
+                // console.log(exchange.id, '[Network Error] ' + e.message)
             } else {
-                console.log(exchange.id, '[General Error] ' + e.message)
+                // console.log(exchange.id, '[General Error] ' + e.message)
             }
 
             throw e;
@@ -380,7 +368,7 @@ export class CCTXWrapper {
     }
 
 
-    async getPositions():Promise<CCTXPosition> {
+    async getPositions():Promise<CCTXPositions> {
         const account: MyWalletAccount = await this.getAccount();
         const ownedHoldings: {
             [asset: string]: {
@@ -410,7 +398,7 @@ export class CCTXWrapper {
                         }
                     }
                 }catch (e){
-                    console.log('error processing ',ownedAsset)
+                    // console.error('error processing ',ownedAsset)
                     return null;
                 }
             })
@@ -436,15 +424,15 @@ export class CCTXWrapper {
                     [symbol]:{
                         symbol,
                         positionSize,
-                        curPrice:curPrice,
-                        spentPrice:spentPrice,
+                        curPrice,
+                        spentPrice,
                         positionValue,
                         unrealizedPnl,
                         unrealizedPnlPercentage,
                     }
                 };
             }catch (e){
-                console.log('error processing ',symbol)
+                // console.log('error processing ',symbol)
                 return null;
             }
         })
@@ -467,5 +455,23 @@ export class CCTXWrapper {
         return recentOrders
             .sort((a,b)=>b.timestamp-a.timestamp)
             .find((el)=> (!type || el.side === type.toLowerCase()))
+    }
+
+    async cancelAllOrders() {
+        const allOwnings = await this.getAllHoldings();
+        const allCancelOperations = Object.keys(allOwnings)
+            .filter((el)=>this.notStableCoin(el))
+            .map(this.concatUSDT)
+            .map(async (symbol) => {
+                try{
+                    const res =  await this.cctxExchange.cancelAllOrders('BTC/USDT');
+                    return res;
+                }catch (e){}
+                return null;
+            })
+
+        return (await Promise.all(allCancelOperations))
+            .filter((el)=>!!el)
+
     }
 }

@@ -22,7 +22,7 @@ describe('CCTX connection to wallet test', () => {
         expect(account.cctxBalance)
             .toBeDefined();
 
-        console.log(JSON.stringify(account))
+        // console.log(JSON.stringify(account))
     });
 
     test('CCTX My Trades', async () => {
@@ -36,7 +36,7 @@ describe('CCTX connection to wallet test', () => {
 
     test('CCTX All Currencies', async () => {
         const currencies = await client.getAllCurrencies();
-        console.log(Object.keys(currencies));
+        // console.log(Object.keys(currencies));
         fs.writeFileSync('./currencies.json', JSON.stringify(Object.keys(currencies)))
         expect(currencies)
             .toBeDefined()
@@ -44,32 +44,32 @@ describe('CCTX connection to wallet test', () => {
 
     test('CCTX All Ticker Prices', async () => {
         const currencies = await client.getAllTickerPrices(['BTC/USDT','ETH','ltc']);
-        console.log(currencies);
+        // console.log(currencies);
         expect(currencies).toBeDefined()
         expect(currencies['LTC/USDT']).toBeDefined()
     });
 
     test('CCTX Symbols', async () => {
         const symbols = await client.allSymbols();
-        console.log(symbols);
+        // console.log(symbols);
     });
 
     test('CCTX initWalletSimulator Chart', async () => {
         const details:WalletSimulator = await client.initWalletSimulator();
         fs.writeFileSync('./initWalletSimulator.json', details.exportToJson());
-        console.log(details.getTotalValue());
+        // console.log(details.getTotalValue());
     });
 
 
     test('CCTX price of', async () => {
         const price = await client.priceOf('LTC');
-        console.log(price);
+        // console.log(price);
     });
 
 
     test('CCTX getDate', async () => {
         const date = await client.getCurrentTimeMs();
-        console.log(new Date(date).toISOString(), new Date().toISOString());
+        // console.log(new Date(date).toISOString(), new Date().toISOString());
     });
 
     test('CCTX Create Buy Order', async () => {
@@ -83,30 +83,31 @@ describe('CCTX connection to wallet test', () => {
             // takeProfitPrice:25200 // <- take-home @ this price
         });
 
-        console.log(payload);
+        // console.log(payload);
         const newOrderResponse = await client.sendOrder(payload);
-        console.log(newOrderResponse);
+         console.log(newOrderResponse);
     });
 
     test('CCTX Get Trade Fees', async () => {
         const tradeFees = await client.getTradeFee('ETH/USDT');
-        console.log(tradeFees);
+        // console.log(tradeFees);
     });
 
     test('CCTX Get Holdings', async () => {
         const allHoldings = await client.getAllHoldings();
-        console.log(allHoldings)
+        // console.log(allHoldings)
     });
 
-    test.only('CCTX See Positions', async () => {
-        const positions = await client.getPositions();
-        console.log(positions);
+    test('CCTX cancel All Orders', async () => {
+        const closed = await client.cancelAllOrders();
+        console.log(closed);
     });
 
     test('CCTX See Positions', async () => {
         const positions = await client.getPositions();
         console.log(positions);
     });
+
 /*
     test
         .each([
