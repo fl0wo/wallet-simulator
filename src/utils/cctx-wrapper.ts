@@ -468,10 +468,12 @@ export class CCTXWrapper {
             .map(this.concatUSDT)
             .map(async (symbol) => {
                 try{
-                    const res =  await this.cctxExchange.cancelAllOrders('BTC/USDT');
+                    const res =  await this.cctxExchange.cancelAllOrders(symbol);
                     return res;
-                }catch (e){}
-                return null;
+                }catch (e){
+                    // do nothing
+                    return null;
+                }
             })
 
         return (await Promise.all(allCancelOperations))
