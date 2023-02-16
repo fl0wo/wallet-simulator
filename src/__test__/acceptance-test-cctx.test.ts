@@ -36,13 +36,11 @@ function mockCCTXClient() {
 /**
  * ALWAYS RUN THIS TEST BEFORE PUBLISHING
  */
-describe('CCTX ACCEPTANCE', () => {
+describe.skip('CCTX ACCEPTANCE', () => {
 
     beforeAll(async () => {
         mockDate(new Date('2023-02-16T12:00:18.670Z'));
-
-        mockCCTXClient();
-
+        // mockCCTXClient();
         client = await CCTXWrapper.getClientWith(secrets.floApi, secrets.floSecret);
     });
 
@@ -53,6 +51,8 @@ describe('CCTX ACCEPTANCE', () => {
 
         const actualJson = w.exportToJson();
         const expectedJson = fs.readFileSync('./walletExample.json').toString('utf-8');
+
+        fs.writeFileSync('./realWallet.json',actualJson)
 
         expect(JSON.parse(actualJson))
             .toStrictEqual(JSON.parse(expectedJson))

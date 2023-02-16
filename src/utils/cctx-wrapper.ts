@@ -101,20 +101,16 @@ export class CCTXWrapper {
 
         const holdings = await this.getAllHoldings();
         const ownedCryptoAssets = Object.keys(holdings);
-        const pricesPromise = this.getAllTickerPrices(ownedCryptoAssets);
-        const _tradesPromise = this.getMyTrades();
-        const _positionsPromise = this.getOpenedPositions();
-
-        const [prices, _trades,_positions] = await Promise.all([
-            pricesPromise, _tradesPromise, _positionsPromise
-        ])
+        const prices = await this.getAllTickerPrices(ownedCryptoAssets);
+        const _trades = await this.getMyTrades();
+        const positions = await this.getOpenedPositions();
 
         const w: WalletSimulator = new WalletSimulator(0, {
             holdings,
             prices: cctxPriceToWalletSimulatorPrice(prices),
             daySnapshots: [],
             _trades: addProfits(_trades.map(cctxTradeToWalletSimulatorTrade)),
-            positions: _positions
+            positions: positions
         });
 
         return w;
