@@ -114,7 +114,7 @@ export class CCTXWrapper {
             prices: cctxPriceToWalletSimulatorPrice(prices),
             daySnapshots: [],
             _trades: addProfits(_trades.map(cctxTradeToWalletSimulatorTrade)),
-            // positions: _positions
+            positions: _positions
         });
 
         return w;
@@ -238,12 +238,9 @@ export class CCTXWrapper {
                 cctxBalance: cctxBalanceParam
             };
         }
-
-        return await this.wrapCatchableOperation(async (exchange: Exchange) => {
-            const fetchAccountOperation = await exchange.fetchBalance();
-            const cctxBalance = getSafeOrThrow(fetchAccountOperation, 'cctxExchange.fetchBalance error!');
-            return CCTX2WalletAccount(cctxBalance);
-        });
+        const fetchAccountOperation = await this.cctxExchange.fetchBalance();
+        const cctxBalance = getSafeOrThrow(fetchAccountOperation, 'cctxExchange.fetchBalance error!');
+        return CCTX2WalletAccount(cctxBalance);
     }
 
     getCurrentTimeMs(): Promise<number> {
@@ -373,7 +370,7 @@ export class CCTXWrapper {
 
     /**
      * Returns CCTXPositions object containing currently running orders already filled.
-     * Its similar to AllHoldings but returns more information such as % p&l & price
+     * It's similar to AllHoldings but returns more information such as % p&l & price.
      */
     async getOpenedPositions():Promise<CCTXPositions> {
         const account: MyWalletAccount = await this.getAccount();
@@ -463,6 +460,7 @@ export class CCTXWrapper {
 
     async getLastOrder(symbol: string,type?:string):Promise<Order | undefined> {
         const recentOrders:Order[] = await this.cctxExchange.fetchClosedOrders(symbol,undefined,50)
+        fs.writeFileSync('./src/__mock__/fetchClosedOrders'+symbol.replace('/','_')+'.json',JSON.stringify(recentOrders))
         return recentOrders
             .sort((a,b)=>b.timestamp-a.timestamp)
             .find((el)=> (!type || el.side === type.toLowerCase()))

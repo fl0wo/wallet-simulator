@@ -46,7 +46,7 @@ export const mockCCTXMethodReturn = (methodName: string, returnResult: any,excha
 
     // Override the method with a Jest mock function.
     ExchangeClass.prototype[methodName] = jest.fn(() => {
-        console.log(`mocked function called: ${methodName}`)
+        // console.log(`mocked function called: ${methodName}`)
         return returnResult
     });
 

@@ -1828,5 +1828,70 @@
   },
   "costBasis": {},
   "daySnapshots": [],
-  "_creationAt": "2023-02-16T12:00:18.670Z"
+  "_creationAt": "2023-02-16T12:00:18.670Z",
+  "positions": {
+    "AVAX/USDT": {
+      "curPrice": 19.47,
+      "positionSize": 0.00537,
+      "positionValue": 0.10455389999999999,
+      "spentPrice": 17.93,
+      "symbol": "AVAX/USDT",
+      "unrealizedPnl": -0.000023689111138419644,
+      "unrealizedPnlPercentage": 8.588957055214719
+    },
+    "BTC/USDT": {
+      "curPrice": 24398.58,
+      "positionSize": 0.0000072,
+      "positionValue": 0.175669776,
+      "spentPrice": 23095.61,
+      "symbol": "BTC/USDT",
+      "unrealizedPnl": -1.6648416204165005e-11,
+      "unrealizedPnlPercentage": 5.641634925425226
+    },
+    "DOGE/USDT": {
+      "curPrice": 0.08732,
+      "positionSize": 0.894,
+      "positionValue": 0.07806408,
+      "spentPrice": 0.08817,
+      "symbol": "DOGE/USDT",
+      "unrealizedPnl": 0.09870107360894549,
+      "unrealizedPnlPercentage": -0.9640467279119922
+    },
+    "DOT/USDT": {
+      "curPrice": 6.51,
+      "positionSize": 2.69311,
+      "positionValue": 17.5321461,
+      "spentPrice": 6.581,
+      "symbol": "DOT/USDT",
+      "unrealizedPnl": 0.004463130256048373,
+      "unrealizedPnlPercentage": -1.0788633946208877
+    },
+    "ETH/USDT": {
+      "curPrice": 1675.52,
+      "positionSize": 0.00006821,
+      "positionValue": 0.1142872192,
+      "spentPrice": 1584.77,
+      "symbol": "ETH/USDT",
+      "unrealizedPnl": -2.3311961957685133e-9,
+      "unrealizedPnlPercentage": 5.726383008259874
+    },
+    "LTC/USDT": {
+      "curPrice": 100.83,
+      "positionSize": 0.00049,
+      "positionValue": 0.0494067,
+      "spentPrice": 90.5,
+      "symbol": "LTC/USDT",
+      "unrealizedPnl": -5.546998585771247e-7,
+      "unrealizedPnlPercentage": 11.414364640883976
+    },
+    "SOL/USDT": {
+      "curPrice": 23.24,
+      "positionSize": 1.41504,
+      "positionValue": 32.8855296,
+      "spentPrice": 23.7,
+      "symbol": "SOL/USDT",
+      "unrealizedPnl": 0.0011817948103444614,
+      "unrealizedPnlPercentage": -1.9409282700421977
+    }
+  }
 }
