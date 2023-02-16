@@ -5,6 +5,7 @@ import {WalletSimulator} from "../index";
 import {Trade as CCTXTrade} from 'ccxt';
 
 import * as crypto from 'crypto';
+import {CCTXWrapper} from "./cctx-wrapper";
 
 export const safeGet = <T, R = any>(object: T | undefined | null,
                                             safeCallback: (object: T) => R,
@@ -187,6 +188,17 @@ export const cctxTradeToWalletSimulatorTrade = (trade:CCTXTrade) => {
         type: trade.side==='buy'?TradeMove.BUY:TradeMove.SELL
     }
     return t;
+}
+
+export const cctxPriceToWalletSimulatorPrice = (prices:any)=>{
+    return arrayToObjectKeys(Object.keys(prices)
+        .map((symbol)=>{
+            const justCrypto = CCTXWrapper.removeUSDT(symbol)
+            return {
+                [justCrypto]: getSafeNull(prices[symbol].close,0)
+            }
+        })
+    )
 }
 
 

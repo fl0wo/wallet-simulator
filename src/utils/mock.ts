@@ -2,6 +2,8 @@
  * @param {Date} expected The date to which we want to freeze time
  * @returns {Function} Call to remove Date mocking
  */
+import * as ccxt from 'ccxt';
+
 export const mockDate = (expected: Date) => {
     const _Date = Date;
 
@@ -35,3 +37,65 @@ export const daysBefore = (d:Date, beforeDays:number) =>
 
 export const daysBetween = (currentDate:Date,nextDate:Date)=>
     Math.round((nextDate.getTime() - currentDate.getTime()) / (1000 * 60 * 60 * 24));
+
+export const mockCCTXMethodReturn = (methodName: string, returnResult: any,exchange:string='binance') => {
+    // @ts-ignore
+    const ExchangeClass = ccxt[exchange];
+    // Save a reference to the original method.
+    const originalMethod = ExchangeClass.prototype[methodName];
+
+    // Override the method with a Jest mock function.
+    ExchangeClass.prototype[methodName] = jest.fn(() => {
+        console.log(`mocked function called: ${methodName}`)
+        return returnResult
+    });
+
+    // Create a cleanup function to restore the original method.
+    const cleanup = () => {
+        ExchangeClass.prototype[methodName] = originalMethod;
+    };
+
+    // Return the cleanup function in case you want to restore the original method later.
+    return cleanup;
+};
+
+export const mockCCTXField = (fieldName: string, mockValue: any,exchange:string='binance') => {
+    // @ts-ignore
+    const ExchangeClass = ccxt[exchange];
+    // Save a reference to the original value of the field.
+    const originalValue = ExchangeClass.prototype[fieldName];
+
+    // Set the value of the field to the mock value.
+    ExchangeClass.prototype[fieldName] = mockValue;
+
+    // Create a cleanup function to restore the original value.
+    const cleanup = () => {
+        ExchangeClass.prototype[fieldName] = originalValue;
+    };
+
+    // Return the cleanup function in case you want to restore the original value later.
+    return cleanup;
+};
+
+export const mockCCTXMethod = (methodName: string, mockImplementation: (args: any[]) => any,exchange:string='binance') => {
+    // @ts-ignore
+    const ExchangeClass = ccxt[exchange];
+
+    // Save a reference to the original method.
+    const originalMethod = ExchangeClass.prototype[methodName];
+
+    // Create a Jest mock function that calls the mock implementation with the input parameters.
+    const mockFn = jest.fn((...args) => mockImplementation(args));
+
+    // Override the method with the Jest mock function.
+    ExchangeClass.prototype[methodName] = mockFn;
+
+    // Create a cleanup function to restore the original method.
+    const cleanup = () => {
+        ExchangeClass.prototype[methodName] = originalMethod;
+    };
+
+    // Return the cleanup function in case you want to restore the original method later.
+    return cleanup;
+};
+

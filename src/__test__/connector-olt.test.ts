@@ -85,7 +85,7 @@ describe.skip('CCTX connection to wallet test', () => {
 
         // console.log(payload);
         const newOrderResponse = await client.sendOrder(payload);
-         console.log(newOrderResponse);
+        // console.log(newOrderResponse);
     });
 
     test('CCTX Get Trade Fees', async () => {
@@ -100,12 +100,12 @@ describe.skip('CCTX connection to wallet test', () => {
 
     test('CCTX cancel All Orders', async () => {
         const closed = await client.cancelAllOrders();
-        console.log(closed);
+        // console.log(closed);
     });
 
     test('CCTX See Positions', async () => {
         const positions = await client.getOpenedPositions();
-        //console.log(positions);
+        // console.log(positions);
     });
 
     test('CCTX Min Buy for symbol', async () => {

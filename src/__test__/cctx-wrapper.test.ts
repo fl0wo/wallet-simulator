@@ -24,7 +24,6 @@ describe.skip('WalletTrend',()=>{
 
 })
 
-
 describe.skip('CCTX Wrapper',()=>{
     beforeAll(async () => {
         client = await CCTXWrapper.getClientWith(secrets.floApi, secrets.floSecret);
@@ -34,8 +33,8 @@ describe.skip('CCTX Wrapper',()=>{
         expect(client).toBeDefined()
         const w = await client.initWalletSimulator();
 
-        expect(w.getTrendBalanceSnapshotsCalculated(31,new Date()))
-            .toHaveLength(30);
+        expect(w.getTotalValue())
+            .toBeGreaterThan(30);
 
         fs.writeFileSync('./walletExported.json', w.exportToJson());
     });

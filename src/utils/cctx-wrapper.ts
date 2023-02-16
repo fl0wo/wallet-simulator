@@ -1,6 +1,6 @@
 import {
     addProfits,
-    arrayToObjectKeys,
+    arrayToObjectKeys, cctxPriceToWalletSimulatorPrice,
     cctxTradeToWalletSimulatorTrade,
     getSafeNull,
     getSafeOrThrow, hideFields,
@@ -12,6 +12,7 @@ import {daysBefore} from "./mock";
 import {MyWalletAccount} from "../models/MyWalletAccount";
 import {WalletSimulator} from "../index";
 import * as crypto from 'crypto';
+import * as fs from "fs";
 
 const ccxt = require('ccxt');
 
@@ -96,22 +97,24 @@ export class CCTXWrapper {
     /**
      * Todo apply good Decorator + Iterator pattern
      */
-    public async initWalletSimulator() {
+    public async initWalletSimulator():Promise<WalletSimulator>{
 
         const holdings = await this.getAllHoldings();
         const ownedCryptoAssets = Object.keys(holdings);
         const pricesPromise = this.getAllTickerPrices(ownedCryptoAssets);
-        const _tradesPromise = this.getMyTrades()
+        const _tradesPromise = this.getMyTrades();
+        const _positionsPromise = this.getOpenedPositions();
 
-        const [prices, _trades] = await Promise.all([
-            pricesPromise, _tradesPromise
+        const [prices, _trades,_positions] = await Promise.all([
+            pricesPromise, _tradesPromise, _positionsPromise
         ])
 
         const w: WalletSimulator = new WalletSimulator(0, {
             holdings,
-            prices,
+            prices: cctxPriceToWalletSimulatorPrice(prices),
             daySnapshots: [],
-            _trades: addProfits(_trades.map(cctxTradeToWalletSimulatorTrade))
+            _trades: addProfits(_trades.map(cctxTradeToWalletSimulatorTrade)),
+            // positions: _positions
         });
 
         return w;
@@ -311,7 +314,7 @@ export class CCTXWrapper {
             return desiredSymbols
                 .filter((el) => this.notStableCoin(el))
                 ?.map((el) => el.toUpperCase())
-                ?.map(el => el);
+                ?.map(el => this.concatUSDT(el));
         }
 
         const allSymbols: string[] = await this.allSymbols();
@@ -452,6 +455,10 @@ export class CCTXWrapper {
             return asset;
         }
         return `${asset}/USDT`;
+    }
+
+    public static removeUSDT(symbol:string){
+        return symbol.replace('/USDT','')
     }
 
     async getLastOrder(symbol: string,type?:string):Promise<Order | undefined> {
