@@ -1,7 +1,7 @@
 import {
     addProfits,
     arrayToObjectKeys, cctxPriceToWalletSimulatorPrice,
-    cctxTradeToWalletSimulatorTrade,
+    cctxTradeToWalletSimulatorTrade, cloneObj,
     getSafeNull,
     getSafeOrThrow, hideFields,
     objToArrayKeys,
@@ -12,7 +12,6 @@ import {daysBefore} from "./mock";
 import {MyWalletAccount} from "../models/MyWalletAccount";
 import {WalletSimulator} from "../index";
 import * as crypto from 'crypto';
-import * as fs from "fs";
 
 const ccxt = require('ccxt');
 
@@ -110,7 +109,7 @@ export class CCTXWrapper {
             prices: cctxPriceToWalletSimulatorPrice(prices),
             daySnapshots: [],
             _trades: addProfits(_trades.map(cctxTradeToWalletSimulatorTrade)),
-            positions: positions
+            positions: cloneObj(positions)
         });
 
         return w;
@@ -368,7 +367,7 @@ export class CCTXWrapper {
      * Returns CCTXPositions object containing currently running orders already filled.
      * It's similar to AllHoldings but returns more information such as % p&l & price.
      */
-    async getOpenedPositions():Promise<CCTXPositions> {
+    async getOpenedPositions():Promise<any> {
         const account: MyWalletAccount = await this.getAccount();
         const ownedHoldings: {
             [asset: string]: {
@@ -384,6 +383,8 @@ export class CCTXWrapper {
             .map(this.concatUSDT)
         );
 
+        console.log('test 1',assetsCurrentPrices)
+
         const fetchLastOrdersForEachOwnedAsset = ownedAssets
             .map(async (ownedAsset) => {
                 const obj = ownedHoldings[ownedAsset];
@@ -398,17 +399,20 @@ export class CCTXWrapper {
                         }
                     }
                 }catch (e){
-                    // console.error('error processing ',ownedAsset)
+                    console.error('error processing ',ownedAsset)
+                    console.log(e);
                     return null;
                 }
             })
 
-        const ownedPositions = arrayToObjectKeys(
-            (await Promise.all(fetchLastOrdersForEachOwnedAsset))
-                .filter((el)=>!!el)
-        )
+        const arrayOfPositions = (await Promise.all(fetchLastOrdersForEachOwnedAsset))
+            .filter((el)=>!!el)
 
-        const positions = Object.keys(ownedPositions).map((symbol) => {
+        const ownedPositions = arrayToObjectKeys(arrayOfPositions)
+
+        console.log('test 2 ownedPositions',ownedPositions)
+
+        const positions:any = Object.keys(ownedPositions).map((symbol) => {
             try{
                 const holdingAmount = getSafeOrThrow(ownedPositions[symbol], 'missing holding information');
                 const curPrice = getSafeOrThrow(assetsCurrentPrices[symbol].close, 'Unknown curPrice for ' + symbol);
@@ -432,14 +436,16 @@ export class CCTXWrapper {
                     }
                 };
             }catch (e){
-                // console.log('error processing ',symbol)
+                console.log('error processing ',symbol)
                 return null;
             }
         })
 
+        console.log('test 3 positions',positions)
+
         return arrayToObjectKeys(
             positions
-                .filter((el)=>!!el)
+                .filter((el: any)=>!!el)
         )
     }
 
@@ -456,7 +462,6 @@ export class CCTXWrapper {
 
     async getLastOrder(symbol: string,type?:string):Promise<Order | undefined> {
         const recentOrders:Order[] = await this.cctxExchange.fetchClosedOrders(symbol,undefined,50)
-        fs.writeFileSync('./src/__mock__/fetchClosedOrders'+symbol.replace('/','_')+'.json',JSON.stringify(recentOrders))
         return recentOrders
             .sort((a,b)=>b.timestamp-a.timestamp)
             .find((el)=> (!type || el.side === type.toLowerCase()))

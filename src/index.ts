@@ -29,6 +29,7 @@ export class WalletSimulator {
     private allowNegativeBalance:boolean = false;
     private allowNegativeHeld:boolean = false;
     private totalValueInUSDT: number = 0;
+    private positions:any;
 
     constructor(balance: number, overrides:any={}) {
         this.holdings = {};

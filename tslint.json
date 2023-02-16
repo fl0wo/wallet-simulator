@@ -5,7 +5,15 @@
   "extends": ["tslint:recommended", "tslint-config-prettier"],
   "rules": {
     "array-type": false,
-    "no-var-requires": false
+    "no-var-requires": false,
+    "no-console": false,
+    "no-restricted-syntax": [
+      "error",
+      {
+        "selector": "CallExpression[callee.object.name='console'][callee.property.name!=/^(log|warn|error|info|trace)$/]",
+        "message": "Unexpected property on console object was called"
+      }
+    ]
   },
   "await-promise": [true, "RequestPromise"],
   "completed-docs": false,
