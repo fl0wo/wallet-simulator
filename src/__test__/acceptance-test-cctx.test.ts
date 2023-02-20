@@ -9,7 +9,7 @@ jest.setTimeout(60000)
 
 let client:CCTXWrapper;
 
-function mockCCTXClient() {
+export function mockCCTXClient() {
     mockCCTXMethod('fetchMyTrades',
         (symbol) => JSON.parse(readFileSync(`./src/__mock__/fetchMyTrades${String(symbol[0]).replace('/', '_')}.json`).toString('utf-8'))
     )
@@ -40,11 +40,11 @@ describe.skip('CCTX ACCEPTANCE', () => {
 
     beforeAll(async () => {
         mockDate(new Date('2023-02-16T12:00:18.670Z'));
-        // mockCCTXClient();
+        mockCCTXClient();
         client = await CCTXWrapper.getClientWith(secrets.floApi, secrets.floSecret);
     });
 
-    it('acceptance cctx to wallet-sim',async () => {
+    it.only('acceptance cctx to wallet-sim',async () => {
         expect(client).toBeDefined();
 
         const w:WalletSimulator = await client.initWalletSimulator();
@@ -53,6 +53,8 @@ describe.skip('CCTX ACCEPTANCE', () => {
         const expectedJson = fs.readFileSync('./walletExample.json').toString('utf-8');
 
         fs.writeFileSync('./realWallet.json',actualJson)
+
+        console.log('client.getNumberHTTPCallsMade()',client.getNumberHTTPCallsMade())
 
         expect(JSON.parse(actualJson))
             .toStrictEqual(JSON.parse(expectedJson))

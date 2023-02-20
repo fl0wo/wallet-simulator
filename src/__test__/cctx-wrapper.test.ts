@@ -24,7 +24,7 @@ describe.skip('WalletTrend',()=>{
 
 })
 
-describe.skip('CCTX Wrapper',()=>{
+describe('CCTX Wrapper',()=>{
     beforeAll(async () => {
         client = await CCTXWrapper.getClientWith(secrets.floApi, secrets.floSecret);
     })
@@ -36,7 +36,7 @@ describe.skip('CCTX Wrapper',()=>{
         expect(w.getTotalValue())
             .toBeGreaterThan(30);
 
-        fs.writeFileSync('./walletExported.json', w.exportToJson());
+        fs.writeFileSync('./walletExported2.json', w.exportToJson());
     });
 
     test('showRequiredCredentials ok', () => {

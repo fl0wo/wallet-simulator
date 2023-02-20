@@ -1,9 +1,12 @@
 import {
     addProfits,
-    arrayToObjectKeys, cctxPriceToWalletSimulatorPrice,
-    cctxTradeToWalletSimulatorTrade, cloneObj,
+    arrayToObjectKeys,
+    cctxPriceToWalletSimulatorPrice,
+    cctxTradeToWalletSimulatorTrade,
+    cloneObj,
     getSafeNull,
-    getSafeOrThrow, hideFields,
+    getSafeOrThrow,
+    hideFields,
     objToArrayKeys,
     removeEmpty
 } from "./general";
@@ -45,12 +48,17 @@ export interface CCTXPositions{
     [symbol:string]:CCTXPosition
 }
 
-interface CCTXOrderPayload {
+export interface CCTXOrderPayload {
     id: string;
     order: CCTXOrder;
 }
 
 export class CCTXWrapper {
+
+    get cctxExchange(): Exchange {
+        this.addHTTPCallCounter();
+        return this._cctxExchange;
+    }
 
     // TODO: let user set this from database
     // FIXME: be really careful
@@ -67,12 +75,13 @@ export class CCTXWrapper {
         'ADA',
         'BUSD'
     ]
+    private nHTTPCallsMade: number = 0;
 
-    private constructor(private cctxExchange: Exchange) {
-        if (!cctxExchange) {
+    private constructor(private _cctxExchange: Exchange) {
+        if (!_cctxExchange) {
             throw Error('null cctxExchange client object!');
         }
-        cctxExchange.checkRequiredCredentials();
+        _cctxExchange.checkRequiredCredentials();
     }
 
     public static async getClientWith(
@@ -150,7 +159,6 @@ export class CCTXWrapper {
             takeProfitPrice: ifHas(order.takeProfitPrice)
         })
 
-        const exchange = this.cctxExchange;
         const side = getSafeOrThrow(order.side, 'order.side missing')
         const type = getSafeOrThrow(order.type, 'order.type missing')
         const symbol = getSafeOrThrow(order.symbol, 'order.symbol missing');
@@ -158,11 +166,11 @@ export class CCTXWrapper {
         const price = getSafeOrThrow(order.price, 'order.price missing'); // price in quote currency USDT
         // const curPrice = getSafeNull((await this.priceOf(symbol))[symbol].close,0)
 
-        const formattedAmount = exchange.amountToPrecision(symbol, amount);
-        const formattedPrice = exchange.priceToPrecision(symbol, price);
+        const formattedAmount = this._cctxExchange.amountToPrecision(symbol, amount);
+        const formattedPrice = this._cctxExchange.priceToPrecision(symbol, price);
         // round_step_size(price - (price * (stop_percent / 100)), tick);
 
-        return await exchange.createOrder(
+        return await this.cctxExchange.createOrder(
             symbol,
             type,
             side,
@@ -225,6 +233,8 @@ export class CCTXWrapper {
      * Returns Account related information
      */
     async getAccount(): Promise<MyWalletAccount> {
+
+
         function CCTX2WalletAccount(cctxBalanceParam: any): MyWalletAccount {
             const balanceUSDTether = cctxBalanceParam.USDT
             const buyingPowerUSDTether = getSafeNull(balanceUSDTether?.free, '0');
@@ -239,12 +249,15 @@ export class CCTXWrapper {
     }
 
     getCurrentTimeMs(): Promise<number> {
+
         return this.cctxExchange.fetchTime()
     }
 
     async getMyTrades(): Promise<Trade[]> {
         const allTradesPromises = this.desiredAssets.map((el) => {
             const symbol = this.toLocalAsset(el, 'USDT');
+
+
             return this.cctxExchange.fetchMyTrades(
                 symbol,
                 daysBefore(new Date(), 30).getTime(),
@@ -256,6 +269,9 @@ export class CCTXWrapper {
     }
 
     async getAllHoldings(): Promise<{ [asset: string]: number }> {
+
+
+
         const allHoldings: any = await this.cctxExchange.fetchTotalBalance();
         const allSymbols: string[] = await this.allSymbols();
 
@@ -276,6 +292,8 @@ export class CCTXWrapper {
     }
 
     getTradeFee(symbol: string): Promise<any> {
+
+
         return this.cctxExchange.fetchTradingFee(symbol)
     }
 
@@ -338,9 +356,8 @@ export class CCTXWrapper {
     }
 
     private async wrapCatchableOperation<T = any>(fn: (exchange: Exchange) => Promise<T>) {
-        const exchange = this.cctxExchange
         try {
-            return await fn(exchange); // Run cctx function
+            return await fn(this.cctxExchange); // Run cctx function
         } catch (e: any) {
             if (e instanceof ccxt.DDoSProtection) {
                 // console.log(exchange.id, '[DDoSProtection] ' + e.message)
@@ -362,12 +379,11 @@ export class CCTXWrapper {
         }
     }
 
-
     /**
      * Returns CCTXPositions object containing currently running orders already filled.
      * It's similar to AllHoldings but returns more information such as % p&l & price.
      */
-    async getOpenedPositions():Promise<any> {
+    async getOpenedPositions():Promise<CCTXPositions> {
         const account: MyWalletAccount = await this.getAccount();
         const ownedHoldings: {
             [asset: string]: {
@@ -382,8 +398,6 @@ export class CCTXWrapper {
         const assetsCurrentPrices: { [asset: string]: Ticker } = await this.getAllTickerPrices(ownedAssets
             .map(this.concatUSDT)
         );
-
-        console.log('test 1',assetsCurrentPrices)
 
         const fetchLastOrdersForEachOwnedAsset = ownedAssets
             .map(async (ownedAsset) => {
@@ -409,8 +423,6 @@ export class CCTXWrapper {
             .filter((el)=>!!el)
 
         const ownedPositions = arrayToObjectKeys(arrayOfPositions)
-
-        console.log('test 2 ownedPositions',ownedPositions)
 
         const positions:any = Object.keys(ownedPositions).map((symbol) => {
             try{
@@ -440,8 +452,6 @@ export class CCTXWrapper {
                 return null;
             }
         })
-
-        console.log('test 3 positions',positions)
 
         return arrayToObjectKeys(
             positions
@@ -474,8 +484,7 @@ export class CCTXWrapper {
             .map(this.concatUSDT)
             .map(async (symbol) => {
                 try{
-                    const res =  await this.cctxExchange.cancelAllOrders(symbol);
-                    return res;
+                    return await this.cctxExchange.cancelAllOrders(symbol);
                 }catch (e){
                     // do nothing
                     return null;
@@ -489,5 +498,25 @@ export class CCTXWrapper {
 
     getMinimumBuyAmountForSymbol(symbol: string):Market {
         return this.cctxExchange.market(symbol)
+    }
+
+    getNumberHTTPCallsMade() {
+        return this.nHTTPCallsMade;
+    }
+
+    private addHTTPCallCounter(){
+        this.nHTTPCallsMade++;
+    }
+
+    getCredentials() {
+        return {
+            api: this._cctxExchange.apiKey,
+            secret: this._cctxExchange.secret,
+            passphrase: this._cctxExchange.password
+        }
+    }
+
+    getCCTXClient():Exchange{
+        return this._cctxExchange
     }
 }
