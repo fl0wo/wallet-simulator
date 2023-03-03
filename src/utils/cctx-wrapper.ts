@@ -324,7 +324,8 @@ export class CCTXWrapper {
             return desiredSymbols
                 .filter((el) => this.notStableCoin(el))
                 ?.map((el) => el.toUpperCase())
-                ?.map(el => this.concatUSDT(el));
+                ?.map(el => this.concatUSDT(el))
+                .filter((el)=> this._cctxExchange.symbols.includes(el)) // Only available symbols
         }
 
         const allSymbols: string[] = await this.allSymbols();

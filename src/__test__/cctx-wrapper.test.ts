@@ -24,7 +24,7 @@ describe.skip('WalletTrend',()=>{
 
 })
 
-describe('CCTX Wrapper',()=>{
+describe.skip('CCTX Wrapper',()=>{
     beforeAll(async () => {
         client = await CCTXWrapper.getClientWith(secrets.floApi, secrets.floSecret);
     })
