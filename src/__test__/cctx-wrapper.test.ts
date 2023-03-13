@@ -25,6 +25,7 @@ describe.skip('WalletTrend',()=>{
 })
 
 describe.skip('CCTX Wrapper',()=>{
+
     beforeAll(async () => {
         client = await CCTXWrapper.getClientWith(secrets.floApi, secrets.floSecret);
     })
@@ -103,8 +104,9 @@ describe.skip('CCTX Wrapper',()=>{
             .toBeDefined()
     });
 
-    test('priceOf ok',async () => {
+    test.only('priceOf ok',async () => {
         const btcPrice = await client.priceOf('BTC')
+        console.log(btcPrice)
 
         expect(btcPrice)
             .toBeDefined()

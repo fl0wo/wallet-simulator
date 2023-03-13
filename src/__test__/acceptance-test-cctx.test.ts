@@ -1,13 +1,52 @@
 import {CCTXWrapper} from "../utils/cctx-wrapper";
 import * as fs from "fs";
 import {WalletSimulator} from "../index";
-import {mockCCTXField, mockCCTXMethod, mockCCTXMethodReturn, mockDate} from "../utils/mock";
+import {daysBefore, mockCCTXField, mockCCTXMethod, mockCCTXMethodReturn, mockDate} from "../utils/mock";
 import {readFileSync} from "fs";
+import {getSafeNull} from "../utils/general";
 
 const secrets = require('../../_secrets/sec.json')
-jest.setTimeout(60000)
+const expectedJson = fs.readFileSync('./walletExample.json').toString('utf-8');
 
 let client:CCTXWrapper;
+
+describe('CCTX ACCEPTANCE', () => {
+
+    beforeAll(async () => {
+        mockDate(new Date('2023-02-16T12:00:18.670Z'));
+        mockCCTXClient();
+        client = await CCTXWrapper.getClientWith(secrets.floApi, secrets.floSecret);
+    });
+
+    it('acceptance cctx to wallet-sim',async () => {
+        expect(client).toBeDefined();
+        console.log('Running')
+        const w:WalletSimulator = await client.initWalletSimulator();
+
+        console.log('Done')
+        const actualJson = w.exportToJson();
+
+        console.log('Exported')
+
+        // fs.writeFileSync('./realWallet.json',actualJson)
+
+        console.log('client.getNumberHTTPCallsMade()',client.getNumberHTTPCallsMade())
+
+        const dBefore = 7;
+        console.log(daysBefore(new Date(),dBefore))
+        console.log(new Date(w.trades[w.trades.length-1].createdTimestamp))
+        const total = w.trades
+            .filter((t)=>t.createdTimestamp>daysBefore(new Date(),dBefore).getTime())
+            .reduce((a,b,c)=>a+getSafeNull(b.profit,0),0)
+
+        console.log('Profit',total)
+
+        expect(JSON.parse(actualJson))
+            .toStrictEqual(JSON.parse(expectedJson))
+    })
+
+});
+
 
 export function mockCCTXClient() {
     mockCCTXMethod('fetchMyTrades',
@@ -33,34 +72,6 @@ export function mockCCTXClient() {
     )
 }
 
-/**
- * ALWAYS RUN THIS TEST BEFORE PUBLISHING
- */
-describe.skip('CCTX ACCEPTANCE', () => {
-
-    beforeAll(async () => {
-        mockDate(new Date('2023-02-16T12:00:18.670Z'));
-        mockCCTXClient();
-        client = await CCTXWrapper.getClientWith(secrets.floApi, secrets.floSecret);
-    });
-
-    it.only('acceptance cctx to wallet-sim',async () => {
-        expect(client).toBeDefined();
-
-        const w:WalletSimulator = await client.initWalletSimulator();
-
-        const actualJson = w.exportToJson();
-        const expectedJson = fs.readFileSync('./walletExample.json').toString('utf-8');
-
-        fs.writeFileSync('./realWallet.json',actualJson)
-
-        console.log('client.getNumberHTTPCallsMade()',client.getNumberHTTPCallsMade())
-
-        expect(JSON.parse(actualJson))
-            .toStrictEqual(JSON.parse(expectedJson))
-    })
-
-});
 
 /*
  {

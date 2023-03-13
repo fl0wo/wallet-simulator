@@ -42,7 +42,7 @@ export class BinanceConnector {
         howManyDaysBefore: number = 30
     ) {
 
-        const BTCUSDTPriceNow = Number.parseFloat(( await this.priceOf('BTCUSDT')).BTCUSDT);
+        const BTCUSDTPriceNow = Number.parseFloat((await this.priceOf('BTCUSDT')).BTCUSDT);
 
         const el = await this.binance.accountSnapshot({
             type: 'SPOT',

@@ -1,6 +1,6 @@
 {
   "name": "@fl0wo/wallet-simulator",
-  "version": "1.2.4",
+  "version": "1.2.5",
   "description": "Tool for tracking and simulating trades, work as well with cryptocurrency transactions.",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -39,6 +39,7 @@
   "homepage": "https://github.com/fl0wo/wallet-simulator#readme",
   "devDependencies": {
     "@types/jest": "^29.2.5",
+    "babel-core": "^7.0.0-bridge.0",
     "jest": "^29.3.1",
     "prettier": "^2.8.2",
     "ts-jest": "^29.0.3",

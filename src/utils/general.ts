@@ -201,16 +201,14 @@ export const cctxPriceToWalletSimulatorPrice = (prices:any)=>{
     )
 }
 
-
-// TODO: Basically when a "SELL" order appears without any "BUY" we cant calculate profit there
 export function addProfits(trades: Trade[]): Trade[] {
 
     const mapOfProfitsOrders =  calculateProfitsMadeByOrdersReverse(trades);
 
-    const allCryptoMovements = trades.map((el) => {
+    return trades.map((el) => {
         const profitCalculated = mapOfProfitsOrders[el.id];
 
-        if(profitCalculated){
+        if (profitCalculated) {
             const x: Trade = {
                 ...el,
                 profit: profitCalculated,
@@ -220,49 +218,60 @@ export function addProfits(trades: Trade[]): Trade[] {
 
         return el;
     });
-
-    return allCryptoMovements;
 }
-
 function calculateProfitsMadeByOrdersReverse(allOrders: Trade[]) {
-    const ordersWithProfits:any = {};
-    const totals:any = {};
+    const ordersWithProfits: any = {};
 
-    for (let i = allOrders.length - 1; i >= 0; i--) {
-        const order = allOrders[i];
+    const sortedOrders = allOrders.sort((a,b)=>a.createdTimestamp - b.createdTimestamp)
 
-        const volume = order.quantity;
-        const valueAt = order.price
-        const fees = order.fee
-        const notional = volume * valueAt;
+    function findFirstBuyBackwards(index:number,ticker:string){
+        const res:{price:number,quantity:number} = {
+            price:0,
+            quantity:0
+        }
+        let nBuys = 0;
+        const maxBuys = 3;
+        for(let i=index-1;i>0;i--){
 
-        let profit;
-        if (order.type===TradeMove.SELL) {
-            // If the order is a sell, initialize the running totals for this symbol
-            totals[order.ticker] = {
-                volume: 0,
-                cost: 0,
-            };
-            // Find the last buy order for this symbol
-            for (let j = i - 1; j >= 0; j--) {
-                const oldOrder = allOrders[j];
-                if (oldOrder.type===TradeMove.BUY && oldOrder.ticker === order.ticker) {
-                    const oldVolume = oldOrder.quantity
-                    const oldValueAt =oldOrder.price
-                    // Update the running totals for this symbol
-                    totals[order.ticker].volume += oldVolume;
-                    totals[order.ticker].cost += oldVolume * oldValueAt;
-                } else if (oldOrder.type===TradeMove.SELL && oldOrder.ticker === order.ticker) {
-                    break;
+            if(sortedOrders[i].type===TradeMove.SELL &&
+                sortedOrders[i].ticker===ticker &&
+                res.quantity>0 &&
+                nBuys>0){
+                return {
+                    price: res.price/nBuys,
+                    quantity: res.quantity/nBuys
                 }
             }
-            // Calculate the profit using the running totals for this symbol
-            profit =    (notional - totals[order.ticker].cost) +
-                (totals[order.ticker].volume - volume) * valueAt;
 
-            ordersWithProfits[order.id]=profit;
+            if(sortedOrders[i].type===TradeMove.BUY && sortedOrders[i].ticker===ticker){
+                nBuys++;
+                res.price+=sortedOrders[i].price;
+                res.quantity+=sortedOrders[i].quantity;
+            }
+        }
 
+        return {
+            price: res.price/nBuys,
+            quantity: res.quantity/nBuys
         }
     }
+
+    for (let i=sortedOrders.length-1;i>0;i--){
+        const curTrade = sortedOrders[i];
+        if(curTrade.type===TradeMove.SELL){
+            // Find its buy
+            const relativeBuyIndex:{price:number,quantity:number} = findFirstBuyBackwards(i,curTrade.ticker);
+
+            if(relativeBuyIndex.quantity>0){
+                const moneyInThisTrade = curTrade.price * curTrade.quantity;
+                const moneyOldTrade = relativeBuyIndex.price * curTrade.quantity;
+                ordersWithProfits[curTrade.id] = (moneyInThisTrade - moneyOldTrade);
+            }else {
+                // No buy for this sell, profit = 0
+            }
+        }
+    }
+
     return ordersWithProfits;
 }
+
