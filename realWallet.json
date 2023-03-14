@@ -1,1 +1,2235 @@
-{"_trades":[{"createdTimestamp":1673966152389,"id":"269879177","price":86.81,"quantity":0.312,"ticker":"LTC","type":"BUY"},{"createdTimestamp":1673966938037,"id":"2503427380","price":21206.44,"quantity":0.00073,"ticker":"BTC","type":"BUY"},{"createdTimestamp":1673966949739,"id":"1058560942","price":1576.3,"quantity":0.0066,"ticker":"ETH","type":"BUY"},{"createdTimestamp":1673967652219,"id":"2503528787","price":21298.12,"quantity":0.00073,"ticker":"BTC","type":"SELL","profit":0.06692639999999983},{"createdTimestamp":1673967652648,"id":"269887843","price":87.08,"quantity":0.158,"ticker":"LTC","type":"SELL"},{"createdTimestamp":1673967652648,"id":"269887844","price":87.08,"quantity":0.154,"ticker":"LTC","type":"SELL"},{"createdTimestamp":1673967653101,"id":"1058571462","price":1581.86,"quantity":0.0066,"ticker":"ETH","type":"SELL","profit":0.036695999999999174},{"createdTimestamp":1673970351295,"id":"1058606914","price":1563.64,"quantity":0.0104,"ticker":"ETH","type":"BUY"},{"createdTimestamp":1673970430669,"id":"1058608063","price":1567.85,"quantity":0.0089,"ticker":"ETH","type":"BUY"},{"createdTimestamp":1673970569979,"id":"2503884794","price":21150.01,"quantity":0.00071,"ticker":"BTC","type":"BUY"},{"createdTimestamp":1673970650758,"id":"2503892567","price":21148.32,"quantity":0.00059,"ticker":"BTC","type":"BUY"},{"createdTimestamp":1673970723763,"id":"269896065","price":86.38,"quantity":0.161,"ticker":"LTC","type":"BUY"},{"createdTimestamp":1673971852276,"id":"269898440","price":86.7,"quantity":0.161,"ticker":"LTC","type":"SELL","profit":0.05152000000000001},{"createdTimestamp":1673973122877,"id":"1058633950","price":1574.65,"quantity":0.0192,"ticker":"ETH","type":"SELL","profit":0.17097600000000668},{"createdTimestamp":1673973953200,"id":"2504174442","price":21231.88,"quantity":0.0011,"ticker":"BTC","type":"SELL","profit":0.09098649999999964},{"createdTimestamp":1673973953200,"id":"2504174443","price":21231.87,"quantity":0.0002,"ticker":"BTC","type":"SELL","profit":0.01654100000000014},{"createdTimestamp":1673976052471,"id":"269920903","price":86.68,"quantity":0.313,"ticker":"LTC","type":"BUY"},{"createdTimestamp":1673980853630,"id":"269926219","price":87.04,"quantity":0.313,"ticker":"LTC","type":"SELL","profit":0.112680000000001},{"createdTimestamp":1673983624013,"id":"1058719073","price":1590.45,"quantity":0.0102,"ticker":"ETH","type":"BUY"},{"createdTimestamp":1673983746146,"id":"1058719793","price":1591.58,"quantity":0.0088,"ticker":"ETH","type":"BUY"},{"createdTimestamp":1674050153469,"id":"1059134369","price":1596.93,"quantity":0.019,"ticker":"ETH","type":"SELL","profit":0.11238500000000329},{"createdTimestamp":1674052252010,"id":"1059179505","price":1594.93,"quantity":0.0102,"ticker":"ETH","type":"BUY"},{"createdTimestamp":1674052320704,"id":"1059180979","price":1595.35,"quantity":0.0088,"ticker":"ETH","type":"BUY"},{"createdTimestamp":1674054953842,"id":"1059212049","price":1599.54,"quantity":0.019,"ticker":"ETH","type":"SELL","profit":0.08360000000000056},{"createdTimestamp":1674056650894,"id":"2510175218","price":21313.96,"quantity":0.00095,"ticker":"BTC","type":"BUY"},{"createdTimestamp":1674057121852,"id":"1059254798","price":1565.96,"quantity":0.0086,"ticker":"ETH","type":"BUY"},{"createdTimestamp":1674057720386,"id":"1059308899","price":1548.09,"quantity":0.0075,"ticker":"ETH","type":"BUY"},{"createdTimestamp":1674057721934,"id":"270032554","price":84.74,"quantity":0.23,"ticker":"LTC","type":"BUY"},{"createdTimestamp":1674057939077,"id":"270033857","price":84.34,"quantity":0.147,"ticker":"LTC","type":"BUY"},{"createdTimestamp":1674061618093,"id":"270068609","price":84.88,"quantity":0.376,"ticker":"LTC","type":"SELL","profit":0.12784000000000262},{"createdTimestamp":1674061852793,"id":"1059506467","price":1554.36,"quantity":0.0161,"ticker":"ETH","type":"SELL","profit":-0.0429065000000044},{"createdTimestamp":1674064853476,"id":"1059567910","price":1539.53,"quantity":0.0075,"ticker":"ETH","type":"BUY"},{"createdTimestamp":1674064853476,"id":"1059567911","price":1539.53,"quantity":0.0012,"ticker":"ETH","type":"BUY"},{"createdTimestamp":1674064927634,"id":"1059569263","price":1540.81,"quantity":0.0075,"ticker":"ETH","type":"BUY"},{"createdTimestamp":1674066128506,"id":"1059578542","price":1549.98,"quantity":0.0162,"ticker":"ETH","type":"SELL","profit":0.16237800000000036},{"createdTimestamp":1674068528865,"id":"1059606419","price":1540.49,"quantity":0.0087,"ticker":"ETH","type":"BUY"},{"createdTimestamp":1674068941970,"id":"1059608966","price":1543.58,"quantity":0.0075,"ticker":"ETH","type":"BUY"},{"createdTimestamp":1674077228336,"id":"270104966","price":83.73,"quantity":0.201,"ticker":"LTC","type":"BUY"},{"createdTimestamp":1674148633351,"id":"270185534","price":84,"quantity":0.201,"ticker":"LTC","type":"SELL","profit":0.05426999999999893},{"createdTimestamp":1674156729712,"id":"1060112702","price":1547.57,"quantity":0.0161,"ticker":"ETH","type":"SELL","profit":0.08911349999999985},{"createdTimestamp":1674233533923,"id":"2523694536","price":21382.05,"quantity":0.00095,"ticker":"BTC","type":"SELL","profit":0.06468549999999951},{"createdTimestamp":1674260350294,"id":"208188576","price":17.37,"quantity":1.83,"ticker":"AVAX","type":"BUY"},{"createdTimestamp":1674263452938,"id":"341596451","price":24.71,"quantity":0.87,"ticker":"SOL","type":"BUY"},{"createdTimestamp":1674265033226,"id":"341604411","price":24.89,"quantity":0.87,"ticker":"SOL","type":"SELL","profit":0.1565999999999974},{"createdTimestamp":1674265034672,"id":"208195877","price":17.43,"quantity":1.83,"ticker":"AVAX","type":"SELL","profit":0.1097999999999999},{"createdTimestamp":1674269154027,"id":"341615306","price":24.95,"quantity":1.31,"ticker":"SOL","type":"BUY"},{"createdTimestamp":1674269826216,"id":"208202495","price":17.32,"quantity":1.24,"ticker":"AVAX","type":"BUY"},{"createdTimestamp":1674275824760,"id":"341632618","price":25.05,"quantity":1.31,"ticker":"SOL","type":"SELL","profit":0.13100000000000023},{"createdTimestamp":1674276951682,"id":"341634326","price":24.98,"quantity":1.07,"ticker":"SOL","type":"BUY"},{"createdTimestamp":1674283629455,"id":"341647488","price":25.1,"quantity":1.07,"ticker":"SOL","type":"SELL","profit":0.12839999999999918},{"createdTimestamp":1674285737668,"id":"208217334","price":17.42,"quantity":1.23,"ticker":"AVAX","type":"SELL","profit":0.12300000000000111},{"createdTimestamp":1674286627568,"id":"341661194","price":25.16,"quantity":1.97,"ticker":"SOL","type":"BUY"},{"createdTimestamp":1674286849979,"id":"341661989","price":25.26,"quantity":1.97,"ticker":"SOL","type":"SELL","profit":0.19700000000000273},{"createdTimestamp":1674286852029,"id":"341661993","price":25.27,"quantity":1.97,"ticker":"SOL","type":"BUY"},{"createdTimestamp":1674287819036,"id":"341672735","price":25.66,"quantity":1.96,"ticker":"SOL","type":"SELL","profit":0.764400000000002},{"createdTimestamp":1674288424676,"id":"208219883","price":17.41,"quantity":0.83,"ticker":"AVAX","type":"BUY"},{"createdTimestamp":1674288954348,"id":"341685066","price":25.28,"quantity":1.74,"ticker":"SOL","type":"BUY"},{"createdTimestamp":1674292021815,"id":"208223665","price":17.34,"quantity":0.8,"ticker":"AVAX","type":"BUY"},{"createdTimestamp":1674294544764,"id":"208226911","price":17.46,"quantity":1.63,"ticker":"AVAX","type":"SELL","profit":0.13854999999999862},{"createdTimestamp":1674295631958,"id":"341716805","price":25.7,"quantity":1.74,"ticker":"SOL","type":"SELL","profit":0.730799999999995},{"createdTimestamp":1674297126574,"id":"208248433","price":17.07,"quantity":6.36,"ticker":"AVAX","type":"BUY"},{"createdTimestamp":1674300425815,"id":"208260270","price":17.12,"quantity":6.36,"ticker":"AVAX","type":"SELL","profit":0.31800000000001205},{"createdTimestamp":1674308830164,"id":"208271378","price":17.19,"quantity":6.33,"ticker":"AVAX","type":"BUY"},{"createdTimestamp":1674312128929,"id":"208273484","price":17.26,"quantity":6.32,"ticker":"AVAX","type":"SELL","profit":0.44240000000000634},{"createdTimestamp":1674313253396,"id":"208274456","price":17.24,"quantity":6.32,"ticker":"AVAX","type":"BUY"},{"createdTimestamp":1674314531217,"id":"208275847","price":17.34,"quantity":6.31,"ticker":"AVAX","type":"SELL","profit":0.6310000000000144},{"createdTimestamp":1674316853763,"id":"208283682","price":17.29,"quantity":6.32,"ticker":"AVAX","type":"BUY"},{"createdTimestamp":1674319325553,"id":"208288427","price":17.38,"quantity":0.64,"ticker":"AVAX","type":"SELL","profit":0.057599999999998985},{"createdTimestamp":1674319325553,"id":"208288428","price":17.38,"quantity":5.68,"ticker":"AVAX","type":"SELL","profit":0.5112000000000023},{"createdTimestamp":1674322152063,"id":"208293471","price":17.39,"quantity":6.3,"ticker":"AVAX","type":"BUY"},{"createdTimestamp":1674391933534,"id":"208359968","price":17.56,"quantity":6.29,"ticker":"AVAX","type":"SELL","profit":1.0692999999999984},{"createdTimestamp":1674393953328,"id":"208370330","price":17.68,"quantity":6.24,"ticker":"AVAX","type":"BUY"},{"createdTimestamp":1674395234014,"id":"208371681","price":17.78,"quantity":6.24,"ticker":"AVAX","type":"SELL","profit":0.6240000000000094},{"createdTimestamp":1674396652469,"id":"208373539","price":17.71,"quantity":6.26,"ticker":"AVAX","type":"BUY"},{"createdTimestamp":1674398224371,"id":"208376142","price":17.77,"quantity":6.25,"ticker":"AVAX","type":"SELL","profit":0.375},{"createdTimestamp":1674401453141,"id":"208401269","price":17.97,"quantity":6.17,"ticker":"AVAX","type":"BUY"},{"createdTimestamp":1674402544562,"id":"208406498","price":18.18,"quantity":6.16,"ticker":"AVAX","type":"SELL","profit":1.2935999999999979},{"createdTimestamp":1674403852960,"id":"208412096","price":17.96,"quantity":6.22,"ticker":"AVAX","type":"BUY"},{"createdTimestamp":1674405125816,"id":"208415727","price":18.05,"quantity":6.22,"ticker":"AVAX","type":"SELL","profit":0.5597999999999956},{"createdTimestamp":1674406632235,"id":"208418862","price":17.93,"quantity":6.26,"ticker":"AVAX","type":"BUY"},{"createdTimestamp":1674408133059,"id":"208422578","price":18.08,"quantity":6.25,"ticker":"AVAX","type":"SELL","profit":0.9374999999999858},{"createdTimestamp":1674409851846,"id":"208430467","price":18.15,"quantity":6.21,"ticker":"AVAX","type":"BUY"},{"createdTimestamp":1674423426975,"id":"208479798","price":17.23,"quantity":6.2,"ticker":"AVAX","type":"SELL","profit":-5.7039999999999935},{"createdTimestamp":1674426722373,"id":"208484302","price":17.12,"quantity":6.27,"ticker":"AVAX","type":"BUY"},{"createdTimestamp":1674428350099,"id":"208485793","price":17.29,"quantity":3.02,"ticker":"AVAX","type":"SELL","profit":0.5133999999999901},{"createdTimestamp":1674428350099,"id":"208485794","price":17.29,"quantity":3.25,"ticker":"AVAX","type":"SELL","profit":0.5524999999999949},{"createdTimestamp":1674433253140,"id":"208491344","price":17.45,"quantity":2.15,"ticker":"AVAX","type":"BUY"},{"createdTimestamp":1674434231628,"id":"208493501","price":17.54,"quantity":2.15,"ticker":"AVAX","type":"SELL","profit":0.19350000000000023},{"createdTimestamp":1674439459077,"id":"208502430","price":17.66,"quantity":1.34,"ticker":"AVAX","type":"BUY"},{"createdTimestamp":1674442326437,"id":"208504938","price":17.78,"quantity":1.33,"ticker":"AVAX","type":"SELL","profit":0.15960000000000107},{"createdTimestamp":1674444351840,"id":"208507812","price":17.76,"quantity":1.01,"ticker":"AVAX","type":"BUY"},{"createdTimestamp":1674444730776,"id":"208508227","price":17.78,"quantity":0.85,"ticker":"AVAX","type":"BUY"},{"createdTimestamp":1674445253287,"id":"1062200484","price":1632.69,"quantity":0.0116,"ticker":"ETH","type":"BUY"},{"createdTimestamp":1674445325981,"id":"1062200868","price":1633.11,"quantity":0.0091,"ticker":"ETH","type":"BUY"},{"createdTimestamp":1674445929017,"id":"208512728","price":18.04,"quantity":1.86,"ticker":"AVAX","type":"SELL","profit":0.5021999999999949},{"createdTimestamp":1674447126861,"id":"208514771","price":17.95,"quantity":0.72,"ticker":"AVAX","type":"BUY"},{"createdTimestamp":1674448627935,"id":"208516884","price":18.01,"quantity":0.72,"ticker":"AVAX","type":"SELL","profit":0.04320000000000057},{"createdTimestamp":1674449519673,"id":"208517745","price":17.93,"quantity":0.72,"ticker":"AVAX","type":"BUY"},{"createdTimestamp":1674449753519,"id":"208517805","price":17.93,"quantity":0.61,"ticker":"AVAX","type":"BUY"},{"createdTimestamp":1674459054323,"id":"305315431","price":6.269,"quantity":2.16,"ticker":"DOT","type":"BUY"},{"createdTimestamp":1674459125535,"id":"305315536","price":6.273,"quantity":1.7,"ticker":"DOT","type":"BUY"},{"createdTimestamp":1674461963854,"id":"1062279182","price":1638.99,"quantity":0.0207,"ticker":"ETH","type":"SELL","profit":0.12606299999999493},{"createdTimestamp":1674462131416,"id":"305318692","price":6.316,"quantity":3.86,"ticker":"DOT","type":"SELL","profit":0.1737000000000002},{"createdTimestamp":1674477351720,"id":"270658082","price":91.5,"quantity":0.241,"ticker":"LTC","type":"BUY"},{"createdTimestamp":1674480050917,"id":"1062376740","price":1632.66,"quantity":0.0081,"ticker":"ETH","type":"BUY"},{"createdTimestamp":1674480558129,"id":"1062380308","price":1630.05,"quantity":0.0067,"ticker":"ETH","type":"BUY"},{"createdTimestamp":1674483432985,"id":"2544910389","price":22731.26,"quantity":0.00045,"ticker":"BTC","type":"BUY"},{"createdTimestamp":1674485229651,"id":"2545120534","price":22832.6,"quantity":0.00045,"ticker":"BTC","type":"SELL","profit":0.04560299999999984},{"createdTimestamp":1674486428540,"id":"2545449128","price":22688.98,"quantity":0.00045,"ticker":"BTC","type":"BUY"},{"createdTimestamp":1674488208746,"id":"2545709017","price":22857.1,"quantity":0.00045,"ticker":"BTC","type":"SELL","profit":0.07565399999999833},{"createdTimestamp":1674499024623,"id":"1062614867","price":1637.81,"quantity":0.0148,"ticker":"ETH","type":"SELL","profit":0.09553400000000067},{"createdTimestamp":1674500754484,"id":"2547092406","price":22913.68,"quantity":0.00066,"ticker":"BTC","type":"BUY"},{"createdTimestamp":1674500822289,"id":"2547101918","price":22910.38,"quantity":0.00053,"ticker":"BTC","type":"BUY"},{"createdTimestamp":1674511750508,"id":"2547969666","price":23010.83,"quantity":0.00119,"ticker":"BTC","type":"SELL","profit":0.11757200000000267},{"createdTimestamp":1674513556715,"id":"208613239","price":18.17,"quantity":1.33,"ticker":"AVAX","type":"SELL","profit":0.31920000000000215},{"createdTimestamp":1674514628249,"id":"1062710595","price":1628,"quantity":0.0107,"ticker":"ETH","type":"BUY"},{"createdTimestamp":1674515221179,"id":"2548152213","price":22907.04,"quantity":0.00072,"ticker":"BTC","type":"BUY"},{"createdTimestamp":1674522040353,"id":"2548594318","price":22993.37,"quantity":0.00072,"ticker":"BTC","type":"SELL","profit":0.06215759999999548},{"createdTimestamp":1674525130461,"id":"1062762676","price":1634.5,"quantity":0.0107,"ticker":"ETH","type":"SELL","profit":0.06954999999999956},{"createdTimestamp":1674551453617,"id":"2550614278","price":22926.29,"quantity":0.00088,"ticker":"BTC","type":"BUY"},{"createdTimestamp":1674551523481,"id":"1062897349","price":1629.85,"quantity":0.0086,"ticker":"ETH","type":"BUY"},{"createdTimestamp":1674551956513,"id":"1062900624","price":1629.43,"quantity":0.007,"ticker":"ETH","type":"BUY"},{"createdTimestamp":1674566222162,"id":"2551772386","price":23009.66,"quantity":0.00088,"ticker":"BTC","type":"SELL","profit":0.07336560000000247},{"createdTimestamp":1674567653212,"id":"2551923752","price":22868.45,"quantity":0.00066,"ticker":"BTC","type":"BUY"},{"createdTimestamp":1674567724810,"id":"2551942018","price":22812.89,"quantity":0.00052,"ticker":"BTC","type":"BUY"},{"createdTimestamp":1674576722385,"id":"2553098492","price":22917.78,"quantity":0.00118,"ticker":"BTC","type":"SELL","profit":0.09098980000000267},{"createdTimestamp":1674596954963,"id":"270811614","price":88.63,"quantity":0.241,"ticker":"LTC","type":"SELL","profit":-0.691670000000002},{"createdTimestamp":1674597555882,"id":"2554848104","price":22911.09,"quantity":0.00042,"ticker":"BTC","type":"BUY"},{"createdTimestamp":1674597555882,"id":"2554848105","price":22912,"quantity":0.00042,"ticker":"BTC","type":"BUY"},{"createdTimestamp":1674597713021,"id":"2554869551","price":22857.01,"quantity":0.00066,"ticker":"BTC","type":"BUY"},{"createdTimestamp":1674597713021,"id":"2554869552","price":22857.24,"quantity":0.00002,"ticker":"BTC","type":"BUY"},{"createdTimestamp":1674597724549,"id":"270816204","price":87.85,"quantity":0.158,"ticker":"LTC","type":"BUY"},{"createdTimestamp":1674598021316,"id":"270816599","price":88.05,"quantity":0.121,"ticker":"LTC","type":"BUY"},{"createdTimestamp":1674600051207,"id":"1063320204","price":1563.13,"quantity":0.0156,"ticker":"ETH","type":"SELL","profit":-1.0375559999999986},{"createdTimestamp":1674600351124,"id":"1063326727","price":1565.1,"quantity":0.0068,"ticker":"ETH","type":"BUY"},{"createdTimestamp":1674676152162,"id":"270916921","price":88.38,"quantity":0.279,"ticker":"LTC","type":"SELL","profit":0.11997000000000213},{"createdTimestamp":1674678940337,"id":"1063975059","price":1576.12,"quantity":0.0068,"ticker":"ETH","type":"SELL","profit":0.07493599999999923},{"createdTimestamp":1674681126748,"id":"2562061760","price":22925.05,"quantity":0.00152,"ticker":"BTC","type":"SELL","profit":0.06188680000000346},{"createdTimestamp":1674684951280,"id":"2562875433","price":23519.53,"quantity":0.00119,"ticker":"BTC","type":"BUY"},{"createdTimestamp":1674685736291,"id":"1064121349","price":1617.23,"quantity":0.0104,"ticker":"ETH","type":"BUY"},{"createdTimestamp":1674686050046,"id":"1064124896","price":1617.58,"quantity":0.0085,"ticker":"ETH","type":"BUY"},{"createdTimestamp":1674694448471,"id":"1064253767","price":1628.96,"quantity":0.0189,"ticker":"ETH","type":"SELL","profit":0.21838950000000068},{"createdTimestamp":1674696730324,"id":"1064275549","price":1621.68,"quantity":0.0104,"ticker":"ETH","type":"BUY"},{"createdTimestamp":1674697936249,"id":"1064286299","price":1617.04,"quantity":0.0085,"ticker":"ETH","type":"BUY"},{"createdTimestamp":1674779520948,"id":"271061017","price":87.44,"quantity":0.143,"ticker":"LTC","type":"BUY"},{"createdTimestamp":1674781424055,"id":"271063801","price":86.84,"quantity":0.115,"ticker":"LTC","type":"BUY"},{"createdTimestamp":1674782227872,"id":"271064602","price":87.21,"quantity":0.257,"ticker":"LTC","type":"SELL","profit":0.017989999999997508},{"createdTimestamp":1674784239856,"id":"271071398","price":86.38,"quantity":0.145,"ticker":"LTC","type":"BUY"},{"createdTimestamp":1674784330773,"id":"271071522","price":86.2,"quantity":0.116,"ticker":"LTC","type":"BUY"},{"createdTimestamp":1674785941752,"id":"2571726927","price":22746.37,"quantity":0.00044,"ticker":"BTC","type":"SELL","profit":-0.3401903999999991},{"createdTimestamp":1674785941752,"id":"2571726928","price":22746.13,"quantity":0.00075,"ticker":"BTC","type":"SELL","profit":-0.5800499999999964},{"createdTimestamp":1674785942170,"id":"1065004167","price":1568.17,"quantity":0.0188,"ticker":"ETH","type":"SELL","profit":-0.962372000000002},{"createdTimestamp":1674787774657,"id":"271075410","price":86.5,"quantity":0.261,"ticker":"LTC","type":"SELL","profit":0.0548099999999998},{"createdTimestamp":1674792952673,"id":"305923999","price":6.371,"quantity":4.01,"ticker":"DOT","type":"BUY"},{"createdTimestamp":1674799149334,"id":"305928387","price":6.414,"quantity":4,"ticker":"DOT","type":"SELL","profit":0.17199999999999704},{"createdTimestamp":1674807653537,"id":"2573079375","price":22970.43,"quantity":0.00069,"ticker":"BTC","type":"BUY"},{"createdTimestamp":1674807653537,"id":"2573079376","price":22971.13,"quantity":0.0002,"ticker":"BTC","type":"BUY"},{"createdTimestamp":1674829621680,"id":"271110787","price":86.8,"quantity":0.175,"ticker":"LTC","type":"BUY"},{"createdTimestamp":1674831249126,"id":"2574872945","price":23033.23,"quantity":0.00013,"ticker":"BTC","type":"SELL","profit":0.00811850000000014},{"createdTimestamp":1674831249126,"id":"2574872946","price":23033.2,"quantity":0.00076,"ticker":"BTC","type":"SELL","profit":0.04743920000000301},{"createdTimestamp":1674831422067,"id":"271112857","price":87.43,"quantity":0.175,"ticker":"LTC","type":"SELL","profit":0.1102500000000024},{"createdTimestamp":1674835255721,"id":"2575441901","price":22962.81,"quantity":0.00026,"ticker":"BTC","type":"BUY"},{"createdTimestamp":1674835255721,"id":"2575441902","price":22962.93,"quantity":0.00063,"ticker":"BTC","type":"BUY"},{"createdTimestamp":1674836440198,"id":"2575565409","price":23075.17,"quantity":0.00089,"ticker":"BTC","type":"SELL","profit":0.09994699999999668},{"createdTimestamp":1674852733763,"id":"305990938","price":6.54,"quantity":3.82,"ticker":"DOT","type":"BUY"},{"createdTimestamp":1674853322494,"id":"2577349729","price":23087.45,"quantity":0.0007,"ticker":"BTC","type":"BUY"},{"createdTimestamp":1674853630996,"id":"271137498","price":88.22,"quantity":0.136,"ticker":"LTC","type":"BUY"},{"createdTimestamp":1674854346303,"id":"2577443197","price":23155.76,"quantity":0.00069,"ticker":"BTC","type":"SELL","profit":0.04713389999999862},{"createdTimestamp":1674854346303,"id":"2577443198","price":23155.75,"quantity":0.00001,"ticker":"BTC","type":"SELL","profit":0.0006829999999999892},{"createdTimestamp":1674855857563,"id":"271138708","price":88.39,"quantity":0.136,"ticker":"LTC","type":"SELL","profit":0.023120000000000474},{"createdTimestamp":1674856749344,"id":"2577612261","price":23094.04,"quantity":0.0007,"ticker":"BTC","type":"BUY"},{"createdTimestamp":1674856853245,"id":"2577618345","price":23095.61,"quantity":0.00058,"ticker":"BTC","type":"BUY"},{"createdTimestamp":1674863750251,"id":"306002580","price":6.567,"quantity":3.82,"ticker":"DOT","type":"SELL","profit":0.10314000000000334},{"createdTimestamp":1674867428553,"id":"2578263971","price":23156.31,"quantity":0.00128,"ticker":"BTC","type":"SELL","profit":0.07870080000000002},{"createdTimestamp":1674887453128,"id":"271167793","price":88.65,"quantity":0.208,"ticker":"LTC","type":"BUY"},{"createdTimestamp":1674887664132,"id":"306027683","price":6.577,"quantity":3.22,"ticker":"DOT","type":"BUY"},{"createdTimestamp":1674908825419,"id":"271184144","price":88.09,"quantity":0.139,"ticker":"LTC","type":"BUY"},{"createdTimestamp":1674912053875,"id":"1065875671","price":1566.71,"quantity":0.0097,"ticker":"ETH","type":"BUY"},{"createdTimestamp":1674912125140,"id":"1065877025","price":1568.12,"quantity":0.0075,"ticker":"ETH","type":"BUY"},{"createdTimestamp":1674915842075,"id":"1065902960","price":1572.57,"quantity":0.0172,"ticker":"ETH","type":"SELL","profit":0.08866599999999991},{"createdTimestamp":1674932816410,"id":"271208926","price":88.36,"quantity":0.346,"ticker":"LTC","type":"SELL","profit":-0.0034600000000004627},{"createdTimestamp":1674939052167,"id":"306073245","price":6.375,"quantity":3.21,"ticker":"DOT","type":"SELL","profit":-0.648419999999998},{"createdTimestamp":1674957052299,"id":"343484431","price":24.45,"quantity":1.06,"ticker":"SOL","type":"BUY"},{"createdTimestamp":1674958918379,"id":"271296381","price":94.6,"quantity":0.147,"ticker":"LTC","type":"BUY"},{"createdTimestamp":1674959517762,"id":"271300890","price":94.53,"quantity":0.125,"ticker":"LTC","type":"BUY"},{"createdTimestamp":1674961621310,"id":"271304526","price":94.79,"quantity":0.272,"ticker":"LTC","type":"SELL","profit":0.06119999999999948},{"createdTimestamp":1674963576286,"id":"271307853","price":94.33,"quantity":0.147,"ticker":"LTC","type":"BUY"},{"createdTimestamp":1674965935861,"id":"271311553","price":94.84,"quantity":0.147,"ticker":"LTC","type":"SELL","profit":0.0749700000000022},{"createdTimestamp":1674990654021,"id":"271351347","price":95,"quantity":0.186,"ticker":"LTC","type":"BUY"},{"createdTimestamp":1674994852963,"id":"271358282","price":94.96,"quantity":0.15,"ticker":"LTC","type":"BUY"},{"createdTimestamp":1674997851727,"id":"343535413","price":24.6,"quantity":1.06,"ticker":"SOL","type":"SELL","profit":0.15900000000000247},{"createdTimestamp":1675003252066,"id":"271374776","price":95.54,"quantity":0.106,"ticker":"LTC","type":"SELL","profit":0.059360000000001634},{"createdTimestamp":1675003252066,"id":"271374777","price":95.54,"quantity":0.23,"ticker":"LTC","type":"SELL","profit":0.12880000000000535},{"createdTimestamp":1675005052659,"id":"271385048","price":95.41,"quantity":0.238,"ticker":"LTC","type":"BUY"},{"createdTimestamp":1675017340229,"id":"271407719","price":96.21,"quantity":0.237,"ticker":"LTC","type":"SELL","profit":0.18959999999999866},{"createdTimestamp":1675024854154,"id":"271430747","price":96.66,"quantity":0.235,"ticker":"LTC","type":"BUY"},{"createdTimestamp":1675026732996,"id":"271433586","price":96.92,"quantity":0.235,"ticker":"LTC","type":"SELL","profit":0.06109999999999971},{"createdTimestamp":1675032652932,"id":"271442737","price":96.11,"quantity":0.236,"ticker":"LTC","type":"BUY"},{"createdTimestamp":1675070222647,"id":"306207900","price":6.311,"quantity":3.38,"ticker":"DOT","type":"BUY"},{"createdTimestamp":1675072627315,"id":"271523624","price":91.46,"quantity":0.236,"ticker":"LTC","type":"SELL","profit":-1.097400000000004},{"createdTimestamp":1675076349612,"id":"1067149051","price":1584.77,"quantity":0.0079,"ticker":"ETH","type":"BUY"},{"createdTimestamp":1675082935956,"id":"271554233","price":92.93,"quantity":0.172,"ticker":"LTC","type":"BUY"},{"createdTimestamp":1675083252559,"id":"271555194","price":93.28,"quantity":0.172,"ticker":"LTC","type":"SELL","profit":0.060199999999998255},{"createdTimestamp":1675086354489,"id":"271561950","price":92.47,"quantity":0.173,"ticker":"LTC","type":"BUY"},{"createdTimestamp":1675090746961,"id":"271572532","price":92.77,"quantity":0.173,"ticker":"LTC","type":"SELL","profit":0.051899999999999835},{"createdTimestamp":1675090747709,"id":"1067284665","price":1595.51,"quantity":0.0079,"ticker":"ETH","type":"SELL","profit":0.08484600000000064},{"createdTimestamp":1675118529684,"id":"271635443","price":89.98,"quantity":0.205,"ticker":"LTC","type":"BUY"},{"createdTimestamp":1675118667682,"id":"271635845","price":90.37,"quantity":0.204,"ticker":"LTC","type":"SELL","profit":0.07955999999999719},{"createdTimestamp":1675118816731,"id":"271636156","price":90.42,"quantity":0.044,"ticker":"LTC","type":"BUY"},{"createdTimestamp":1675118816731,"id":"271636157","price":90.42,"quantity":0.16,"ticker":"LTC","type":"BUY"},{"createdTimestamp":1675118832401,"id":"271636184","price":90.5,"quantity":0.165,"ticker":"LTC","type":"BUY"},{"createdTimestamp":1675131955049,"id":"271694691","price":94.24,"quantity":0.369,"ticker":"LTC","type":"SELL","profit":1.3997400000000013},{"createdTimestamp":1676198736735,"id":"307684668","price":6.328,"quantity":3.38,"ticker":"DOT","type":"SELL","profit":0.057459999999998956},{"createdTimestamp":1676545248902,"id":"346619525","price":23.7,"quantity":1.41,"ticker":"SOL","type":"BUY"},{"createdTimestamp":1676546881486,"id":"308132243","price":6.581,"quantity":2.69,"ticker":"DOT","type":"BUY"}],"balanceAtWalletCreation":0,"allowNegativeBalance":false,"allowNegativeHeld":false,"totalValueInUSDT":119.0136099752,"holdings":{"BTC":0.0000072,"LTC":0.00049,"ETH":0.00006821,"USDT":68.0739526,"DOGE":0.894,"SOL":1.41504,"DOT":2.69311,"AVAX":0.00537},"prices":{"BTC":24398.58,"ETH":1675.52,"LTC":100.83,"DOGE":0.08732,"SOL":23.24,"DOT":6.51,"AVAX":19.47,"USDT":1},"costBasis":{},"daySnapshots":[],"_creationAt":"2023-02-16T12:00:18.670Z","positions":{"BTC/USDT":{"symbol":"BTC/USDT","positionSize":0.0000072,"curPrice":24398.58,"spentPrice":23095.61,"positionValue":0.175669776,"unrealizedPnl":-1.6648416204165005e-11,"unrealizedPnlPercentage":5.641634925425226},"LTC/USDT":{"symbol":"LTC/USDT","positionSize":0.000839,"curPrice":100.83,"spentPrice":90.5,"positionValue":0.08459637,"unrealizedPnl":-9.497820027473625e-7,"unrealizedPnlPercentage":11.414364640883976},"ETH/USDT":{"symbol":"ETH/USDT","positionSize":0.00004631,"curPrice":1675.52,"spentPrice":1584.77,"positionValue":0.0775933312,"unrealizedPnl":-1.5827253456390537e-9,"unrealizedPnlPercentage":5.726383008259874},"DOGE/USDT":{"symbol":"DOGE/USDT","positionSize":0.894,"curPrice":0.08732,"spentPrice":0.08817,"positionValue":0.07806408,"unrealizedPnl":0.09870107360894549,"unrealizedPnlPercentage":-0.9640467279119922},"SOL/USDT":{"symbol":"SOL/USDT","positionSize":0.00118,"curPrice":23.24,"spentPrice":23.7,"positionValue":0.0274232,"unrealizedPnl":9.854971422761649e-7,"unrealizedPnlPercentage":-1.9409282700421977},"DOT/USDT":{"symbol":"DOT/USDT","positionSize":0.00229,"curPrice":6.51,"spentPrice":6.581,"positionValue":0.014907899999999998,"unrealizedPnl":0.0000037950801439045464,"unrealizedPnlPercentage":-1.0788633946208877},"AVAX/USDT":{"symbol":"AVAX/USDT","positionSize":0.00186,"curPrice":19.47,"spentPrice":17.93,"positionValue":0.0362142,"unrealizedPnl":-0.00000820516698649172,"unrealizedPnlPercentage":8.588957055214719}}}
+{
+  "_trades": [
+    {
+      "createdTimestamp": 1676198736735,
+      "id": "307684668",
+      "price": 6.328,
+      "quantity": 3.38,
+      "ticker": "DOT",
+      "type": "SELL"
+    },
+    {
+      "createdTimestamp": 1676545248902,
+      "id": "346619525",
+      "price": 23.7,
+      "quantity": 1.41,
+      "ticker": "SOL",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1676546881486,
+      "id": "308132243",
+      "price": 6.581,
+      "quantity": 2.69,
+      "ticker": "DOT",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1676575540614,
+      "id": "308210952",
+      "price": 6.655,
+      "quantity": 2.69,
+      "ticker": "DOT",
+      "type": "SELL",
+      "profit": 0.19905999999999935
+    },
+    {
+      "createdTimestamp": 1676575824412,
+      "id": "308211314",
+      "price": 6.651,
+      "quantity": 2.67,
+      "ticker": "DOT",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1676575826666,
+      "id": "211662053",
+      "price": 19.93,
+      "quantity": 0.57,
+      "ticker": "AVAX",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1676577328815,
+      "id": "308212964",
+      "price": 6.676,
+      "quantity": 2.67,
+      "ticker": "DOT",
+      "type": "SELL",
+      "profit": 0.06674999999999898
+    },
+    {
+      "createdTimestamp": 1676579157673,
+      "id": "308216781",
+      "price": 6.619,
+      "quantity": 2.33,
+      "ticker": "DOT",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1676579736542,
+      "id": "308220242",
+      "price": 6.681,
+      "quantity": 2.32,
+      "ticker": "DOT",
+      "type": "SELL",
+      "profit": 0.14384000000000086
+    },
+    {
+      "createdTimestamp": 1676581224074,
+      "id": "308226395",
+      "price": 6.599,
+      "quantity": 2.33,
+      "ticker": "DOT",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1676583033367,
+      "id": "346731457",
+      "price": 22.98,
+      "quantity": 1.3,
+      "ticker": "SOL",
+      "type": "SELL",
+      "profit": -0.9359999999999964
+    },
+    {
+      "createdTimestamp": 1676583033411,
+      "id": "346731458",
+      "price": 22.98,
+      "quantity": 0.11,
+      "ticker": "SOL",
+      "type": "SELL",
+      "profit": -0.07919999999999972
+    },
+    {
+      "createdTimestamp": 1676583621428,
+      "id": "346734063",
+      "price": 22.99,
+      "quantity": 1.12,
+      "ticker": "SOL",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1676586405724,
+      "id": "211680436",
+      "price": 19.1,
+      "quantity": 0.52,
+      "ticker": "AVAX",
+      "type": "SELL",
+      "profit": -0.43159999999999954
+    },
+    {
+      "createdTimestamp": 1676586405724,
+      "id": "211680437",
+      "price": 19.1,
+      "quantity": 0.05,
+      "ticker": "AVAX",
+      "type": "SELL",
+      "profit": -0.04149999999999998
+    },
+    {
+      "createdTimestamp": 1676586628698,
+      "id": "211681142",
+      "price": 19.05,
+      "quantity": 0.67,
+      "ticker": "AVAX",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1676587235388,
+      "id": "308242199",
+      "price": 6.392,
+      "quantity": 2.33,
+      "ticker": "DOT",
+      "type": "SELL",
+      "profit": -0.48231
+    },
+    {
+      "createdTimestamp": 1676588723180,
+      "id": "308246263",
+      "price": 6.373,
+      "quantity": 2.55,
+      "ticker": "DOT",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1676589047543,
+      "id": "308247395",
+      "price": 6.416,
+      "quantity": 2.55,
+      "ticker": "DOT",
+      "type": "SELL",
+      "profit": 0.10965000000000202
+    },
+    {
+      "createdTimestamp": 1676589328173,
+      "id": "308247982",
+      "price": 6.414,
+      "quantity": 2.54,
+      "ticker": "DOT",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1676590562898,
+      "id": "346761589",
+      "price": 22.27,
+      "quantity": 1.12,
+      "ticker": "SOL",
+      "type": "SELL",
+      "profit": -0.8063999999999965
+    },
+    {
+      "createdTimestamp": 1676590820003,
+      "id": "346762469",
+      "price": 22.25,
+      "quantity": 1.1,
+      "ticker": "SOL",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1676592929193,
+      "id": "346771820",
+      "price": 22.34,
+      "quantity": 1.1,
+      "ticker": "SOL",
+      "type": "SELL",
+      "profit": 0.0990000000000002
+    },
+    {
+      "createdTimestamp": 1676593222623,
+      "id": "274133096",
+      "price": 99.44,
+      "quantity": 0.125,
+      "ticker": "LTC",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1676594725552,
+      "id": "308260535",
+      "price": 6.441,
+      "quantity": 2.54,
+      "ticker": "DOT",
+      "type": "SELL",
+      "profit": 0.06858000000000075
+    },
+    {
+      "createdTimestamp": 1676596061311,
+      "id": "274138311",
+      "price": 100.19,
+      "quantity": 0.114,
+      "ticker": "LTC",
+      "type": "SELL",
+      "profit": 0.08550000000000146
+    },
+    {
+      "createdTimestamp": 1676596062369,
+      "id": "274138314",
+      "price": 100.19,
+      "quantity": 0.011,
+      "ticker": "LTC",
+      "type": "SELL",
+      "profit": 0.00825000000000009
+    },
+    {
+      "createdTimestamp": 1676606428418,
+      "id": "274161182",
+      "price": 99.84,
+      "quantity": 0.148,
+      "ticker": "LTC",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1676609119317,
+      "id": "346790048",
+      "price": 22.61,
+      "quantity": 0.93,
+      "ticker": "SOL",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1676610064100,
+      "id": "346790584",
+      "price": 22.67,
+      "quantity": 0.93,
+      "ticker": "SOL",
+      "type": "SELL",
+      "profit": 0.055800000000001404
+    },
+    {
+      "createdTimestamp": 1676611520085,
+      "id": "346791592",
+      "price": 22.58,
+      "quantity": 0.91,
+      "ticker": "SOL",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1676612257737,
+      "id": "308301842",
+      "price": 6.675,
+      "quantity": 1.74,
+      "ticker": "DOT",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1676612426255,
+      "id": "308302123",
+      "price": 6.695,
+      "quantity": 1.73,
+      "ticker": "DOT",
+      "type": "SELL",
+      "profit": 0.034600000000001074
+    },
+    {
+      "createdTimestamp": 1676614227453,
+      "id": "346793407",
+      "price": 22.65,
+      "quantity": 0.91,
+      "ticker": "SOL",
+      "type": "SELL",
+      "profit": 0.06370000000000076
+    },
+    {
+      "createdTimestamp": 1676614519257,
+      "id": "308305580",
+      "price": 6.702,
+      "quantity": 1.96,
+      "ticker": "DOT",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1676615271658,
+      "id": "308307787",
+      "price": 6.734,
+      "quantity": 1.96,
+      "ticker": "DOT",
+      "type": "SELL",
+      "profit": 0.06271999999999878
+    },
+    {
+      "createdTimestamp": 1676620520484,
+      "id": "346799416",
+      "price": 22.55,
+      "quantity": 0.95,
+      "ticker": "SOL",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1676624125139,
+      "id": "346802962",
+      "price": 22.61,
+      "quantity": 0.95,
+      "ticker": "SOL",
+      "type": "SELL",
+      "profit": 0.05699999999999861
+    },
+    {
+      "createdTimestamp": 1676628875445,
+      "id": "346806643",
+      "price": 22.6,
+      "quantity": 0.79,
+      "ticker": "SOL",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1676637625838,
+      "id": "346813820",
+      "price": 22.69,
+      "quantity": 0.78,
+      "ticker": "SOL",
+      "type": "SELL",
+      "profit": 0.07019999999999982
+    },
+    {
+      "createdTimestamp": 1676640621424,
+      "id": "346817030",
+      "price": 22.55,
+      "quantity": 0.78,
+      "ticker": "SOL",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1676641827464,
+      "id": "346818217",
+      "price": 22.63,
+      "quantity": 0.78,
+      "ticker": "SOL",
+      "type": "SELL",
+      "profit": 0.06239999999999668
+    },
+    {
+      "createdTimestamp": 1676642420904,
+      "id": "346818742",
+      "price": 22.59,
+      "quantity": 0.78,
+      "ticker": "SOL",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1676642744338,
+      "id": "346819278",
+      "price": 22.65,
+      "quantity": 0.78,
+      "ticker": "SOL",
+      "type": "SELL",
+      "profit": 0.04679999999999751
+    },
+    {
+      "createdTimestamp": 1676644527398,
+      "id": "211733821",
+      "price": 19.24,
+      "quantity": 0.67,
+      "ticker": "AVAX",
+      "type": "SELL",
+      "profit": 0.12729999999999997
+    },
+    {
+      "createdTimestamp": 1676646020030,
+      "id": "346834089",
+      "price": 22.64,
+      "quantity": 0.9,
+      "ticker": "SOL",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1676646336440,
+      "id": "346835537",
+      "price": 22.74,
+      "quantity": 0.9,
+      "ticker": "SOL",
+      "type": "SELL",
+      "profit": 0.0899999999999963
+    },
+    {
+      "createdTimestamp": 1676651421655,
+      "id": "346845766",
+      "price": 22.7,
+      "quantity": 0.89,
+      "ticker": "SOL",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1676652030522,
+      "id": "211749515",
+      "price": 19.1,
+      "quantity": 0.61,
+      "ticker": "AVAX",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1676652087998,
+      "id": "346847133",
+      "price": 22.76,
+      "quantity": 0.89,
+      "ticker": "SOL",
+      "type": "SELL",
+      "profit": 0.053400000000003445
+    },
+    {
+      "createdTimestamp": 1676652338495,
+      "id": "346847474",
+      "price": 22.81,
+      "quantity": 0.79,
+      "ticker": "SOL",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1676653526818,
+      "id": "346849067",
+      "price": 22.92,
+      "quantity": 0.79,
+      "ticker": "SOL",
+      "type": "SELL",
+      "profit": 0.08690000000000353
+    },
+    {
+      "createdTimestamp": 1676653834481,
+      "id": "211751076",
+      "price": 19.29,
+      "quantity": 0.61,
+      "ticker": "AVAX",
+      "type": "SELL",
+      "profit": 0.11589999999999989
+    },
+    {
+      "createdTimestamp": 1676655926627,
+      "id": "274235972",
+      "price": 100.76,
+      "quantity": 0.148,
+      "ticker": "LTC",
+      "type": "SELL",
+      "profit": 0.13616000000000028
+    },
+    {
+      "createdTimestamp": 1676656862381,
+      "id": "308484839",
+      "price": 7.188,
+      "quantity": 1.87,
+      "ticker": "DOT",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1676657128241,
+      "id": "308487180",
+      "price": 7.268,
+      "quantity": 1.87,
+      "ticker": "DOT",
+      "type": "SELL",
+      "profit": 0.1495999999999995
+    },
+    {
+      "createdTimestamp": 1676661939171,
+      "id": "308522818",
+      "price": 7.288,
+      "quantity": 1.84,
+      "ticker": "DOT",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1676662825827,
+      "id": "308526053",
+      "price": 7.373,
+      "quantity": 1.84,
+      "ticker": "DOT",
+      "type": "SELL",
+      "profit": 0.15639999999999965
+    },
+    {
+      "createdTimestamp": 1676667019625,
+      "id": "346878359",
+      "price": 23.4,
+      "quantity": 1,
+      "ticker": "SOL",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1676668239082,
+      "id": "346879673",
+      "price": 23.47,
+      "quantity": 1,
+      "ticker": "SOL",
+      "type": "SELL",
+      "profit": 0.07000000000000028
+    },
+    {
+      "createdTimestamp": 1676670620413,
+      "id": "346882756",
+      "price": 23.32,
+      "quantity": 1,
+      "ticker": "SOL",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1676671232049,
+      "id": "274256611",
+      "price": 100.55,
+      "quantity": 0.112,
+      "ticker": "LTC",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1676671521786,
+      "id": "211769879",
+      "price": 19.25,
+      "quantity": 0.61,
+      "ticker": "AVAX",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1676673625450,
+      "id": "211773962",
+      "price": 19.47,
+      "quantity": 0.61,
+      "ticker": "AVAX",
+      "type": "SELL",
+      "profit": 0.13419999999999987
+    },
+    {
+      "createdTimestamp": 1676683413480,
+      "id": "346906346",
+      "price": 23.38,
+      "quantity": 1,
+      "ticker": "SOL",
+      "type": "SELL",
+      "profit": 0.05999999999999872
+    },
+    {
+      "createdTimestamp": 1676685024903,
+      "id": "274274749",
+      "price": 101.35,
+      "quantity": 0.112,
+      "ticker": "LTC",
+      "type": "SELL",
+      "profit": 0.08960000000000079
+    },
+    {
+      "createdTimestamp": 1676687719082,
+      "id": "346914525",
+      "price": 23.44,
+      "quantity": 1,
+      "ticker": "SOL",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1676687721591,
+      "id": "211797340",
+      "price": 19.91,
+      "quantity": 0.67,
+      "ticker": "AVAX",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1676735425258,
+      "id": "346954915",
+      "price": 23.5,
+      "quantity": 1,
+      "ticker": "SOL",
+      "type": "SELL",
+      "profit": 0.05999999999999872
+    },
+    {
+      "createdTimestamp": 1676742320646,
+      "id": "346972432",
+      "price": 23.48,
+      "quantity": 0.88,
+      "ticker": "SOL",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1676742934899,
+      "id": "346973487",
+      "price": 23.57,
+      "quantity": 0.88,
+      "ticker": "SOL",
+      "type": "SELL",
+      "profit": 0.07920000000000016
+    },
+    {
+      "createdTimestamp": 1676750254923,
+      "id": "346982933",
+      "price": 23.49,
+      "quantity": 0.88,
+      "ticker": "SOL",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1676751024159,
+      "id": "274355221",
+      "price": 99.31,
+      "quantity": 0.101,
+      "ticker": "LTC",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1676757924148,
+      "id": "346990933",
+      "price": 23.57,
+      "quantity": 0.88,
+      "ticker": "SOL",
+      "type": "SELL",
+      "profit": 0.0704000000000029
+    },
+    {
+      "createdTimestamp": 1676763035130,
+      "id": "346995445",
+      "price": 23.52,
+      "quantity": 0.8,
+      "ticker": "SOL",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1676766344655,
+      "id": "274364473",
+      "price": 99.99,
+      "quantity": 0.101,
+      "ticker": "LTC",
+      "type": "SELL",
+      "profit": 0.06868000000000052
+    },
+    {
+      "createdTimestamp": 1676767924136,
+      "id": "346998617",
+      "price": 23.59,
+      "quantity": 0.79,
+      "ticker": "SOL",
+      "type": "SELL",
+      "profit": 0.05529999999999902
+    },
+    {
+      "createdTimestamp": 1676770519057,
+      "id": "347001575",
+      "price": 23.33,
+      "quantity": 0.79,
+      "ticker": "SOL",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1676775625558,
+      "id": "347004472",
+      "price": 23.39,
+      "quantity": 0.79,
+      "ticker": "SOL",
+      "type": "SELL",
+      "profit": 0.04740000000000322
+    },
+    {
+      "createdTimestamp": 1676778919482,
+      "id": "347005557",
+      "price": 23.26,
+      "quantity": 1.03,
+      "ticker": "SOL",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1676779570731,
+      "id": "347005788",
+      "price": 23.32,
+      "quantity": 1.03,
+      "ticker": "SOL",
+      "type": "SELL",
+      "profit": 0.06179999999999808
+    },
+    {
+      "createdTimestamp": 1676788254926,
+      "id": "347024244",
+      "price": 23.62,
+      "quantity": 1.05,
+      "ticker": "SOL",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1676790327935,
+      "id": "347026599",
+      "price": 23.7,
+      "quantity": 1.05,
+      "ticker": "SOL",
+      "type": "SELL",
+      "profit": 0.08399999999999963
+    },
+    {
+      "createdTimestamp": 1676791530622,
+      "id": "347027640",
+      "price": 23.61,
+      "quantity": 0.94,
+      "ticker": "SOL",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1676798295458,
+      "id": "308810109",
+      "price": 7.387,
+      "quantity": 3.15,
+      "ticker": "DOT",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1676803526281,
+      "id": "308818614",
+      "price": 7.439,
+      "quantity": 3.15,
+      "ticker": "DOT",
+      "type": "SELL",
+      "profit": 0.16380000000000194
+    },
+    {
+      "createdTimestamp": 1676810725509,
+      "id": "347045136",
+      "price": 23.86,
+      "quantity": 0.94,
+      "ticker": "SOL",
+      "type": "SELL",
+      "profit": 0.23500000000000298
+    },
+    {
+      "createdTimestamp": 1676813747818,
+      "id": "211881137",
+      "price": 20.05,
+      "quantity": 0.67,
+      "ticker": "AVAX",
+      "type": "SELL",
+      "profit": 0.09379999999999988
+    },
+    {
+      "createdTimestamp": 1676816603865,
+      "id": "308897418",
+      "price": 7.668,
+      "quantity": 6,
+      "ticker": "DOT",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1676820923321,
+      "id": "211898976",
+      "price": 20.1,
+      "quantity": 0.82,
+      "ticker": "AVAX",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1676822126639,
+      "id": "308915577",
+      "price": 7.723,
+      "quantity": 5.99,
+      "ticker": "DOT",
+      "type": "SELL",
+      "profit": 0.32945000000000135
+    },
+    {
+      "createdTimestamp": 1676823049604,
+      "id": "211902928",
+      "price": 20.32,
+      "quantity": 0.82,
+      "ticker": "AVAX",
+      "type": "SELL",
+      "profit": 0.18039999999999878
+    },
+    {
+      "createdTimestamp": 1676825139280,
+      "id": "211908992",
+      "price": 20.15,
+      "quantity": 1.34,
+      "ticker": "AVAX",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1676825721426,
+      "id": "308951328",
+      "price": 7.57,
+      "quantity": 4.71,
+      "ticker": "DOT",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1676837127530,
+      "id": "211934775",
+      "price": 19.5,
+      "quantity": 1.34,
+      "ticker": "AVAX",
+      "type": "SELL",
+      "profit": -0.8709999999999987
+    },
+    {
+      "createdTimestamp": 1676837425996,
+      "id": "211935498",
+      "price": 19.56,
+      "quantity": 0.96,
+      "ticker": "AVAX",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1676841715747,
+      "id": "211942679",
+      "price": 19.69,
+      "quantity": 0.95,
+      "ticker": "AVAX",
+      "type": "SELL",
+      "profit": 0.1235000000000035
+    },
+    {
+      "createdTimestamp": 1676855424959,
+      "id": "211961003",
+      "price": 19.54,
+      "quantity": 0.96,
+      "ticker": "AVAX",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1676855732938,
+      "id": "309054566",
+      "price": 7.275,
+      "quantity": 4.7,
+      "ticker": "DOT",
+      "type": "SELL",
+      "profit": -1.386499999999998
+    },
+    {
+      "createdTimestamp": 1676856320493,
+      "id": "309059003",
+      "price": 7.326,
+      "quantity": 5.17,
+      "ticker": "DOT",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1676858354263,
+      "id": "309064807",
+      "price": 7.401,
+      "quantity": 5.17,
+      "ticker": "DOT",
+      "type": "SELL",
+      "profit": 0.38774999999999693
+    },
+    {
+      "createdTimestamp": 1676858420909,
+      "id": "309065027",
+      "price": 7.397,
+      "quantity": 5.14,
+      "ticker": "DOT",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1676860825413,
+      "id": "309070794",
+      "price": 7.454,
+      "quantity": 5.13,
+      "ticker": "DOT",
+      "type": "SELL",
+      "profit": 0.29240999999999673
+    },
+    {
+      "createdTimestamp": 1676865067017,
+      "id": "211976774",
+      "price": 19.68,
+      "quantity": 0.96,
+      "ticker": "AVAX",
+      "type": "SELL",
+      "profit": 0.1343999999999994
+    },
+    {
+      "createdTimestamp": 1676871020242,
+      "id": "309086505",
+      "price": 7.457,
+      "quantity": 6.09,
+      "ticker": "DOT",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1676876128457,
+      "id": "309092590",
+      "price": 7.535,
+      "quantity": 6.09,
+      "ticker": "DOT",
+      "type": "SELL",
+      "profit": 0.47502000000000777
+    },
+    {
+      "createdTimestamp": 1676882420544,
+      "id": "309103387",
+      "price": 7.433,
+      "quantity": 6.13,
+      "ticker": "DOT",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1676885066999,
+      "id": "212022545",
+      "price": 20.37,
+      "quantity": 0.8,
+      "ticker": "AVAX",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1676886324333,
+      "id": "309110563",
+      "price": 7.516,
+      "quantity": 6.12,
+      "ticker": "DOT",
+      "type": "SELL",
+      "profit": 0.5079600000000042
+    },
+    {
+      "createdTimestamp": 1676886324997,
+      "id": "212026191",
+      "price": 20.62,
+      "quantity": 0.8,
+      "ticker": "AVAX",
+      "type": "SELL",
+      "profit": 0.1999999999999993
+    },
+    {
+      "createdTimestamp": 1676897422456,
+      "id": "309133365",
+      "price": 7.463,
+      "quantity": 5.37,
+      "ticker": "DOT",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1676897422456,
+      "id": "309133366",
+      "price": 7.464,
+      "quantity": 0.76,
+      "ticker": "DOT",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1676900733289,
+      "id": "212068838",
+      "price": 21.01,
+      "quantity": 0.78,
+      "ticker": "AVAX",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1676902057351,
+      "id": "309141765",
+      "price": 7.53,
+      "quantity": 6.13,
+      "ticker": "DOT",
+      "type": "SELL",
+      "profit": 0.40764500000000226
+    },
+    {
+      "createdTimestamp": 1676902524553,
+      "id": "212073380",
+      "price": 21.15,
+      "quantity": 0.78,
+      "ticker": "AVAX",
+      "type": "SELL",
+      "profit": 0.10919999999999774
+    },
+    {
+      "createdTimestamp": 1676904918930,
+      "id": "309149378",
+      "price": 7.5,
+      "quantity": 6.13,
+      "ticker": "DOT",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1676910776171,
+      "id": "212095897",
+      "price": 20.88,
+      "quantity": 0.79,
+      "ticker": "AVAX",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1677082966208,
+      "id": "212500139",
+      "price": 19.69,
+      "quantity": 0.79,
+      "ticker": "AVAX",
+      "type": "SELL",
+      "profit": -0.9400999999999993
+    },
+    {
+      "createdTimestamp": 1677083071401,
+      "id": "309450591",
+      "price": 6.92,
+      "quantity": 6.12,
+      "ticker": "DOT",
+      "type": "SELL",
+      "profit": -3.549599999999998
+    },
+    {
+      "createdTimestamp": 1677098754894,
+      "id": "348121948",
+      "price": 23.55,
+      "quantity": 1.77,
+      "ticker": "SOL",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1677098757321,
+      "id": "274953759",
+      "price": 93.55,
+      "quantity": 0.216,
+      "ticker": "LTC",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1677104165083,
+      "id": "348126924",
+      "price": 23.74,
+      "quantity": 1.77,
+      "ticker": "SOL",
+      "type": "SELL",
+      "profit": 0.33629999999999427
+    },
+    {
+      "createdTimestamp": 1677106888949,
+      "id": "274960821",
+      "price": 94.58,
+      "quantity": 0.215,
+      "ticker": "LTC",
+      "type": "SELL",
+      "profit": 0.22144999999999726
+    },
+    {
+      "createdTimestamp": 1677117655330,
+      "id": "274973156",
+      "price": 95.09,
+      "quantity": 0.187,
+      "ticker": "LTC",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1677120383236,
+      "id": "274978350",
+      "price": 96.13,
+      "quantity": 0.187,
+      "ticker": "LTC",
+      "type": "SELL",
+      "profit": 0.19447999999999865
+    },
+    {
+      "createdTimestamp": 1677132873910,
+      "id": "309522629",
+      "price": 7.308,
+      "quantity": 2.7,
+      "ticker": "DOT",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1677134864347,
+      "id": "274995079",
+      "price": 94.87,
+      "quantity": 0.118,
+      "ticker": "LTC",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1677144675765,
+      "id": "348193264",
+      "price": 24.41,
+      "quantity": 0.84,
+      "ticker": "SOL",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1677147378533,
+      "id": "2782453191",
+      "price": 24251.63,
+      "quantity": 0.00043,
+      "ticker": "BTC",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1677151885645,
+      "id": "212587534",
+      "price": 20.03,
+      "quantity": 0.81,
+      "ticker": "AVAX",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1677158239374,
+      "id": "212602123",
+      "price": 20.18,
+      "quantity": 0.81,
+      "ticker": "AVAX",
+      "type": "SELL",
+      "profit": 0.1214999999999975
+    },
+    {
+      "createdTimestamp": 1677176285141,
+      "id": "309599211",
+      "price": 7.083,
+      "quantity": 2.7,
+      "ticker": "DOT",
+      "type": "SELL",
+      "profit": -0.6074999999999982
+    },
+    {
+      "createdTimestamp": 1677190570507,
+      "id": "348296470",
+      "price": 23.69,
+      "quantity": 0.84,
+      "ticker": "SOL",
+      "type": "SELL",
+      "profit": -0.6048000000000009
+    },
+    {
+      "createdTimestamp": 1677206873074,
+      "id": "348314060",
+      "price": 23.78,
+      "quantity": 0.95,
+      "ticker": "SOL",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1677222083371,
+      "id": "348329692",
+      "price": 24.04,
+      "quantity": 0.95,
+      "ticker": "SOL",
+      "type": "SELL",
+      "profit": 0.24699999999999633
+    },
+    {
+      "createdTimestamp": 1677234655675,
+      "id": "212672678",
+      "price": 19.4,
+      "quantity": 1.47,
+      "ticker": "AVAX",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1677234658046,
+      "id": "348347681",
+      "price": 23.67,
+      "quantity": 0.96,
+      "ticker": "SOL",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1677240980921,
+      "id": "212676673",
+      "price": 19.59,
+      "quantity": 1.47,
+      "ticker": "AVAX",
+      "type": "SELL",
+      "profit": 0.27930000000000277
+    },
+    {
+      "createdTimestamp": 1677240999241,
+      "id": "348354990",
+      "price": 23.96,
+      "quantity": 0.96,
+      "ticker": "SOL",
+      "type": "SELL",
+      "profit": 0.27839999999999776
+    },
+    {
+      "createdTimestamp": 1677244945187,
+      "id": "348360196",
+      "price": 23.73,
+      "quantity": 0.96,
+      "ticker": "SOL",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1677253595761,
+      "id": "212702615",
+      "price": 18.81,
+      "quantity": 1.15,
+      "ticker": "AVAX",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1677253597953,
+      "id": "275133091",
+      "price": 91.91,
+      "quantity": 0.118,
+      "ticker": "LTC",
+      "type": "SELL",
+      "profit": -0.34928000000000203
+    },
+    {
+      "createdTimestamp": 1677253662184,
+      "id": "2796544127",
+      "price": 23410.98,
+      "quantity": 0.00043,
+      "ticker": "BTC",
+      "type": "SELL",
+      "profit": -0.3614795000000015
+    },
+    {
+      "createdTimestamp": 1677254466453,
+      "id": "2796750311",
+      "price": 23343.76,
+      "quantity": 0.00049,
+      "ticker": "BTC",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1677255375263,
+      "id": "348408628",
+      "price": 22.86,
+      "quantity": 0.96,
+      "ticker": "SOL",
+      "type": "SELL",
+      "profit": -0.8352000000000004
+    },
+    {
+      "createdTimestamp": 1677256256525,
+      "id": "348416946",
+      "price": 22.62,
+      "quantity": 0.86,
+      "ticker": "SOL",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1677256258950,
+      "id": "275152171",
+      "price": 90.53,
+      "quantity": 0.152,
+      "ticker": "LTC",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1677257193584,
+      "id": "348421377",
+      "price": 22.86,
+      "quantity": 0.85,
+      "ticker": "SOL",
+      "type": "SELL",
+      "profit": 0.20399999999999707
+    },
+    {
+      "createdTimestamp": 1677261162763,
+      "id": "275162665",
+      "price": 91.95,
+      "quantity": 0.152,
+      "ticker": "LTC",
+      "type": "SELL",
+      "profit": 0.21584000000000003
+    },
+    {
+      "createdTimestamp": 1677271805205,
+      "id": "348454072",
+      "price": 23.13,
+      "quantity": 0.85,
+      "ticker": "SOL",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1677276068163,
+      "id": "212760488",
+      "price": 18.2,
+      "quantity": 1.15,
+      "ticker": "AVAX",
+      "type": "SELL",
+      "profit": -0.7014999999999993
+    },
+    {
+      "createdTimestamp": 1677276075993,
+      "id": "275182471",
+      "price": 91.01,
+      "quantity": 0.114,
+      "ticker": "LTC",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1677288028867,
+      "id": "275195676",
+      "price": 91.73,
+      "quantity": 0.114,
+      "ticker": "LTC",
+      "type": "SELL",
+      "profit": 0.08207999999999949
+    },
+    {
+      "createdTimestamp": 1677329482446,
+      "id": "348533881",
+      "price": 22.38,
+      "quantity": 0.85,
+      "ticker": "SOL",
+      "type": "SELL",
+      "profit": -0.6374999999999993
+    },
+    {
+      "createdTimestamp": 1677351718950,
+      "id": "212837952",
+      "price": 17.9,
+      "quantity": 1.9,
+      "ticker": "AVAX",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1677380461801,
+      "id": "212874609",
+      "price": 18.03,
+      "quantity": 1.38,
+      "ticker": "AVAX",
+      "type": "SELL",
+      "profit": 0.17940000000000467
+    },
+    {
+      "createdTimestamp": 1677380461801,
+      "id": "212874610",
+      "price": 18.03,
+      "quantity": 0.52,
+      "ticker": "AVAX",
+      "type": "SELL",
+      "profit": 0.06760000000000055
+    },
+    {
+      "createdTimestamp": 1677441684717,
+      "id": "2818053235",
+      "price": 23517.28,
+      "quantity": 0.00049,
+      "ticker": "BTC",
+      "type": "SELL",
+      "profit": 0.08502479999999935
+    },
+    {
+      "createdTimestamp": 1677450674241,
+      "id": "2819416738",
+      "price": 23351.28,
+      "quantity": 0.00087,
+      "ticker": "BTC",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1677453382073,
+      "id": "2819867038",
+      "price": 23561.67,
+      "quantity": 0.00087,
+      "ticker": "BTC",
+      "type": "SELL",
+      "profit": 0.1830393000000008
+    },
+    {
+      "createdTimestamp": 1677676575084,
+      "id": "310142555",
+      "price": 6.521,
+      "quantity": 6.98,
+      "ticker": "DOT",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1677864882506,
+      "id": "310351102",
+      "price": 6.068,
+      "quantity": 6.97,
+      "ticker": "DOT",
+      "type": "SELL",
+      "profit": -3.1574099999999987
+    },
+    {
+      "createdTimestamp": 1677869160085,
+      "id": "310353868",
+      "price": 6.041,
+      "quantity": 7.31,
+      "ticker": "DOT",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1677959159753,
+      "id": "213320932",
+      "price": 16.36,
+      "quantity": 1.94,
+      "ticker": "AVAX",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1677960965730,
+      "id": "310403615",
+      "price": 5.846,
+      "quantity": 7.3,
+      "ticker": "DOT",
+      "type": "SELL",
+      "profit": -1.423499999999997
+    },
+    {
+      "createdTimestamp": 1677962767732,
+      "id": "310406262",
+      "price": 5.814,
+      "quantity": 5.27,
+      "ticker": "DOT",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1677966370008,
+      "id": "213335394",
+      "price": 15.81,
+      "quantity": 1.93,
+      "ticker": "AVAX",
+      "type": "SELL",
+      "profit": -1.0614999999999952
+    },
+    {
+      "createdTimestamp": 1677967343783,
+      "id": "213338029",
+      "price": 15.84,
+      "quantity": 2.17,
+      "ticker": "AVAX",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1677967343784,
+      "id": "213338030",
+      "price": 15.84,
+      "quantity": 0.17,
+      "ticker": "AVAX",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1677969063714,
+      "id": "213341784",
+      "price": 16.08,
+      "quantity": 2.34,
+      "ticker": "AVAX",
+      "type": "SELL",
+      "profit": 0.5615999999999985
+    },
+    {
+      "createdTimestamp": 1677969067764,
+      "id": "310419513",
+      "price": 5.866,
+      "quantity": 5.27,
+      "ticker": "DOT",
+      "type": "SELL",
+      "profit": 0.27403999999999584
+    },
+    {
+      "createdTimestamp": 1677984363739,
+      "id": "213354375",
+      "price": 16.2,
+      "quantity": 3.24,
+      "ticker": "AVAX",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1677984379072,
+      "id": "310435453",
+      "price": 5.945,
+      "quantity": 7.29,
+      "ticker": "DOT",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1677986165445,
+      "id": "213355027",
+      "price": 16.32,
+      "quantity": 3.24,
+      "ticker": "AVAX",
+      "type": "SELL",
+      "profit": 0.38880000000000337
+    },
+    {
+      "createdTimestamp": 1677987214188,
+      "id": "310437611",
+      "price": 6.009,
+      "quantity": 7.28,
+      "ticker": "DOT",
+      "type": "SELL",
+      "profit": 0.4659200000000041
+    },
+    {
+      "createdTimestamp": 1678059061461,
+      "id": "360918656",
+      "price": 0.00001106,
+      "quantity": 3758711,
+      "ticker": "SHIB",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1678068085771,
+      "id": "310479916",
+      "price": 5.898,
+      "quantity": 2.79,
+      "ticker": "DOT",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1678068091143,
+      "id": "213388893",
+      "price": 15.91,
+      "quantity": 1.08,
+      "ticker": "AVAX",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1678073492878,
+      "id": "213394120",
+      "price": 16.02,
+      "quantity": 1.08,
+      "ticker": "AVAX",
+      "type": "SELL",
+      "profit": 0.11880000000000024
+    },
+    {
+      "createdTimestamp": 1678098664441,
+      "id": "310499498",
+      "price": 5.95,
+      "quantity": 2.79,
+      "ticker": "DOT",
+      "type": "SELL",
+      "profit": 0.1450800000000001
+    },
+    {
+      "createdTimestamp": 1678118483514,
+      "id": "360959762",
+      "price": 0.00001119,
+      "quantity": 3754952,
+      "ticker": "SHIB",
+      "type": "SELL",
+      "profit": 0.4881437599999927
+    },
+    {
+      "createdTimestamp": 1678357030486,
+      "id": "361272962",
+      "price": 0.00001087,
+      "quantity": 4654921,
+      "ticker": "SHIB",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1678370565455,
+      "id": "361285828",
+      "price": 0.00001096,
+      "quantity": 4650266,
+      "ticker": "SHIB",
+      "type": "SELL",
+      "profit": 0.41852394000000714
+    },
+    {
+      "createdTimestamp": 1678375936524,
+      "id": "361293973",
+      "price": 0.00001095,
+      "quantity": 4634484,
+      "ticker": "SHIB",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1678380385293,
+      "id": "349899525",
+      "price": 18.08,
+      "quantity": 1.37,
+      "ticker": "SOL",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1678389375928,
+      "id": "361319120",
+      "price": 0.00001062,
+      "quantity": 4629849,
+      "ticker": "SHIB",
+      "type": "SELL",
+      "profit": -1.5278501700000007
+    },
+    {
+      "createdTimestamp": 1678390371850,
+      "id": "361320998",
+      "price": 0.00001058,
+      "quantity": 3626749,
+      "ticker": "SHIB",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1678394822079,
+      "id": "349960680",
+      "price": 17.28,
+      "quantity": 1.37,
+      "ticker": "SOL",
+      "type": "SELL",
+      "profit": -1.0959999999999965
+    },
+    {
+      "createdTimestamp": 1678394824297,
+      "id": "361348117",
+      "price": 0.00001006,
+      "quantity": 3623123,
+      "ticker": "SHIB",
+      "type": "SELL",
+      "profit": -1.8840239600000004
+    },
+    {
+      "createdTimestamp": 1678395651380,
+      "id": "349976958",
+      "price": 16.97,
+      "quantity": 2.63,
+      "ticker": "SOL",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1678395672278,
+      "id": "361363006",
+      "price": 0.00000996,
+      "quantity": 4873597,
+      "ticker": "SHIB",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1678396553600,
+      "id": "361368475",
+      "price": 0.00001013,
+      "quantity": 4868723,
+      "ticker": "SHIB",
+      "type": "SELL",
+      "profit": 0.82768291
+    },
+    {
+      "createdTimestamp": 1678396553950,
+      "id": "349984363",
+      "price": 17.15,
+      "quantity": 2.63,
+      "ticker": "SOL",
+      "type": "SELL",
+      "profit": 0.47339999999999804
+    },
+    {
+      "createdTimestamp": 1678397469717,
+      "id": "361372663",
+      "price": 0.00001019,
+      "quantity": 4816881,
+      "ticker": "SHIB",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1678410050626,
+      "id": "350017381",
+      "price": 17.06,
+      "quantity": 1.4,
+      "ticker": "SOL",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1678412750478,
+      "id": "350029463",
+      "price": 17.21,
+      "quantity": 1.4,
+      "ticker": "SOL",
+      "type": "SELL",
+      "profit": 0.2100000000000044
+    },
+    {
+      "createdTimestamp": 1678441580856,
+      "id": "350081676",
+      "price": 16.53,
+      "quantity": 1.45,
+      "ticker": "SOL",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1678443376450,
+      "id": "361444444",
+      "price": 0.00000988,
+      "quantity": 4812064,
+      "ticker": "SHIB",
+      "type": "SELL",
+      "profit": -1.491739840000001
+    },
+    {
+      "createdTimestamp": 1678445149631,
+      "id": "361454350",
+      "price": 0.00000973,
+      "quantity": 3822061,
+      "ticker": "SHIB",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1678446257872,
+      "id": "361458654",
+      "price": 0.00000984,
+      "quantity": 1117886,
+      "ticker": "SHIB",
+      "type": "SELL",
+      "profit": 0.12296745999999992
+    },
+    {
+      "createdTimestamp": 1678446260588,
+      "id": "361458656",
+      "price": 0.00000984,
+      "quantity": 2700353,
+      "ticker": "SHIB",
+      "type": "SELL",
+      "profit": 0.29703883000000175
+    },
+    {
+      "createdTimestamp": 1678447079545,
+      "id": "361460496",
+      "price": 0.00000984,
+      "quantity": 3795785,
+      "ticker": "SHIB",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1678450678222,
+      "id": "350120684",
+      "price": 16.78,
+      "quantity": 1.45,
+      "ticker": "SOL",
+      "type": "SELL",
+      "profit": 0.36249999999999716
+    },
+    {
+      "createdTimestamp": 1678450775203,
+      "id": "361466146",
+      "price": 0.00000995,
+      "quantity": 3791989,
+      "ticker": "SHIB",
+      "type": "SELL",
+      "profit": 0.4171187899999964
+    },
+    {
+      "createdTimestamp": 1678457839818,
+      "id": "350175740",
+      "price": 17.24,
+      "quantity": 2.6,
+      "ticker": "SOL",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1678458653131,
+      "id": "350179034",
+      "price": 17.36,
+      "quantity": 2.59,
+      "ticker": "SOL",
+      "type": "SELL",
+      "profit": 0.3108000000000004
+    },
+    {
+      "createdTimestamp": 1678459620364,
+      "id": "361497530",
+      "price": 0.00001001,
+      "quantity": 4880464,
+      "ticker": "SHIB",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1678463227088,
+      "id": "361504017",
+      "price": 0.00001012,
+      "quantity": 4875584,
+      "ticker": "SHIB",
+      "type": "SELL",
+      "profit": 0.5363142399999958
+    },
+    {
+      "createdTimestamp": 1678468623060,
+      "id": "350219335",
+      "price": 17.57,
+      "quantity": 1.39,
+      "ticker": "SOL",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1678468623060,
+      "id": "350219336",
+      "price": 17.57,
+      "quantity": 1.18,
+      "ticker": "SOL",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1678470376413,
+      "id": "350222586",
+      "price": 17.74,
+      "quantity": 2.57,
+      "ticker": "SOL",
+      "type": "SELL",
+      "profit": 0.4368999999999943
+    },
+    {
+      "createdTimestamp": 1678474933168,
+      "id": "361520432",
+      "price": 0.00001013,
+      "quantity": 4870676,
+      "ticker": "SHIB",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1678478541783,
+      "id": "361524213",
+      "price": 0.00001023,
+      "quantity": 4865805,
+      "ticker": "SHIB",
+      "type": "SELL",
+      "profit": 0.4865805000000023
+    },
+    {
+      "createdTimestamp": 1678482948006,
+      "id": "361528018",
+      "price": 0.00001018,
+      "quantity": 4864598,
+      "ticker": "SHIB",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1678489342713,
+      "id": "361534676",
+      "price": 0.00001026,
+      "quantity": 4859734,
+      "ticker": "SHIB",
+      "type": "SELL",
+      "profit": 0.3887787199999906
+    },
+    {
+      "createdTimestamp": 1678502773583,
+      "id": "361556035",
+      "price": 0.00001035,
+      "quantity": 2951648,
+      "ticker": "SHIB",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1678504614448,
+      "id": "1096236561",
+      "price": 1460.1,
+      "quantity": 0.0094,
+      "ticker": "ETH",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1678504638960,
+      "id": "2921913792",
+      "price": 20361.84,
+      "quantity": 0.0006,
+      "ticker": "BTC",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1678508190581,
+      "id": "350321686",
+      "price": 18.02,
+      "quantity": 0.72,
+      "ticker": "SOL",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1678509258527,
+      "id": "350323912",
+      "price": 18.14,
+      "quantity": 0.72,
+      "ticker": "SOL",
+      "type": "SELL",
+      "profit": 0.08640000000000114
+    },
+    {
+      "createdTimestamp": 1678517196678,
+      "id": "350339006",
+      "price": 17.89,
+      "quantity": 0.73,
+      "ticker": "SOL",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1678520777940,
+      "id": "361581076",
+      "price": 0.00000996,
+      "quantity": 2948696,
+      "ticker": "SHIB",
+      "type": "SELL",
+      "profit": -1.1499914400000009
+    },
+    {
+      "createdTimestamp": 1678520780276,
+      "id": "350355218",
+      "price": 17.17,
+      "quantity": 0.73,
+      "ticker": "SOL",
+      "type": "SELL",
+      "profit": -0.525599999999999
+    },
+    {
+      "createdTimestamp": 1678521672425,
+      "id": "350361767",
+      "price": 17.08,
+      "quantity": 1.21,
+      "ticker": "SOL",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1678522545535,
+      "id": "361587384",
+      "price": 0.00001007,
+      "quantity": 1411812,
+      "ticker": "SHIB",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1678523457061,
+      "id": "350370467",
+      "price": 17.33,
+      "quantity": 1.21,
+      "ticker": "SOL",
+      "type": "SELL",
+      "profit": 0.30249999999999844
+    },
+    {
+      "createdTimestamp": 1678557700346,
+      "id": "361629778",
+      "price": 0.00001015,
+      "quantity": 1410400,
+      "ticker": "SHIB",
+      "type": "SELL",
+      "profit": 0.11283199999999916
+    },
+    {
+      "createdTimestamp": 1678581210745,
+      "id": "361649947",
+      "price": 0.0000102,
+      "quantity": 1868041,
+      "ticker": "SHIB",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1678642332785,
+      "id": "1097977197",
+      "price": 1510.31,
+      "quantity": 0.0094,
+      "ticker": "ETH",
+      "type": "SELL",
+      "profit": 0.47197399999999945
+    },
+    {
+      "createdTimestamp": 1678642863679,
+      "id": "2935614084",
+      "price": 20644.34,
+      "quantity": 0.0006,
+      "ticker": "BTC",
+      "type": "SELL",
+      "profit": 0.16949999999999932
+    },
+    {
+      "createdTimestamp": 1678645981029,
+      "id": "361701977",
+      "price": 0.00001034,
+      "quantity": 1866173,
+      "ticker": "SHIB",
+      "type": "SELL",
+      "profit": 0.2612642199999975
+    },
+    {
+      "createdTimestamp": 1678649455529,
+      "id": "350615475",
+      "price": 18.51,
+      "quantity": 0.69,
+      "ticker": "SOL",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1678649473768,
+      "id": "1098203223",
+      "price": 1519.65,
+      "quantity": 0.0125,
+      "ticker": "ETH",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1678650413464,
+      "id": "361713902",
+      "price": 0.00001031,
+      "quantity": 2039960,
+      "ticker": "SHIB",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1678653955500,
+      "id": "350634084",
+      "price": 18.84,
+      "quantity": 0.69,
+      "ticker": "SOL",
+      "type": "SELL",
+      "profit": 0.22769999999999868
+    },
+    {
+      "createdTimestamp": 1678653956951,
+      "id": "361722749",
+      "price": 0.00001051,
+      "quantity": 2037920,
+      "ticker": "SHIB",
+      "type": "SELL",
+      "profit": 0.40758399999999995
+    },
+    {
+      "createdTimestamp": 1678654712887,
+      "id": "1098330020",
+      "price": 1537.75,
+      "quantity": 0.0125,
+      "ticker": "ETH",
+      "type": "SELL",
+      "profit": 0.22625000000000028
+    },
+    {
+      "createdTimestamp": 1678662044784,
+      "id": "350711976",
+      "price": 19.88,
+      "quantity": 0.65,
+      "ticker": "SOL",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1678664813784,
+      "id": "350736174",
+      "price": 20.28,
+      "quantity": 0.65,
+      "ticker": "SOL",
+      "type": "SELL",
+      "profit": 0.2599999999999998
+    },
+    {
+      "createdTimestamp": 1678667410372,
+      "id": "350756702",
+      "price": 20.12,
+      "quantity": 0.72,
+      "ticker": "SOL",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1678668396332,
+      "id": "350767991",
+      "price": 20.48,
+      "quantity": 0.72,
+      "ticker": "SOL",
+      "type": "SELL",
+      "profit": 0.2591999999999999
+    },
+    {
+      "createdTimestamp": 1678670220258,
+      "id": "350780578",
+      "price": 20.16,
+      "quantity": 0.62,
+      "ticker": "SOL",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1678672935594,
+      "id": "361778826",
+      "price": 0.00001082,
+      "quantity": 2416887,
+      "ticker": "SHIB",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1678698088774,
+      "id": "350850274",
+      "price": 19.43,
+      "quantity": 0.62,
+      "ticker": "SOL",
+      "type": "SELL",
+      "profit": -0.45260000000000034
+    },
+    {
+      "createdTimestamp": 1678700831969,
+      "id": "277830432",
+      "price": 75.12,
+      "quantity": 0.378,
+      "ticker": "LTC",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1678700844392,
+      "id": "361819865",
+      "price": 0.00001047,
+      "quantity": 2414470,
+      "ticker": "SHIB",
+      "type": "SELL",
+      "profit": -0.8450644999999994
+    },
+    {
+      "createdTimestamp": 1678701697351,
+      "id": "361821429",
+      "price": 0.00001046,
+      "quantity": 3997973,
+      "ticker": "SHIB",
+      "type": "BUY"
+    },
+    {
+      "createdTimestamp": 1678704356938,
+      "id": "361824720",
+      "price": 0.00001054,
+      "quantity": 3993975,
+      "ticker": "SHIB",
+      "type": "SELL",
+      "profit": 0.3195180000000022
+    },
+    {
+      "createdTimestamp": 1678705251568,
+      "id": "277843240",
+      "price": 75.67,
+      "quantity": 0.377,
+      "ticker": "LTC",
+      "type": "SELL",
+      "profit": 0.20734999999999815
+    }
+  ],
+  "balanceAtWalletCreation": 0,
+  "allowNegativeBalance": false,
+  "allowNegativeHeld": false,
+  "totalValueInUSDT": 106.03665487380002,
+  "holdings": {
+    "BTC": 0.0000072,
+    "LTC": 0.000839,
+    "ETH": 0.00004631,
+    "USDT": 105.58597597,
+    "TRX": 0.0054,
+    "DOGE": 0.894,
+    "SOL": 0.00118,
+    "DOT": 0.00229,
+    "AVAX": 0.00186,
+    "SHIB": 0.75
+  },
+  "prices": {
+    "BTC": 24217.63,
+    "ETH": 1665.78,
+    "LTC": 79.66,
+    "TRX": 0.06609,
+    "DOGE": 0.07163,
+    "SOL": 19.94,
+    "DOT": 6.094,
+    "AVAX": 16.37,
+    "SHIB": 0.00001092,
+    "USDT": 1
+  },
+  "costBasis": {},
+  "daySnapshots": [],
+  "_creationAt": "2023-03-14T09:40:24.023Z",
+  "positions": {
+    "BTC/USDT": {
+      "symbol": "BTC/USDT",
+      "positionSize": 0.0000072,
+      "curPrice": 24221.72,
+      "spentPrice": 20375.11,
+      "positionValue": 0.174396384,
+      "unrealizedPnl": -5.61184556844737e-11,
+      "unrealizedPnlPercentage": 18.878965561412922
+    },
+    "LTC/USDT": {
+      "symbol": "LTC/USDT",
+      "positionSize": 0.000839,
+      "curPrice": 79.69,
+      "spentPrice": 75.13,
+      "positionValue": 0.06685991,
+      "unrealizedPnl": -6.390128445450071e-7,
+      "unrealizedPnlPercentage": 6.069479568747508
+    },
+    "ETH/USDT": {
+      "symbol": "ETH/USDT",
+      "positionSize": 0.00004631,
+      "curPrice": 1666.22,
+      "spentPrice": 1519.65,
+      "positionValue": 0.0771626482,
+      "unrealizedPnl": -2.6806736865631974e-9,
+      "unrealizedPnlPercentage": 9.644984042378175
+    },
+    "TRX/USDT": {
+      "symbol": "TRX/USDT",
+      "positionSize": 0.0054,
+      "curPrice": 0.0661,
+      "spentPrice": 0.06777,
+      "positionValue": 0.00035694000000000004,
+      "unrealizedPnl": 0.002013127520176468,
+      "unrealizedPnlPercentage": -2.464217205253049
+    },
+    "DOGE/USDT": {
+      "symbol": "DOGE/USDT",
+      "positionSize": 0.894,
+      "curPrice": 0.07164,
+      "spentPrice": 0.08817,
+      "positionValue": 0.06404615999999999,
+      "unrealizedPnl": 2.3395587441574444,
+      "unrealizedPnlPercentage": -18.74787342633549
+    },
+    "SOL/USDT": {
+      "symbol": "SOL/USDT",
+      "positionSize": 0.00118,
+      "curPrice": 19.95,
+      "spentPrice": 20.16,
+      "positionValue": 0.023541,
+      "unrealizedPnl": 6.161236424394401e-7,
+      "unrealizedPnlPercentage": -1.041666666666671
+    },
+    "DOT/USDT": {
+      "symbol": "DOT/USDT",
+      "positionSize": 0.00229,
+      "curPrice": 6.094,
+      "spentPrice": 5.898,
+      "positionValue": 0.01395526,
+      "unrealizedPnl": -0.000012487754021627758,
+      "unrealizedPnlPercentage": 3.3231603933536897
+    },
+    "AVAX/USDT": {
+      "symbol": "AVAX/USDT",
+      "positionSize": 0.00186,
+      "curPrice": 16.36,
+      "spentPrice": 15.91,
+      "positionValue": 0.0304296,
+      "unrealizedPnl": -0.0000032156737393559937,
+      "unrealizedPnlPercentage": 2.8284098051539868
+    },
+    "SHIB/USDT": {
+      "symbol": "SHIB/USDT",
+      "positionSize": 0.75,
+      "curPrice": 0.00001092,
+      "spentPrice": 0.00001046,
+      "positionValue": 0.000008190000000000001,
+      "unrealizedPnl": -3020.4021599815096,
+      "unrealizedPnlPercentage": 4.3977055449330855
+    }
+  }
+}

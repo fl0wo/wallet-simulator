@@ -10,6 +10,8 @@ const expectedJson = fs.readFileSync('./walletExample.json').toString('utf-8');
 
 let client:CCTXWrapper;
 
+jest.setTimeout(1000 * 60)
+
 describe('CCTX ACCEPTANCE', () => {
 
     beforeAll(async () => {
@@ -36,11 +38,10 @@ describe('CCTX ACCEPTANCE', () => {
         console.log(daysBefore(new Date(),dBefore))
         console.log(new Date(w.trades[w.trades.length-1].createdTimestamp))
         const total = w.trades
-            .filter((t)=>t.createdTimestamp>daysBefore(new Date(),dBefore).getTime())
+            .filter((t)=>t.createdTimestamp>daysBefore(new Date(),30).getTime())
             .reduce((a,b,c)=>a+getSafeNull(b.profit,0),0)
 
-        console.log('Profit',total)
-
+        console.log('Profit ~13',total)
         expect(JSON.parse(actualJson))
             .toStrictEqual(JSON.parse(expectedJson))
     })

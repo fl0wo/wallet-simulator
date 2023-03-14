@@ -222,53 +222,58 @@ export function addProfits(trades: Trade[]): Trade[] {
 function calculateProfitsMadeByOrdersReverse(allOrders: Trade[]) {
     const ordersWithProfits: any = {};
 
-    const sortedOrders = allOrders.sort((a,b)=>a.createdTimestamp - b.createdTimestamp)
+    const sortedOrders = allOrders.sort((a, b) => a.createdTimestamp - b.createdTimestamp)
 
-    function findFirstBuyBackwards(index:number,ticker:string){
-        const res:{price:number,quantity:number} = {
-            price:0,
-            quantity:0
+    function findFirstBuyBackwards(index: number, ticker: string) {
+        const res: { price: number, quantity: number } = {
+            price: 0,
+            quantity: 0
         }
         let nBuys = 0;
         const maxBuys = 3;
-        for(let i=index-1;i>0;i--){
+        for (let i = index - 1; i > 0; i--) {
 
-            if(sortedOrders[i].type===TradeMove.SELL &&
-                sortedOrders[i].ticker===ticker &&
-                res.quantity>0 &&
-                nBuys>0){
+            if (sortedOrders[i].type === TradeMove.SELL &&
+                sortedOrders[i].ticker === ticker &&
+                res.quantity > 0 &&
+                nBuys > 0) {
                 return {
-                    price: res.price/nBuys,
-                    quantity: res.quantity/nBuys
+                    price: res.price / nBuys,
+                    quantity: res.quantity / nBuys
                 }
             }
 
-            if(sortedOrders[i].type===TradeMove.BUY && sortedOrders[i].ticker===ticker){
+            if (sortedOrders[i].type === TradeMove.BUY && sortedOrders[i].ticker === ticker) {
                 nBuys++;
-                res.price+=sortedOrders[i].price;
-                res.quantity+=sortedOrders[i].quantity;
+                res.price += sortedOrders[i].price;
+                res.quantity += sortedOrders[i].quantity;
             }
         }
 
         return {
-            price: res.price/nBuys,
-            quantity: res.quantity/nBuys
+            price: res.price / nBuys,
+            quantity: res.quantity / nBuys
         }
     }
 
-    for (let i=sortedOrders.length-1;i>0;i--){
-        const curTrade = sortedOrders[i];
-        if(curTrade.type===TradeMove.SELL){
-            // Find its buy
-            const relativeBuyIndex:{price:number,quantity:number} = findFirstBuyBackwards(i,curTrade.ticker);
+    for (let i = sortedOrders.length - 1; i > 0; i--){
+        try {
+            const curTrade = sortedOrders[i];
+            if (curTrade.type === TradeMove.SELL) {
+                // Find its buy
+                const relativeBuyIndex: { price: number, quantity: number } = findFirstBuyBackwards(i, curTrade.ticker);
 
-            if(relativeBuyIndex.quantity>0){
-                const moneyInThisTrade = curTrade.price * curTrade.quantity;
-                const moneyOldTrade = relativeBuyIndex.price * curTrade.quantity;
-                ordersWithProfits[curTrade.id] = (moneyInThisTrade - moneyOldTrade);
-            }else {
-                // No buy for this sell, profit = 0
+                if (relativeBuyIndex.quantity > 0) {
+                    const moneyInThisTrade = curTrade.price * curTrade.quantity;
+                    const moneyOldTrade = relativeBuyIndex.price * curTrade.quantity;
+                    ordersWithProfits[curTrade.id] = (moneyInThisTrade - moneyOldTrade);
+                } else {
+                    console.log('THIS WAS A SELL BUT NO BUY FOR HIM', curTrade);
+                    // No buy for this sell, profit = 0
+                }
             }
+        } catch (e) {
+            console.error(e);
         }
     }
 
